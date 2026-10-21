@@ -121,8 +121,8 @@ describe('gallery pull request CI workflow contract', () => {
     assert.doesNotMatch(ciWorkflow, /: write\b/u);
   });
 
-  it('runs install, type check, tests and verification in that order', () => {
-    const commands = ['run: npm ci', 'run: npm run check', 'run: npm test', 'run: npm run verify'];
+  it('runs install, locale audit, type check, tests and verification in that order', () => {
+    const commands = ['run: npm ci', 'run: npm run i18n:check', 'run: npm run check', 'run: npm test', 'run: npm run verify'];
     let previous = -1;
     for (const command of commands) {
       const position = ci.indexOf(command);

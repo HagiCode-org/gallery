@@ -11,3 +11,6 @@ dist/
 
 # Staged gh-pages payload
 .deploy/
+
+# Generated from src/i18n/locales by scripts/generate-i18n-resources.mjs
+src/i18n/generated/

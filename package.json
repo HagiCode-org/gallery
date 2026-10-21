@@ -4,14 +4,20 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev --host 0.0.0.0",
-    "build": "astro build",
+    "dev": "npm run i18n:generate && astro dev --host 0.0.0.0",
+    "build": "npm run i18n:generate && astro build",
     "preview": "astro preview",
-    "check": "astro check && tsc --noEmit",
+    "check": "npm run i18n:generate && astro check && tsc --noEmit",
     "verify": "npm run build && node scripts/verify-foundation.mjs",
     "deploy:payload": "node scripts/assemble-gh-pages-payload.mjs",
     "deploy:warmup": "node scripts/warm-deployment-domains.mjs",
-    "test": "node --test \"scripts/__tests__/*.test.mjs\""
+    "test": "npm run i18n:generate && node --test \"scripts/__tests__/*.test.mjs\"",
+    "i18n:generate": "node scripts/generate-i18n-resources.mjs",
+    "i18n:audit": "node scripts/i18n-audit.mjs audit",
+    "i18n:doctor": "node scripts/i18n-audit.mjs doctor",
+    "i18n:sync": "hagi18n sync --config hagi18n.yaml --from en-US",
+    "i18n:sync:write": "hagi18n sync --config hagi18n.yaml --from en-US --write",
+    "i18n:check": "npm run i18n:audit && npm run i18n:doctor"
   },
   "dependencies": {
     "@astrojs/react": "^7.1.0",
@@ -32,8 +38,10 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@hagicode/hagi18n": "^0.2.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "js-yaml": "^4.3.2",
     "typescript": "~6.0.3"
   },
   "engines": {

@@ -1,0 +1,51 @@
+localesRoot: src/i18n/locales
+repoRoot: .
+baseLocale: en-US
+targetLocales:
+  - zh-CN
+  - zh-Hant
+  - ja-JP
+  - ko-KR
+  - de-DE
+  - fr-FR
+  - es-ES
+  - pt-BR
+  - ru-RU
+# Values that several languages share with English on purpose: loanwords (Album, Details, Seed, System), the byte unit,
+# the keyboard hints in the zoom tooltip, and the French count forms. The list applies to every locale, so add a key only
+# when its English spelling is correct in the language that needs it.
+auditIdenticalAllowlist:
+  ui.yml:
+    - header.themeSystem
+    - home.albumsHeading
+    - images.one
+    - images.few
+    - images.other
+    - albums.one
+    - albums.few
+    - albums.other
+    - album.nav
+    - viewer.bytes
+    - viewer.zoomTitle
+    - viewer.details
+    - viewer.detailsTitle
+    - viewer.seed
+doctor:
+  excludedDirectories:
+    - .astro
+    - .deploy
+    - .git
+    - dist
+    - generated
+    - node_modules
+  textFileExtensions:
+    - .astro
+    - .css
+    - .js
+    - .json
+    - .md
+    - .mjs
+    - .ts
+    - .tsx
+    - .yaml
+    - .yml
