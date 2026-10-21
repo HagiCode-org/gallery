@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@astrojs/react": "^7.1.0",
-    "@hagicode/hagilight": "0.13.0",
-    "@hagicode/hagilight-core": "0.13.0",
+    "@hagicode/hagilight": "0.14.0",
+    "@hagicode/hagilight-core": "0.14.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "class-variance-authority": "^0.7.1",
