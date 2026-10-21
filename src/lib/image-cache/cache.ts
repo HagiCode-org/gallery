@@ -20,7 +20,7 @@ export interface CacheStorageLike {
   delete(name: string): Promise<boolean>;
 }
 
-export type FetchLike = (url: string, init?: { credentials: 'omit'; cache?: 'reload' }) => Promise<Response>;
+export type FetchLike = (url: string, init?: { credentials: 'omit' }) => Promise<Response>;
 
 export interface StorageOptions {
   readonly storage: CacheStorageLike | undefined;
@@ -61,8 +61,7 @@ export async function readCached(url: string, bytes: number, options: StorageOpt
 
 // Downloads an object and stores it under its URL. Only a successful response is stored, and only when its size is the
 // size the index gives, so a stale index never writes a copy that a later read would reject. Resolves to whether it
-// stored the object. Credentials are omitted: the request carries nothing a visitor could be identified by. The
-// browser's HTTP cache is bypassed: it may hold the answer to a plain <img> load, which has no CORS header.
+// stored the object. Credentials are omitted: the request carries nothing a visitor could be identified by.
 export async function storeCached(
   url: string,
   bytes: number,
@@ -72,7 +71,7 @@ export async function storeCached(
     const { storage } = options;
     if (!storage) return false;
     const fetchFn: FetchLike = options.fetch ?? ((input, init) => fetch(input, init));
-    const response = await fetchFn(url, { credentials: 'omit', cache: 'reload' });
+    const response = await fetchFn(url, { credentials: 'omit' });
     if (!response.ok) return false;
     const blob = await response.blob();
     if (blob.size !== bytes) return false;
