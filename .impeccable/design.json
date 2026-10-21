@@ -1,0 +1,722 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-21T04:12:15.366Z",
+  "title": "Design System: HagiCode Gallery",
+  "extensions": {
+    "colorMeta": {
+      "primary": {
+        "role": "primary",
+        "displayName": "Cobalt Link",
+        "canonical": "#1d4ed8",
+        "tonalRamp": [
+          "#000036",
+          "#041859",
+          "#16337e",
+          "#2b4ea5",
+          "#416bce",
+          "#729bf5",
+          "#9cc3ff",
+          "#cceeff"
+        ]
+      },
+      "primary-foreground": {
+        "role": "primary",
+        "displayName": "Primary Foreground",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#222222",
+          "#3a3a3a",
+          "#555555",
+          "#717171",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "primary-dark": {
+        "role": "primary",
+        "displayName": "Periwinkle Glow",
+        "canonical": "#8fb0ff",
+        "tonalRamp": [
+          "#010036",
+          "#081859",
+          "#1d3478",
+          "#365097",
+          "#516eb7",
+          "#7c9ce9",
+          "#a0c2ff",
+          "#ceedff"
+        ]
+      },
+      "primary-foreground-dark": {
+        "role": "primary",
+        "displayName": "Primary Foreground Dark",
+        "canonical": "#101a2a",
+        "tonalRamp": [
+          "#040b1a",
+          "#182232",
+          "#303b4d",
+          "#4a5669",
+          "#667286",
+          "#929fb5",
+          "#b7c5db",
+          "#e1f0ff"
+        ]
+      },
+      "background": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f7f9fc",
+        "tonalRamp": [
+          "#0a0b0d",
+          "#202224",
+          "#393b3d",
+          "#545558",
+          "#707274",
+          "#9d9ea1",
+          "#c2c4c7",
+          "#edeff1"
+        ]
+      },
+      "foreground": {
+        "role": "neutral",
+        "displayName": "Ink Slate",
+        "canonical": "#202938",
+        "tonalRamp": [
+          "#050b18",
+          "#192230",
+          "#313b4b",
+          "#4c5667",
+          "#677284",
+          "#949fb2",
+          "#b9c5d9",
+          "#e3efff"
+        ]
+      },
+      "card": {
+        "role": "neutral",
+        "displayName": "Card White",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#0b0b0b",
+          "#222222",
+          "#3a3a3a",
+          "#555555",
+          "#717171",
+          "#9e9e9e",
+          "#c4c4c4",
+          "#eeeeee"
+        ]
+      },
+      "secondary": {
+        "role": "secondary",
+        "displayName": "Pale Wash",
+        "canonical": "#eff4ff",
+        "tonalRamp": [
+          "#080b12",
+          "#1e2229",
+          "#373a43",
+          "#51555e",
+          "#6d727b",
+          "#9a9ea9",
+          "#bfc4cf",
+          "#eaeef9"
+        ]
+      },
+      "secondary-foreground": {
+        "role": "secondary",
+        "displayName": "Deep Slate Blue",
+        "canonical": "#1f3b75",
+        "tonalRamp": [
+          "#000036",
+          "#041b53",
+          "#1b3771",
+          "#35538f",
+          "#5070af",
+          "#7b9ee0",
+          "#a0c4ff",
+          "#caefff"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Mist",
+        "canonical": "#edf2fb",
+        "tonalRamp": [
+          "#080b11",
+          "#1e2228",
+          "#373b42",
+          "#51555d",
+          "#6d727a",
+          "#9a9fa7",
+          "#bfc4cd",
+          "#eaeff8"
+        ]
+      },
+      "muted-foreground": {
+        "role": "neutral",
+        "displayName": "Slate Mist",
+        "canonical": "#526174",
+        "tonalRamp": [
+          "#020b1a",
+          "#152233",
+          "#2e3c4d",
+          "#485769",
+          "#647387",
+          "#90a0b5",
+          "#b5c6dc",
+          "#dff0ff"
+        ]
+      },
+      "accent": {
+        "role": "secondary",
+        "displayName": "Accent",
+        "canonical": "#e8effd",
+        "tonalRamp": [
+          "#070b14",
+          "#1d222c",
+          "#353b45",
+          "#505561",
+          "#6c727e",
+          "#989fac",
+          "#bec4d2",
+          "#e8effd"
+        ]
+      },
+      "accent-foreground": {
+        "role": "secondary",
+        "displayName": "Accent Foreground",
+        "canonical": "#1e3a8a",
+        "tonalRamp": [
+          "#010036",
+          "#061859",
+          "#19327e",
+          "#304fa1",
+          "#4a6dc1",
+          "#759bf4",
+          "#9ec2ff",
+          "#cdeeff"
+        ]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#dce4f1",
+        "tonalRamp": [
+          "#070b13",
+          "#1c222b",
+          "#353b45",
+          "#4f5661",
+          "#6b727d",
+          "#979fab",
+          "#bdc5d1",
+          "#e7effc"
+        ]
+      },
+      "input": {
+        "role": "neutral",
+        "displayName": "Input Edge",
+        "canonical": "#d6e0ee",
+        "tonalRamp": [
+          "#060b14",
+          "#1b222c",
+          "#333b46",
+          "#4e5662",
+          "#69727f",
+          "#969fac",
+          "#bbc5d3",
+          "#e5effe"
+        ]
+      },
+      "ring": {
+        "role": "neutral",
+        "displayName": "Ring Blue",
+        "canonical": "#3164d3",
+        "tonalRamp": [
+          "#000036",
+          "#021959",
+          "#12347e",
+          "#274fa5",
+          "#3d6cce",
+          "#709cf5",
+          "#9ac3ff",
+          "#caefff"
+        ]
+      },
+      "background-dark": {
+        "role": "neutral",
+        "displayName": "Night Blue",
+        "canonical": "#0d1422",
+        "tonalRamp": [
+          "#050b18",
+          "#1a2230",
+          "#323b4b",
+          "#4c5567",
+          "#687284",
+          "#959fb2",
+          "#bac4d9",
+          "#e4efff"
+        ]
+      },
+      "foreground-dark": {
+        "role": "neutral",
+        "displayName": "Frost",
+        "canonical": "#e5ebf5",
+        "tonalRamp": [
+          "#080b12",
+          "#1e2229",
+          "#363b43",
+          "#51565e",
+          "#6d727b",
+          "#999fa8",
+          "#bfc4ce",
+          "#e9eff9"
+        ]
+      },
+      "card-dark": {
+        "role": "neutral",
+        "displayName": "Card Navy",
+        "canonical": "#141e30",
+        "tonalRamp": [
+          "#040b1b",
+          "#172234",
+          "#303b4f",
+          "#4a566b",
+          "#657288",
+          "#929fb7",
+          "#b7c5dd",
+          "#e1efff"
+        ]
+      },
+      "secondary-dark": {
+        "role": "secondary",
+        "displayName": "Secondary Dark",
+        "canonical": "#1d2a40",
+        "tonalRamp": [
+          "#020a1e",
+          "#152237",
+          "#2d3b52",
+          "#47566e",
+          "#63728c",
+          "#8f9fbb",
+          "#b4c5e2",
+          "#def0ff"
+        ]
+      },
+      "muted-dark": {
+        "role": "neutral",
+        "displayName": "Muted Dark",
+        "canonical": "#1b283d",
+        "tonalRamp": [
+          "#020a1d",
+          "#152236",
+          "#2d3b51",
+          "#47566e",
+          "#63728b",
+          "#8f9fba",
+          "#b4c5e1",
+          "#def0ff"
+        ]
+      },
+      "muted-foreground-dark": {
+        "role": "neutral",
+        "displayName": "Muted Foreground Dark",
+        "canonical": "#aab8ce",
+        "tonalRamp": [
+          "#040b1a",
+          "#172232",
+          "#303b4d",
+          "#4a5669",
+          "#667286",
+          "#929fb5",
+          "#b7c5db",
+          "#e1f0ff"
+        ]
+      },
+      "border-dark": {
+        "role": "neutral",
+        "displayName": "Border Dark",
+        "canonical": "#293851",
+        "tonalRamp": [
+          "#020a1f",
+          "#142139",
+          "#2c3b54",
+          "#465671",
+          "#61728e",
+          "#8d9fbd",
+          "#b2c5e4",
+          "#dcf0ff"
+        ]
+      },
+      "input-dark": {
+        "role": "neutral",
+        "displayName": "Input Dark",
+        "canonical": "#33445f",
+        "tonalRamp": [
+          "#010a20",
+          "#12213a",
+          "#2a3b55",
+          "#445672",
+          "#607290",
+          "#8ca0bf",
+          "#b1c5e6",
+          "#dbf0ff"
+        ]
+      },
+      "sky-deep": {
+        "role": "neutral",
+        "displayName": "Sky Deep",
+        "canonical": "#080d19",
+        "tonalRamp": [
+          "#060b17",
+          "#1b212f",
+          "#343a49",
+          "#4e5565",
+          "#6a7282",
+          "#969eb0",
+          "#bcc4d6",
+          "#e6efff"
+        ]
+      },
+      "sky-mid": {
+        "role": "neutral",
+        "displayName": "Sky Mid",
+        "canonical": "#0f1a31",
+        "tonalRamp": [
+          "#030a1f",
+          "#162139",
+          "#2e3a54",
+          "#485570",
+          "#63728e",
+          "#8f9fbd",
+          "#b4c5e4",
+          "#deefff"
+        ]
+      },
+      "sky-fg": {
+        "role": "neutral",
+        "displayName": "Sky Fg",
+        "canonical": "#eaf0fa",
+        "tonalRamp": [
+          "#080b12",
+          "#1e2229",
+          "#363b43",
+          "#51565e",
+          "#6d727b",
+          "#999fa8",
+          "#bfc4ce",
+          "#e9eff9"
+        ]
+      },
+      "sky-muted": {
+        "role": "neutral",
+        "displayName": "Sky Muted",
+        "canonical": "#b4c2d9",
+        "tonalRamp": [
+          "#040b1a",
+          "#172233",
+          "#303b4e",
+          "#4a566a",
+          "#667287",
+          "#929fb5",
+          "#b7c5dc",
+          "#e1efff"
+        ]
+      },
+      "sky-line": {
+        "role": "neutral",
+        "displayName": "Sky Line",
+        "canonical": "#243453",
+        "tonalRamp": [
+          "#010924",
+          "#12203e",
+          "#2a3a5a",
+          "#445577",
+          "#5f7295",
+          "#8b9fc4",
+          "#b0c5eb",
+          "#daefff"
+        ]
+      },
+      "sky-star": {
+        "role": "primary",
+        "displayName": "Star Periwinkle",
+        "canonical": "#8fb0ff",
+        "tonalRamp": [
+          "#010036",
+          "#081859",
+          "#1d3478",
+          "#365097",
+          "#516eb7",
+          "#7c9ce9",
+          "#a0c2ff",
+          "#ceedff"
+        ]
+      },
+      "sky-ink": {
+        "role": "neutral",
+        "displayName": "Sky Ink",
+        "canonical": "#0b1424",
+        "tonalRamp": [
+          "#040b1a",
+          "#182233",
+          "#303b4d",
+          "#4a5669",
+          "#667287",
+          "#929fb5",
+          "#b8c5dc",
+          "#e1efff"
+        ]
+      },
+      "viewer-bg": {
+        "role": "neutral",
+        "displayName": "Viewer Black",
+        "canonical": "#05070c",
+        "tonalRamp": [
+          "#080b11",
+          "#1e2228",
+          "#373b41",
+          "#52555d",
+          "#6e7279",
+          "#9a9fa7",
+          "#c0c4cd",
+          "#eaeff7"
+        ]
+      },
+      "viewer-panel": {
+        "role": "neutral",
+        "displayName": "Viewer Panel",
+        "canonical": "#0a0f19",
+        "tonalRamp": [
+          "#070b15",
+          "#1c222d",
+          "#343b47",
+          "#4f5562",
+          "#6b727f",
+          "#979fad",
+          "#bdc4d3",
+          "#e7effe"
+        ]
+      },
+      "viewer-fg": {
+        "role": "neutral",
+        "displayName": "Viewer Fg",
+        "canonical": "#eef2f9",
+        "tonalRamp": [
+          "#090b10",
+          "#1f2227",
+          "#383b40",
+          "#52555b",
+          "#6e7278",
+          "#9b9fa5",
+          "#c0c4cb",
+          "#ebeff6"
+        ]
+      },
+      "viewer-muted": {
+        "role": "neutral",
+        "displayName": "Viewer Muted",
+        "canonical": "#a5b3c9",
+        "tonalRamp": [
+          "#040b1a",
+          "#172233",
+          "#303b4d",
+          "#4a5669",
+          "#657287",
+          "#929fb5",
+          "#b7c5dc",
+          "#e1f0ff"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The sky hero h1."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The album page h1."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Album card titles."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Descriptions and ledes in muted foreground."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Monospace data: keys, counts, ranges, seeds."
+      }
+    },
+    "shadows": [
+      {
+        "name": "album-sheet",
+        "value": "0 0.75rem 1.75rem -0.5rem rgb(5 8 14 / 0.5)",
+        "purpose": "Each picture in a card's fanned stack."
+      },
+      {
+        "name": "lifted-thumbnail",
+        "value": "0 1.25rem 2.25rem -0.875rem rgb(5 8 14 / 0.6)",
+        "purpose": "Hovered or focused thumbnail."
+      },
+      {
+        "name": "album-cover",
+        "value": "0 1.75rem 3.5rem -1.75rem rgb(5 8 14 / 0.6)",
+        "purpose": "The cover on an album page."
+      },
+      {
+        "name": "viewer-picture",
+        "value": "0 2rem 5rem -2rem rgb(0 0 0 / 0.85)",
+        "purpose": "The picture on show in the viewer."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "Default easing for entrances, lifts and morphs."
+      },
+      {
+        "name": "ease-in-out",
+        "value": "cubic-bezier(0.65, 0, 0.35, 1)",
+        "purpose": "Symmetric moves."
+      },
+      {
+        "name": "spring",
+        "value": "linear(0, 0.0368 3.8%, … 1.0542 57.7%, … 1)",
+        "purpose": "Settles with one small overshoot (album stack, call-to-action arrow). Full curve is in global.css."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "density-control",
+        "value": "40rem"
+      },
+      {
+        "name": "wall-featured / album-hero / viewer-panel",
+        "value": "48rem"
+      },
+      {
+        "name": "sky-split",
+        "value": "56rem"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The default action: cobalt fill, 10px radius, 32px tall.",
+      "html": "<button class=\"ds-btn-primary\">Copy prompt</button>",
+      "css": ".ds-btn-primary{display:inline-flex;align-items:center;justify-content:center;height:32px;padding:0 10px;border:1px solid transparent;border-radius:10px;background:#1d4ed8;color:#fff;font:500 14px/1 system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;cursor:pointer;transition:background-color .2s,transform .2s}.ds-btn-primary:hover{background:rgb(29 78 216 / .8)}.ds-btn-primary:active{transform:translateY(1px)}.ds-btn-primary:focus-visible{outline:none;box-shadow:0 0 0 3px rgb(49 100 211 / .5)}"
+    },
+    {
+      "name": "Sky Call-to-action",
+      "kind": "button",
+      "refersTo": "button-sky-cta",
+      "description": "The one action in the sky hero: periwinkle fill on the dark room, arrow nudges down on hover.",
+      "html": "<div class=\"ds-sky\"><a class=\"ds-sky-cta\" href=\"#\">Browse albums <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14M6 13l6 6 6-6\"/></svg></a></div>",
+      "css": ".ds-sky{padding:24px;background:linear-gradient(180deg,#0f1a31,#080d19);border-radius:14px}.ds-sky-cta{display:inline-flex;align-items:center;gap:9px;min-height:44px;padding:0 18px 0 20px;border-radius:10px;background:#8fb0ff;color:#0b1424;font:650 15px/1 system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;text-decoration:none;transition:background-color .25s,transform .25s}.ds-sky-cta svg{transition:transform .4s cubic-bezier(.16,1,.3,1)}.ds-sky-cta:hover{background:#aac2ff}.ds-sky-cta:hover svg{transform:translateY(3px)}.ds-sky-cta:active{transform:translateY(1px)}.ds-sky-cta:focus-visible{outline:2px solid #8fb0ff;outline-offset:3px}"
+    },
+    {
+      "name": "Density Control",
+      "kind": "chip",
+      "refersTo": "density-button-active",
+      "description": "S / M / L thumbnail size toggle; the pressed button takes the secondary fill.",
+      "html": "<div class=\"ds-density\" role=\"group\" aria-label=\"Thumbnail size\"><button aria-pressed=\"false\">S</button><button aria-pressed=\"true\">M</button><button aria-pressed=\"false\">L</button></div>",
+      "css": ".ds-density{display:inline-flex;gap:2px;padding:2px;border:1px solid #dce4f1;border-radius:8px}.ds-density button{min-width:36px;min-height:36px;border:0;border-radius:6px;background:transparent;color:#526174;font:600 13px system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;cursor:pointer;transition:background-color .2s,color .2s}.ds-density button:hover{background:#edf2fb}.ds-density button[aria-pressed=true]{background:#eff4ff;color:#1f3b75}.ds-density button:focus-visible{outline:2px solid #3164d3;outline-offset:2px}"
+    },
+    {
+      "name": "Album Card",
+      "kind": "card",
+      "refersTo": "album-card",
+      "description": "A ringed card with a fanned stack of the album's pictures; no shadow on the card itself.",
+      "html": "<article class=\"ds-card\"><div class=\"ds-card-art\"><span class=\"ds-sheet s2\"></span><span class=\"ds-sheet s1\"></span><span class=\"ds-sheet s0\"></span></div><div class=\"ds-card-body\"><h3>Hero avatars</h3><p>Avatar portraits for the hero section.</p><span class=\"ds-count\">720 images</span></div></article>",
+      "css": ".ds-card{overflow:hidden;width:280px;border-radius:14px;background:#fff;color:#202938;box-shadow:0 0 0 1px rgb(32 41 56 / .1);font-family:system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;transition:transform .5s cubic-bezier(.16,1,.3,1)}.ds-card:hover{transform:translateY(-4px)}.ds-card-art{position:relative;aspect-ratio:4/3;background:#edf2fb}.ds-sheet{position:absolute;top:50%;left:50%;width:50%;aspect-ratio:1;border-radius:8px;background:linear-gradient(135deg,#8fb0ff,#3164d3);box-shadow:0 12px 28px -8px rgb(5 8 14 / .5);translate:-50% -50%}.ds-sheet.s2{transform:translate(-4%,-6%) rotate(-3deg) scale(.9);opacity:.7}.ds-sheet.s1{transform:translate(4%,-3%) rotate(2.5deg) scale(.95);opacity:.85}.ds-card-body{padding:16px}.ds-card h3{margin:0;font-size:18px;font-weight:700;line-height:1.2;letter-spacing:-.01em}.ds-card p{margin:4px 0 8px;color:#526174;font-size:14px;line-height:1.5}.ds-count{font:12px ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;font-variant-numeric:tabular-nums;color:#526174}"
+    },
+    {
+      "name": "Thumbnail",
+      "kind": "custom",
+      "refersTo": "thumbnail",
+      "description": "A picture at its own aspect ratio; the mono key rises on a scrim on hover and focus.",
+      "html": "<a class=\"ds-thumb\" href=\"#\"><span class=\"ds-thumb-img\"></span><span class=\"ds-key\">ember-01</span></a>",
+      "css": ".ds-thumb{position:relative;display:block;width:152px;aspect-ratio:1;overflow:hidden;border-radius:8px;background:#edf2fb;color:#f4f7fb;text-decoration:none;transition:transform .45s cubic-bezier(.16,1,.3,1),box-shadow .45s cubic-bezier(.16,1,.3,1)}.ds-thumb-img{position:absolute;inset:0;background:linear-gradient(135deg,#8fb0ff,#1d4ed8);transition:transform .9s cubic-bezier(.16,1,.3,1)}.ds-key{position:absolute;right:0;bottom:0;left:0;padding:28px 8px 6px;background:linear-gradient(to top,rgb(5 8 14 / .78),transparent);font:11px/1.25 ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;opacity:0;transform:translateY(6px);transition:opacity .3s,transform .3s}.ds-thumb:hover,.ds-thumb:focus-visible{transform:scale(1.04);box-shadow:0 20px 36px -14px rgb(5 8 14 / .6)}.ds-thumb:hover .ds-thumb-img{transform:scale(1.07)}.ds-thumb:hover .ds-key,.ds-thumb:focus-visible .ds-key{opacity:1;transform:none}.ds-thumb:focus-visible{outline:2px solid #3164d3;outline-offset:3px}"
+    },
+    {
+      "name": "Viewer Control",
+      "kind": "button",
+      "refersTo": "viewer-button",
+      "description": "Round 44px control in the dark viewer; hover lifts a white veil, press scales down.",
+      "html": "<div class=\"ds-viewer\"><button class=\"ds-viewer-btn\" aria-label=\"Details\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.75\" stroke-linecap=\"round\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"9\"/><path d=\"M12 11v5M12 8h.01\"/></svg></button><span class=\"ds-viewer-count\">012 / 720</span></div>",
+      "css": ".ds-viewer{display:flex;align-items:center;gap:12px;padding:12px 16px;background:#05070c;border-radius:10px;color:#eef2f9}.ds-viewer-btn{display:inline-grid;place-items:center;width:44px;height:44px;border:0;border-radius:999px;background:transparent;color:#eef2f9;cursor:pointer;transition:background-color .2s,transform .3s cubic-bezier(.16,1,.3,1)}.ds-viewer-btn:hover{background:rgb(255 255 255 / .12)}.ds-viewer-btn:active{transform:scale(.92)}.ds-viewer-btn:focus-visible{outline:2px solid #a9c0ff;outline-offset:3px}.ds-viewer-count{font:13px ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;font-variant-numeric:tabular-nums;color:#a5b3c9}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Night Room",
+    "overview": "A picture is judged in a dark room, so the gallery builds one. The page around it is a pale or deep blue-grey sheet that stays quiet on purpose: one blue, a system font, ringed surfaces, no shadow on any piece of chrome. Pictures supply the colour. Inside that page sit two dark rooms that do not change with the visitor's theme: the sky hero on the home page and the viewer that opens over an album. They carry their own palette because the thing in front of the visitor is a picture, and a picture reads best against near-black.\n\nDensity is open. The wall of albums and the grid of thumbnails fill the width up to 120rem, with the gutter doing the framing. Motion is authored once per surface (the wall rising on home, the thumbnail travelling into the viewer) and everything else is a short transition. Nothing is added that the data does not carry: a key, a size, a prompt, a seed.",
+    "keyCharacteristics": [
+      "One blue for links, actions and focus; the pictures carry all other colour.",
+      "Chrome separates with rings and borders; a shadow means a picture has been lifted.",
+      "Two fixed dark rooms (sky, viewer) inside a theme-following page.",
+      "Native system font and a native monospace for keys, counts and readouts; no web font.",
+      "Motion is one authored moment per surface; hover effects belong to a fine pointer; reduced motion removes all of it."
+    ],
+    "rules": [
+      {
+        "name": "The One Blue Rule",
+        "body": "Links, actions and focus use the single blue (Cobalt Link in light, Periwinkle Glow in dark). A second accent hue is not introduced; colour variety comes from the images.",
+        "section": "colors"
+      },
+      {
+        "name": "The Fixed Dark Rule",
+        "body": "The sky and the viewer stay dark in a light theme. They own a palette; page tokens do not leak into them and theirs do not leak out.",
+        "section": "colors"
+      },
+      {
+        "name": "The Picture Tint Rule",
+        "body": "Where a surface needs colour, borrow it from the album's own cover (the blurred wash behind a card, the glow under an album page, the ambient light behind the viewer picture) instead of picking a decorative hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Data Is Mono Rule",
+        "body": "Anything that is a value from the pipeline (a key, a seed, a size, a range) is set in the monospace stack with tabular numerals. Descriptive text is never mono.",
+        "section": "typography"
+      },
+      {
+        "name": "The One H1 Rule",
+        "body": "Each page has exactly one `h1`; the site name in the top bar is a link, not a heading.",
+        "section": "typography"
+      },
+      {
+        "name": "The Real Shape Rule",
+        "body": "A cell, a stack or a cover takes the aspect ratio the index reports for its image. Pictures are never cropped to a house ratio.",
+        "section": "layout"
+      },
+      {
+        "name": "The Lifted Picture Rule",
+        "body": "A shadow means a picture is in the air. A card, a button, a bar or a panel never gets one.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** let the pictures carry colour; keep the chrome to the one blue, the neutrals and the dark rooms.",
+      "**Do** keep the sky and the viewer dark in every theme.",
+      "**Do** use a shadow only on a lifted picture, always with an offset and a blur.",
+      "**Do** write scroll-driven animation as longhands (`animation-name`, `animation-timeline`), because the minifier folds a complete shorthand into one declaration that some browsers drop.",
+      "**Do** put hover effects behind `(hover: hover) and (pointer: fine)` and make every animation resolve to the plain visible state, so a page without script or with reduced motion shows everything.",
+      "**Do** use the monospace stack with tabular numerals for data values; keep 44px targets on links and viewer controls."
+    ],
+    "donts": [
+      "**Don't** put cards around thumbnails; keys sit on a scrim over the picture.",
+      "**Don't** add a second accent hue, a web font or a theme toggle.",
+      "**Don't** give a card, button, bar or panel a box shadow.",
+      "**Don't** crop pictures to a fixed ratio; use the ratio the index reports.",
+      "**Don't** hide content behind an animation's start state: keyframes have no `to`, so the resting state is the real card."
+    ]
+  }
+}
