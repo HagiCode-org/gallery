@@ -1,0 +1,13 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Local env files
+.env
+.env.*
+
+# Staged gh-pages payload
+.deploy/
