@@ -1,0 +1,169 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* The dark variant follows the active theme: an explicit data-theme="dark", or, with no attribute, a dark system
+   preference. An explicit light choice turns it off even on a dark system. The gallery has no theme toggle yet, so
+   the system preference is what decides in practice. */
+@custom-variant dark {
+  &:where([data-theme="dark"], [data-theme="dark"] *) {
+    @slot;
+  }
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme]), :root:not([data-theme]) *) {
+      @slot;
+    }
+  }
+}
+
+/* Light tokens. Surfaces are separated by rings and borders, never by shadows. */
+:root {
+  --background: #f7f9fc;
+  --foreground: #202938;
+  --card: #ffffff;
+  --card-foreground: #202938;
+  --popover: #ffffff;
+  --popover-foreground: #202938;
+  --primary: #1d4ed8;
+  --primary-foreground: #ffffff;
+  --secondary: #eff4ff;
+  --secondary-foreground: #1f3b75;
+  --muted: #edf2fb;
+  --muted-foreground: #526174;
+  --accent: #e8effd;
+  --accent-foreground: #1e3a8a;
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: #dce4f1;
+  --input: #d6e0ee;
+  --ring: #3164d3;
+  --radius: 0.625rem;
+  color-scheme: light dark;
+}
+
+/* An explicit light choice keeps the light tokens above and turns off the browser's dark controls. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+/* An explicit dark choice. The same token list appears again in the media block below, which covers a visitor with
+   no stored choice and no script. scripts/__tests__/shadcn-foundation.test.mjs keeps the two copies equal. */
+:root[data-theme="dark"] {
+  --background: #0d1422;
+  --foreground: #e5ebf5;
+  --card: #141e30;
+  --card-foreground: #e5ebf5;
+  --popover: #18243a;
+  --popover-foreground: #e5ebf5;
+  --primary: #8fb0ff;
+  --primary-foreground: #101a2a;
+  --secondary: #1d2a40;
+  --secondary-foreground: #e5ebf5;
+  --muted: #1b283d;
+  --muted-foreground: #aab8ce;
+  --accent: #22314a;
+  --accent-foreground: #e5ebf5;
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: #293851;
+  --input: #33445f;
+  --ring: #8fb0ff;
+  color-scheme: dark;
+}
+
+/* No data-theme attribute yet: the system preference decides. Keep this list equal to the explicit dark list above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --background: #0d1422;
+    --foreground: #e5ebf5;
+    --card: #141e30;
+    --card-foreground: #e5ebf5;
+    --popover: #18243a;
+    --popover-foreground: #e5ebf5;
+    --primary: #8fb0ff;
+    --primary-foreground: #101a2a;
+    --secondary: #1d2a40;
+    --secondary-foreground: #e5ebf5;
+    --muted: #1b283d;
+    --muted-foreground: #aab8ce;
+    --accent: #22314a;
+    --accent-foreground: #e5ebf5;
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: #293851;
+    --input: #33445f;
+    --ring: #8fb0ff;
+  }
+}
+
+/* Utilities such as bg-card come from these theme entries. `inline` substitutes the token values. */
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+/* Element rules sit in a layer below utilities, so a utility class always overrides them. */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: var(--border);
+  }
+
+  body {
+    margin: 0;
+    background: var(--background);
+    color: var(--foreground);
+    font-family:
+      system-ui,
+      -apple-system,
+      'Segoe UI',
+      Roboto,
+      'Helvetica Neue',
+      Arial,
+      'PingFang SC',
+      'Microsoft YaHei',
+      sans-serif;
+    line-height: 1.6;
+    overflow-wrap: break-word;
+  }
+
+  h1 {
+    margin: 0 0 1rem;
+    font-size: clamp(2rem, 7vw, 2.75rem);
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: var(--muted-foreground);
+  }
+
+  a {
+    color: var(--primary);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+}

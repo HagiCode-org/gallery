@@ -1,0 +1,46 @@
+---
+import { Badge } from '@/components/ui/badge';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { SITE_DESCRIPTION, SITE_NAME } from '@/config/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { cn } from '@/lib/utils';
+---
+
+<BaseLayout>
+  <div id="top" class="space-y-6">
+    <h1>{SITE_NAME}</h1>
+    <p>{SITE_DESCRIPTION}</p>
+    <Separator />
+    <Card id="specimen" className="min-w-0">
+      <CardHeader>
+        <CardTitle>Component specimen</CardTitle>
+        <Badge>Example</Badge>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <p>This card shows the seed shadcn components rendered as static HTML.</p>
+        <div class="flex flex-col gap-2 sm:flex-row">
+          <a
+            href="#specimen"
+            data-slot="button"
+            data-variant="default"
+            data-size="default"
+            class={cn(buttonVariants({ variant: 'default' }), 'min-w-0 w-full sm:w-auto')}
+          >
+            See the components
+          </a>
+          <a
+            href="#top"
+            data-slot="button"
+            data-variant="outline"
+            data-size="default"
+            class={cn(buttonVariants({ variant: 'outline' }), 'min-w-0 w-full sm:w-auto')}
+          >
+            Back to top
+          </a>
+        </div>
+      </CardContent>
+    </Card>
+  </div>
+</BaseLayout>

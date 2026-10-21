@@ -1,0 +1,48 @@
+---
+import Footer from '@hagicode/hagilight/Footer';
+import SEOHead from '@hagicode/hagilight/SEOHead';
+import { resolveFaviconHeadEntry } from '@hagicode/hagilight-core/favicon';
+import sharedFaviconUrl from '@hagicode/hagilight-core/favicon.ico';
+import { DEFAULT_LOCALE, SITE_DESCRIPTION, SITE_NAME, type Locale } from '@/config/site';
+import '@/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  locale?: Locale;
+}
+
+const { title = SITE_NAME, description = SITE_DESCRIPTION, locale = DEFAULT_LOCALE } = Astro.props;
+
+// hagilightFavicon() only edits Astro's config head, which this layout does not render. The shared
+// icon is therefore supplied here, through SEOHead, so the page links it.
+const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <SEOHead
+      site={Astro.site}
+      page={{ title, description }}
+      head={faviconEntry ? [faviconEntry] : []}
+      siteSeo={{ title: SITE_NAME, description: SITE_DESCRIPTION }}
+    />
+  </head>
+  <body class="flex min-h-dvh flex-col">
+    <header class="border-b border-border">
+      <a
+        href={import.meta.env.BASE_URL}
+        class="block min-w-0 px-4 py-3 text-sm font-medium text-foreground no-underline lg:px-10"
+      >
+        {SITE_NAME}
+      </a>
+    </header>
+    <main class="mx-auto w-full min-w-0 max-w-3xl flex-1 px-4 py-8 lg:py-10">
+      <slot />
+    </main>
+    <Footer locale={locale} />
+  </body>
+</html>
