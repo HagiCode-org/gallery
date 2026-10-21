@@ -6,8 +6,20 @@ export const SITE_DESCRIPTION = 'A gallery of HagiCode work, shared as static pa
 // Production origin. Hagilight needs an absolute URL for the sitemap, robots.txt, RSS, llms.txt and metadata.
 export const SITE_URL = 'https://gallery.hagicode.com';
 
-// Mirrors the i18n block in astro.config.mjs; scripts/__tests__/config.test.mjs checks they match.
-export const SUPPORTED_LOCALES = ['en-US'] as const;
+// The ten languages Hagilight's footer ships. Mirrors the i18n block in astro.config.mjs; scripts/__tests__/config.test.mjs
+// checks they match. The order is the order of the language menu.
+export const SUPPORTED_LOCALES = [
+  'en-US',
+  'zh-CN',
+  'zh-Hant',
+  'ja-JP',
+  'ko-KR',
+  'de-DE',
+  'fr-FR',
+  'es-ES',
+  'pt-BR',
+  'ru-RU',
+] as const;
 
 export type Locale = (typeof SUPPORTED_LOCALES)[number];
 

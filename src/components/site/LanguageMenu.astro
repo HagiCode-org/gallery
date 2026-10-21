@@ -1,0 +1,41 @@
+---
+import { SUPPORTED_LOCALES, type Locale } from '@/config/site';
+import { LOCALE_LABELS, localePath } from '@/i18n/locales';
+import type { Messages } from '@/i18n/messages';
+
+interface Props {
+  locale: Locale;
+  // The current page's locale-free path. Each entry links to the same page in its language.
+  pagePath: string;
+  messages: Messages['header'];
+}
+
+const { locale, pagePath, messages } = Astro.props;
+const current = LOCALE_LABELS[locale];
+---
+
+<!-- A native <details> menu of plain links, so it works without JavaScript. src/scripts/site-controls.ts only adds
+     closing on Escape and on a click outside. -->
+<details class="lang-menu" data-lang-menu>
+  <summary class="lang-summary" aria-label={`${messages.language}: ${current.nativeName}`} title={messages.language}>
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z"></path></svg>
+    <span class="lang-current" lang={locale}>{current.nativeName}</span>
+    <svg class="lang-caret" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"></path></svg>
+  </summary>
+  <ul class="lang-list">
+    {
+      SUPPORTED_LOCALES.map((code) => (
+        <li>
+          <a
+            class="lang-link"
+            href={localePath(code, pagePath)}
+            lang={code}
+            hreflang={code}
+            aria-current={code === locale ? 'true' : undefined}
+            data-locale={code}
+          >{LOCALE_LABELS[code].nativeName}</a>
+        </li>
+      ))
+    }
+  </ul>
+</details>

@@ -1,0 +1,36 @@
+achievement-icons:
+  title: Erfolgssymbole
+  description: Abzeichen-Symbole für Erfolge.
+agent-cli-default-cats:
+  title: Standardkatzen der Agent-CLI
+  description: Standard-Katzenavatare für Agent-CLI-Sitzungen.
+anime-theme-backgrounds:
+  title: Anime-Design-Hintergründe
+  description: Hintergrundbilder für das Anime-Designpaket.
+cat-head-gallery:
+  title: Katzenkopf-Galerie
+  description: Porträts von Katzenköpfen.
+document-subject-theme-previews:
+  title: Vorschauen der Dokumentthemen
+  description: Vorschaubilder für Dokumentthemen.
+hero-avatars:
+  title: Helden-Avatare
+  description: Avatar-Porträts für den Heldenbereich.
+preset-task-backgrounds:
+  title: Hintergründe für Aufgabenvorlagen
+  description: Hintergrundbilder für Aufgabenvorlagen.
+prompt-scenario-covers:
+  title: Titelbilder der Prompt-Szenarien
+  description: Titelbilder für Prompt-Szenarien.
+session-favicons:
+  title: Sitzungs-Favicons
+  description: Favicon-Bilder für Sitzungen.
+startup-splash:
+  title: Startbildschirm
+  description: Bilder, die beim Start der App angezeigt werden.
+tier-rating-badges:
+  title: Abzeichen für Stufenbewertungen
+  description: Abzeichen für Stufenbewertungen.
+tokenmonitor-stage-illustrations:
+  title: TokenMonitor-Stufenillustrationen
+  description: Illustrationen für die Stufen von TokenMonitor.

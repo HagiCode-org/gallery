@@ -3,6 +3,8 @@
 // It reads the markup the grid carries (data-* attributes written at build time) and never parses an index.
 // Everything beyond "open, show, close" is an enhancement: without View Transitions it fades in, without pointer
 // events the buttons and arrow keys still work, and a failed cache read never hides an image.
+import enUS from '../i18n/generated/en-US/ui.json';
+import type { ViewerScriptMessages } from '../i18n/messages/types.ts';
 import type { MetadataLoad, ImageMetadata } from '../lib/image-cache/metadata.ts';
 import {
   DOUBLE_TAP_SCALE,
@@ -18,11 +20,6 @@ import {
   type View,
 } from '../lib/viewer/transform.ts';
 
-const UNKNOWN = 'Unknown';
-const NOT_PUBLISHED = 'No description is published for this image.';
-const NOT_LOADED = 'The description could not be loaded.';
-const LOADING = 'Loading the description…';
-const IMAGE_FAILED = 'The image could not be loaded.';
 const PANEL_KEY = 'gallery:panel';
 const EASE_OUT = 'cubic-bezier(0.16, 1, 0.3, 1)';
 // A tap is a press that barely moves and ends quickly. Two taps this close together, in time and space, zoom.
@@ -40,10 +37,10 @@ export interface ViewerDeps {
   whenIdle(task: () => void): void;
 }
 
-function formatGeneratedAt(value: string | null): string {
-  if (value === null) return UNKNOWN;
+function formatGeneratedAt(value: string | null, unknown: string): string {
+  if (value === null) return unknown;
   const time = new Date(value);
-  if (Number.isNaN(time.getTime())) return UNKNOWN;
+  if (Number.isNaN(time.getTime())) return unknown;
   return `${time.toISOString().slice(0, 16).replace('T', ' ')} UTC`;
 }
 
@@ -79,7 +76,20 @@ function storePanelPreference(open: boolean): void {
   }
 }
 
+// The language of the page and the strings this script sets at run time, both written onto the dialog at build time. A
+// missing or unreadable attribute falls back to English, so the viewer still works.
+function readMessages(dialog: HTMLElement): { locale: string; text: ViewerScriptMessages } {
+  const locale = dialog.dataset.locale || 'en-US';
+  try {
+    const parsed = JSON.parse(dialog.dataset.messages ?? '') as Partial<ViewerScriptMessages>;
+    return { locale, text: { ...enUS.viewer, ...parsed } };
+  } catch {
+    return { locale, text: enUS.viewer };
+  }
+}
+
 export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: ViewerDeps): void {
+  const { locale, text: strings } = readMessages(dialog);
   const items = [...grid.querySelectorAll<HTMLAnchorElement>('a.gallery-item')];
   const pick = <T extends HTMLElement>(selector: string) => dialog.querySelector<T>(selector);
   const viewer = pick<HTMLElement>('[data-viewer]');
@@ -140,7 +150,7 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
     figure.style.transform = next.scale === 1 && next.x === 0 && next.y === 0 ? '' : `translate3d(${next.x}px, ${next.y}px, 0) scale(${next.scale})`;
     viewer.toggleAttribute('data-zoomed', next.scale > 1);
     const zoomed = next.scale > 1;
-    zoomButton.setAttribute('aria-label', zoomed ? 'Zoom out' : 'Zoom in');
+    zoomButton.setAttribute('aria-label', zoomed ? strings.zoomOut : strings.zoomIn);
     zoomButton.querySelector('[data-zoom-plus]')?.setAttribute('d', zoomed ? 'm20 20-3.5-3.5M8 11h6' : 'm20 20-3.5-3.5M8 11h6M11 8v6');
   };
 
@@ -332,7 +342,7 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
     image.src = shown || url;
     image.addEventListener('error', () => {
       if (figure.contains(image) && image.src !== url) image.src = url;
-      else if (figure.contains(image)) status.textContent = IMAGE_FAILED;
+      else if (figure.contains(image)) status.textContent = strings.imageFailed;
     });
     figure.replaceChildren(image);
     if (direction !== 0 && !reducedMotion.matches) {
@@ -358,19 +368,19 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
     count.textContent = formatPosition(index + 1, items.length);
     fact('key')!.textContent = item.dataset.key ?? '';
     fact('size')!.textContent = `${item.dataset.width} × ${item.dataset.height} px`;
-    fact('bytes')!.textContent = `${Number(item.dataset.bytes).toLocaleString('en-US')} bytes`;
+    fact('bytes')!.textContent = strings.bytes.replace('{{n}}', Number(item.dataset.bytes).toLocaleString(locale));
   };
 
   const setFields = (metadata: ImageMetadata | null) => {
     field('positive')!.textContent = metadata?.prompt.positive ?? '—';
     field('negative')!.textContent = metadata?.prompt.negative ?? '—';
     field('seed')!.textContent = metadata ? String(metadata.seed) : '—';
-    field('generatedAt')!.textContent = metadata ? formatGeneratedAt(metadata.generatedAt) : '—';
+    field('generatedAt')!.textContent = metadata ? formatGeneratedAt(metadata.generatedAt, strings.unknown) : '—';
     for (const name of ['positive', 'negative'] as const) {
       const button = copyButton(name);
       if (!button) continue;
       button.disabled = !metadata || (metadata.prompt[name] ?? '') === '';
-      button.textContent = 'Copy';
+      button.textContent = strings.copy;
     }
   };
 
@@ -380,14 +390,14 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
     metadataLoaded = false;
     setFields(null);
     if (!metadataUrl) {
-      status.textContent = NOT_PUBLISHED;
+      status.textContent = strings.notPublished;
       return;
     }
-    status.textContent = LOADING;
+    status.textContent = strings.loading;
     const result = await deps.loadMetadata(metadataUrl);
     if (request !== metadataRequest) return;
     if (result.status === 'failed') {
-      status.textContent = NOT_LOADED;
+      status.textContent = strings.notLoaded;
       return;
     }
     status.textContent = '';
@@ -453,16 +463,16 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
       const done = (label: string) => {
         button.textContent = label;
         window.setTimeout(() => {
-          if (button.isConnected) button.textContent = 'Copy';
+          if (button.isConnected) button.textContent = strings.copy;
         }, 1600);
       };
       if (!navigator.clipboard) {
-        done('Copy failed');
+        done(strings.copyFailed);
         return;
       }
       navigator.clipboard.writeText(text).then(
-        () => done('Copied'),
-        () => done('Copy failed'),
+        () => done(strings.copied),
+        () => done(strings.copyFailed),
       );
     });
   }

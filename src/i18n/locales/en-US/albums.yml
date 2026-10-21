@@ -1,0 +1,36 @@
+achievement-icons:
+  title: Achievement icons
+  description: Badge icons for achievements.
+agent-cli-default-cats:
+  title: Agent CLI default cats
+  description: Default cat avatars for agent CLI sessions.
+anime-theme-backgrounds:
+  title: Anime theme backgrounds
+  description: Background artwork for the anime theme set.
+cat-head-gallery:
+  title: Cat head gallery
+  description: Cat head portraits.
+document-subject-theme-previews:
+  title: Document subject theme previews
+  description: Preview images for document subject themes.
+hero-avatars:
+  title: Hero avatars
+  description: Avatar portraits for the hero section.
+preset-task-backgrounds:
+  title: Preset task backgrounds
+  description: Background images for preset tasks.
+prompt-scenario-covers:
+  title: Prompt scenario covers
+  description: Cover images for prompt scenarios.
+session-favicons:
+  title: Session favicons
+  description: Favicon images for sessions.
+startup-splash:
+  title: Startup splash
+  description: Images shown while the app starts.
+tier-rating-badges:
+  title: Tier rating badges
+  description: Badges for tier ratings.
+tokenmonitor-stage-illustrations:
+  title: TokenMonitor stage illustrations
+  description: Stage illustrations for TokenMonitor.

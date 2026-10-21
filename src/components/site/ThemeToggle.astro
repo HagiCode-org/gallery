@@ -1,0 +1,30 @@
+---
+import type { Messages } from '@/i18n/messages';
+
+interface Props {
+  messages: Messages['header'];
+}
+
+const { messages } = Astro.props;
+
+// Three choices, one 24-unit grid and one 1.75 stroke, like the viewer's icons.
+const choices = [
+  { value: 'system', label: messages.themeSystem, paths: ['M4 5h16v11H4z', 'M9 20h6M12 16v4'] },
+  { value: 'light', label: messages.themeLight, paths: ['M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8z', 'M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'] },
+  { value: 'dark', label: messages.themeDark, paths: ['M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z'] },
+];
+---
+
+<!-- Hidden until src/scripts/site-controls.ts runs: without JavaScript the buttons would do nothing, and the page
+     already follows the system theme. -->
+<div class="theme-toggle" role="group" aria-label={messages.theme} data-theme-toggle hidden>
+  {
+    choices.map((choice) => (
+      <button type="button" class="theme-option" data-theme-choice={choice.value} aria-pressed="false" aria-label={choice.label} title={choice.label}>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          {choice.paths.map((d) => <path d={d} />)}
+        </svg>
+      </button>
+    ))
+  }
+</div>

@@ -31,6 +31,12 @@ describe('Astro configuration', () => {
     assert.equal(config.i18n.routing.prefixDefaultLocale, false);
   });
 
+  it('keeps prefixDefaultLocale off, so English stays at the root and the other nine take /<locale>/', async () => {
+    const config = (await import(path.join(root, 'astro.config.mjs'))).default;
+    assert.equal(config.i18n.routing.prefixDefaultLocale, false);
+    assert.equal(config.i18n.locales.length, 10);
+  });
+
   it('keeps the i18n locale list equal to SUPPORTED_LOCALES', async () => {
     const config = (await import(path.join(root, 'astro.config.mjs'))).default;
     assert.deepEqual(config.i18n.locales, [...SUPPORTED_LOCALES]);

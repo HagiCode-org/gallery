@@ -1,0 +1,36 @@
+achievement-icons:
+  title: 成就圖示
+  description: 成就徽章圖示。
+agent-cli-default-cats:
+  title: 代理 CLI 預設貓咪
+  description: 代理 CLI 工作階段使用的預設貓咪頭像。
+anime-theme-backgrounds:
+  title: 動漫主題背景
+  description: 動漫主題套組的背景插畫。
+cat-head-gallery:
+  title: 貓頭圖庫
+  description: 貓咪頭部肖像。
+document-subject-theme-previews:
+  title: 文件主題預覽
+  description: 文件主題的預覽圖。
+hero-avatars:
+  title: 英雄頭像
+  description: 英雄區使用的頭像肖像。
+preset-task-backgrounds:
+  title: 預設任務背景
+  description: 預設任務使用的背景圖片。
+prompt-scenario-covers:
+  title: 提示詞情境封面
+  description: 提示詞情境的封面圖片。
+session-favicons:
+  title: 工作階段圖示
+  description: 工作階段使用的網站圖示圖片。
+startup-splash:
+  title: 啟動畫面
+  description: 應用程式啟動時顯示的圖片。
+tier-rating-badges:
+  title: 等級評定徽章
+  description: 等級評定使用的徽章。
+tokenmonitor-stage-illustrations:
+  title: TokenMonitor 階段插畫
+  description: TokenMonitor 各階段的插畫。

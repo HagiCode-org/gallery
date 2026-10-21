@@ -1,0 +1,36 @@
+achievement-icons:
+  title: Значки достижений
+  description: Значки-награды для достижений.
+agent-cli-default-cats:
+  title: Котики по умолчанию для Agent CLI
+  description: Аватары-котики по умолчанию для сеансов Agent CLI.
+anime-theme-backgrounds:
+  title: Фоны аниме-темы
+  description: Фоновые иллюстрации для набора аниме-тем.
+cat-head-gallery:
+  title: Галерея кошачьих мордочек
+  description: Портреты кошачьих мордочек.
+document-subject-theme-previews:
+  title: Превью тем документов
+  description: Превью-изображения для тем по предмету документа.
+hero-avatars:
+  title: Аватары героев
+  description: Портреты-аватары для раздела героев.
+preset-task-backgrounds:
+  title: Фоны предустановленных задач
+  description: Фоновые изображения для предустановленных задач.
+prompt-scenario-covers:
+  title: Обложки сценариев промптов
+  description: Обложки для сценариев промптов.
+session-favicons:
+  title: Фавиконки сеансов
+  description: Изображения фавиконок для сеансов.
+startup-splash:
+  title: Заставка запуска
+  description: Изображения, которые показываются при запуске приложения.
+tier-rating-badges:
+  title: Значки уровней рейтинга
+  description: Значки для уровней рейтинга.
+tokenmonitor-stage-illustrations:
+  title: Иллюстрации этапов TokenMonitor
+  description: Иллюстрации этапов TokenMonitor.

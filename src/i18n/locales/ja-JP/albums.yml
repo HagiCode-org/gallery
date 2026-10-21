@@ -1,0 +1,36 @@
+achievement-icons:
+  title: 実績アイコン
+  description: 実績バッジのアイコン。
+agent-cli-default-cats:
+  title: エージェント CLI の標準ネコ
+  description: エージェント CLI セッションの標準ネコアバター。
+anime-theme-backgrounds:
+  title: アニメテーマの背景
+  description: アニメテーマセットの背景アート。
+cat-head-gallery:
+  title: ネコの顔ギャラリー
+  description: ネコの顔のポートレート。
+document-subject-theme-previews:
+  title: ドキュメント主題テーマのプレビュー
+  description: ドキュメント主題テーマのプレビュー画像。
+hero-avatars:
+  title: ヒーローのアバター
+  description: ヒーローセクション用のアバターポートレート。
+preset-task-backgrounds:
+  title: プリセットタスクの背景
+  description: プリセットタスク用の背景画像。
+prompt-scenario-covers:
+  title: プロンプトシナリオのカバー
+  description: プロンプトシナリオ用のカバー画像。
+session-favicons:
+  title: セッションのファビコン
+  description: セッション用のファビコン画像。
+startup-splash:
+  title: 起動スプラッシュ
+  description: アプリの起動中に表示される画像。
+tier-rating-badges:
+  title: ティア評価バッジ
+  description: ティア評価用のバッジ。
+tokenmonitor-stage-illustrations:
+  title: TokenMonitor のステージイラスト
+  description: TokenMonitor の各ステージのイラスト。

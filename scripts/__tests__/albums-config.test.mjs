@@ -44,18 +44,11 @@ describe('album configuration (task 1.2)', () => {
     assert.equal(new Set(ALBUMS.map((album) => album.prefix)).size, ALBUMS.length);
   });
 
-  it('gives every album a title and a description', () => {
-    for (const album of ALBUMS) {
-      assert.ok(album.title.trim().length > 0, `${album.slug} needs a title`);
-      assert.ok(album.description.trim().length > 0, `${album.slug} needs a description`);
-    }
-  });
-
   it('refuses a duplicate slug and names it', () => {
     assert.throws(
       () => assertUniqueAlbums([
-        { slug: 'a', prefix: 'one', title: 'A', description: '' },
-        { slug: 'a', prefix: 'two', title: 'B', description: '' },
+        { slug: 'a', prefix: 'one' },
+        { slug: 'a', prefix: 'two' },
       ]),
       /Duplicate album slug "a"/u,
     );
@@ -64,8 +57,8 @@ describe('album configuration (task 1.2)', () => {
   it('refuses a duplicate prefix and names it', () => {
     assert.throws(
       () => assertUniqueAlbums([
-        { slug: 'a', prefix: 'same', title: 'A', description: '' },
-        { slug: 'b', prefix: 'same', title: 'B', description: '' },
+        { slug: 'a', prefix: 'same' },
+        { slug: 'b', prefix: 'same' },
       ]),
       /Duplicate album prefix "same" in ALBUMS \(album "b"\)/u,
     );

@@ -3,8 +3,8 @@
 @import "shadcn/tailwind.css";
 
 /* The dark variant follows the active theme: an explicit data-theme="dark", or, with no attribute, a dark system
-   preference. An explicit light choice turns it off even on a dark system. The gallery has no theme toggle yet, so
-   the system preference is what decides in practice. */
+   preference. An explicit light choice turns it off even on a dark system. The header's theme toggle
+   (src/scripts/site-controls.ts) sets data-theme to light or dark, and removes it to follow the system again. */
 @custom-variant dark {
   &:where([data-theme="dark"], [data-theme="dark"] *) {
     @slot;

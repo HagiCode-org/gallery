@@ -1,0 +1,63 @@
+siteDescription: A gallery of HagiCode work, shared as static pages.
+header:
+  language: Language
+  theme: Theme
+  themeSystem: System
+  themeLight: Light
+  themeDark: Dark
+home:
+  lede: "The pictures behind HagiCode: cat avatars, hero portraits, splash scenes. Each one is rendered with img-gen, grouped into an album, and opens with the prompt that made it."
+  browse: Browse the albums
+  albumsHeading: Albums
+  empty: No albums are published yet.
+images:
+  one: "{{n}} image"
+  few: "{{n}} images"
+  many: "{{n}} images"
+  other: "{{n}} images"
+albums:
+  one: "{{n}} album"
+  few: "{{n}} albums"
+  many: "{{n}} albums"
+  other: "{{n}} albums"
+notFound:
+  title: Page not found
+  description: The address is not an album or a page of the gallery.
+  body: This address is not an album or a page of the gallery. An album that is not published has no page.
+  back: Back to the albums
+album:
+  nav: Album
+  back: All albums
+  thumbnailSize: Thumbnail size
+  small: Small thumbnails
+  medium: Medium thumbnails
+  large: Large thumbnails
+viewer:
+  unknown: Unknown
+  notPublished: No description is published for this image.
+  notLoaded: The description could not be loaded.
+  loading: Loading the description…
+  imageFailed: The image could not be loaded.
+  copy: Copy
+  copied: Copied
+  copyFailed: Copy failed
+  zoomIn: Zoom in
+  zoomOut: Zoom out
+  bytes: "{{n}} bytes"
+  zoomTitle: Zoom (+ / −)
+  details: Details
+  detailsTitle: Details (I)
+  close: Close
+  closeTitle: Close (Esc)
+  previous: Previous image
+  previousTitle: Previous (←)
+  next: Next image
+  nextTitle: Next (→)
+  panelLabel: Image details
+  key: Key
+  pixelSize: Pixel size
+  byteSize: Byte size
+  positivePrompt: Positive prompt
+  negativePrompt: Negative prompt
+  seed: Seed
+  generated: Generated

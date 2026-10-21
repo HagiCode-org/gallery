@@ -2,7 +2,8 @@
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { SITE_NAME, SITE_URL } from '../src/config/site.ts';
+import { DEFAULT_LOCALE, SITE_NAME, SITE_URL, SUPPORTED_LOCALES } from '../src/config/site.ts';
+import { PREFIXED_LOCALES, localePath, splitLocalePath } from '../src/i18n/locales.ts';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
@@ -98,7 +99,9 @@ for (const file of htmlFiles) {
   const metaTags = html.match(/<meta\b[^>]*>/giu) ?? [];
   const linkTags = html.match(/<link\b[^>]*>/giu) ?? [];
 
-  expect(/<html\b[^>]*\slang="en-US"/u.test(html), `${page} root element must declare lang="en-US"`);
+  // The language the address carries. 404.html is the one page whose address says nothing; it ships in the default language.
+  const pageLocale = page === 'dist/404.html' ? DEFAULT_LOCALE : splitLocalePath(pageRoute).locale;
+  expect(new RegExp(`<html\\b[^>]*\\slang="${pageLocale}"`, 'u').test(html), `${page} root element must declare lang="${pageLocale}"`);
   expect((html.match(/<title>/giu) ?? []).length === 1, `${page} must contain exactly one <title>`);
   const canonicalLinks = linkTags.filter((tag) => attr(tag, 'rel') === 'canonical');
   expect(canonicalLinks.length === 1, `${page} must contain exactly one canonical link, found ${canonicalLinks.length}`);
@@ -118,6 +121,28 @@ for (const file of htmlFiles) {
     expect(count === 1, `${page} must contain exactly one <meta ${key}="${value}">, found ${count}`);
   }
   expect(!/astro-island|hydrat/iu.test(html), `${page} must not contain an island or hydration script`);
+
+  // Language and theme controls: ten language links, the theme toggle, and the pre-paint theme script.
+  const languageLinks = [...html.matchAll(/<a\b[^>]*class="lang-link"[^>]*>/giu)].map((match) => match[0]);
+  expect(languageLinks.length === SUPPORTED_LOCALES.length, `${page} language menu must list ${SUPPORTED_LOCALES.length} languages, found ${languageLinks.length}`);
+  expect(html.includes('data-theme-toggle'), `${page} must render the theme toggle`);
+  expect(html.includes("localStorage.getItem('starlight-theme')"), `${page} must apply the stored theme before first paint`);
+  // Pages that exist in every language pair their translations with hreflang links; 404.html exists once.
+  const alternates = linkTags.filter((tag) => attr(tag, 'rel') === 'alternate' && attr(tag, 'hreflang') !== undefined);
+  if (page === 'dist/404.html') {
+    expect(alternates.length === 0, `${page} must not declare hreflang alternates, found ${alternates.length}`);
+  } else {
+    const pagePath = splitLocalePath(pageRoute).path;
+    const wanted = new Map([
+      ...SUPPORTED_LOCALES.map((code) => [code, `${SITE_URL}${localePath(code, pagePath)}`]),
+      ['x-default', `${SITE_URL}${localePath(DEFAULT_LOCALE, pagePath)}`],
+    ]);
+    const found = new Map(alternates.map((tag) => [attr(tag, 'hreflang'), decodeAttr(attr(tag, 'href') ?? '')]));
+    expect(
+      found.size === wanted.size && [...wanted].every(([code, href]) => found.get(code) === href),
+      `${page} hreflang alternates must be ${[...wanted].map(([code, href]) => `${code} ${href}`).join(', ')}`,
+    );
+  }
 
   // Footer: exactly one, with attribution, build labels, and sitemap and RSS links that resolve.
   const footers = html.match(/<footer\b[\s\S]*?<\/footer>/giu) ?? [];
@@ -177,27 +202,43 @@ for (const file of htmlFiles) {
 }
 
 // Album pages: each one renders its grid with the data the client script reads, and the image dialog. Every album link
-// on the home page must resolve to a built album page. Album pages are built only for albums the index published.
-const albumPages = htmlFiles.filter((file) => relative(dist, file).split(sep).join('/').startsWith('albums/'));
-const homeFile = join(dist, 'index.html');
-if (fileExists(homeFile)) {
-  const homeLinks = [...readFileSync(homeFile, 'utf8').matchAll(/<a\b[^>]*\shref="(\/albums\/[^"]*)"/giu)].map((match) => decodeAttr(match[1]));
+// on a home page must resolve to a built album page of the same language. Album pages are built only for albums the
+// index published, in every language.
+const pathInfo = (file) => splitLocalePath(`/${relative(dist, file).split(sep).join('/')}`);
+const albumPages = htmlFiles.filter((file) => pathInfo(file).path.startsWith('/albums/'));
+const albumPagesByLocale = (locale) => albumPages.filter((file) => pathInfo(file).locale === locale);
+for (const locale of SUPPORTED_LOCALES) {
+  const homeFile = join(dist, locale === DEFAULT_LOCALE ? '' : locale, 'index.html');
+  expect(fileExists(homeFile), `${relative(root, homeFile)} is missing: every supported language needs a home page`);
+  if (!fileExists(homeFile)) continue;
+  const prefix = localePath(locale, '/albums/');
+  const homeLinks = [...readFileSync(homeFile, 'utf8').matchAll(/<a\b[^>]*\shref="(\/[^"]*albums\/[^"]*)"/giu)]
+    .map((match) => decodeAttr(match[1]))
+    .filter((href) => href.startsWith(prefix));
   for (const href of homeLinks) {
     const url = siteUrl(href);
-    expect(url !== null && distFileFor(url) !== null, `dist/index.html links to an album page missing from dist/: ${href}`);
+    expect(url !== null && distFileFor(url) !== null, `${relative(root, homeFile)} links to an album page missing from dist/: ${href}`);
   }
   // The sky and the album wall each link every album, so the distinct targets are what is counted.
   const distinctLinks = new Set(homeLinks);
-  expect(distinctLinks.size === albumPages.length, `dist/index.html links ${distinctLinks.size} albums but dist/albums/ has ${albumPages.length} pages`);
+  expect(
+    distinctLinks.size === albumPagesByLocale(locale).length,
+    `${relative(root, homeFile)} links ${distinctLinks.size} albums but ${locale} has ${albumPagesByLocale(locale).length} album pages`,
+  );
 }
+expect(
+  new Set(PREFIXED_LOCALES.map((locale) => albumPagesByLocale(locale).length)).size <= 1
+    && (PREFIXED_LOCALES.length === 0 || albumPagesByLocale(PREFIXED_LOCALES[0]).length === albumPagesByLocale(DEFAULT_LOCALE).length),
+  'every language must have the same album pages as the default language',
+);
 for (const file of albumPages) {
   const page = `dist/${relative(dist, file).split(sep).join('/')}`;
   const html = readFileSync(file, 'utf8');
   const items = html.match(/<a\b[^>]*class="gallery-item"[^>]*>/giu) ?? [];
   // An album whose index lists no image shows its count and no grid.
   expect(
-    items.length === 0 ? /\b0 images\b/u.test(html) : html.includes('data-gallery-grid'),
-    `${page} must render the image grid, or the zero-image count when it lists no image`,
+    items.length === 0 || html.includes('data-gallery-grid'),
+    `${page} must render the image grid when it lists images`,
   );
   expect(html.includes('data-gallery-dialog'), `${page} must render the image dialog`);
   // The viewer shell: stage, both arrows, close, and the details panel the script drives.

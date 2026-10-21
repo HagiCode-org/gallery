@@ -3,7 +3,10 @@ import Footer from '@hagicode/hagilight/Footer';
 import SEOHead from '@hagicode/hagilight/SEOHead';
 import { resolveFaviconHeadEntry } from '@hagicode/hagilight-core/favicon';
 import sharedFaviconUrl from '@hagicode/hagilight-core/favicon.ico';
-import { DEFAULT_LOCALE, SITE_DESCRIPTION, SITE_NAME, type Locale } from '@/config/site';
+import SiteHeader from '@/components/site/SiteHeader.astro';
+import { DEFAULT_LOCALE, SITE_NAME, SITE_URL, SUPPORTED_LOCALES, type Locale } from '@/config/site';
+import { localePath, ogLocale } from '@/i18n/locales';
+import { messagesFor } from '@/i18n/messages';
 import '@/styles/global.css';
 import '@/styles/gallery.css';
 import '@/styles/sky.css';
@@ -12,17 +15,31 @@ interface Props {
   title?: string;
   description?: string;
   locale?: Locale;
+  // The page's locale-free path, such as "/" or "/albums/some-album/". The language menu and the hreflang links point
+  // at the same path in every language. Omit it for a page that exists in one form only (404), which then links the
+  // language menu to each language's home page.
+  pagePath?: string;
   // Absolute URL for the canonical link. Left unset, Hagilight uses the request path, which is right for every page
   // except one that Astro writes to a file name, such as 404.astro.
   canonical?: string;
 }
 
 const {
-  title = SITE_NAME,
-  description = SITE_DESCRIPTION,
   locale = DEFAULT_LOCALE,
+  pagePath,
   canonical,
 } = Astro.props;
+const messages = messagesFor(locale);
+const { title = SITE_NAME, description = messages.siteDescription } = Astro.props;
+
+// One hreflang link per language, plus x-default for the default language, so search engines pair the translations.
+const alternates = pagePath
+  ? [
+      ...SUPPORTED_LOCALES.map((code) => ({ hreflang: code, href: `${SITE_URL}${localePath(code, pagePath)}` })),
+      { hreflang: 'x-default', href: `${SITE_URL}${localePath(DEFAULT_LOCALE, pagePath)}` },
+    ].map(({ hreflang, href }) => ({ tag: 'link' as const, attrs: { rel: 'alternate', hreflang, href } }))
+  : [];
+const localeMeta = { tag: 'meta' as const, attrs: { property: 'og:locale', content: ogLocale(locale) } };
 
 // hagilightFavicon() only edits Astro's config head, which this layout does not render. The shared
 // icon is therefore supplied here, through SEOHead, so the page links it.
@@ -37,17 +54,26 @@ const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
     <SEOHead
       site={Astro.site}
       page={{ title, description, url: canonical }}
-      head={faviconEntry ? [faviconEntry] : []}
-      siteSeo={{ title: SITE_NAME, description: SITE_DESCRIPTION }}
+      head={[...(faviconEntry ? [faviconEntry] : []), ...alternates, localeMeta]}
+      siteSeo={{ title: SITE_NAME, description: messages.siteDescription }}
     />
+    <!-- Applies a stored light or dark choice before first paint, so a reload does not flash the other theme. It repeats
+         the one-line rule of src/lib/theme.ts, because it must run before any module loads. -->
+    <script is:inline>
+      try {
+        var theme = localStorage.getItem('starlight-theme');
+        if (theme === 'light' || theme === 'dark') document.documentElement.setAttribute('data-theme', theme);
+      } catch (error) {}
+    </script>
   </head>
   <body class="flex min-h-dvh flex-col">
-    <header class="site-header">
-      <a href={import.meta.env.BASE_URL} class="site-brand">{SITE_NAME}</a>
-    </header>
+    <SiteHeader locale={locale} pagePath={pagePath ?? '/'} messages={messages.header} />
     <main class="site-main">
       <slot />
     </main>
     <Footer locale={locale} />
+    <script>
+      import '../scripts/site-controls.ts';
+    </script>
   </body>
 </html>

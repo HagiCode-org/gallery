@@ -1,0 +1,63 @@
+siteDescription: Una galería de trabajos de HagiCode, compartida como páginas estáticas.
+header:
+  language: Idioma
+  theme: Tema
+  themeSystem: Sistema
+  themeLight: Claro
+  themeDark: Oscuro
+home:
+  lede: "Las imágenes detrás de HagiCode: avatares de gatos, retratos de héroes, escenas de inicio. Cada una se genera con img-gen, se agrupa en un álbum y se abre con el prompt que la creó."
+  browse: Explorar los álbumes
+  albumsHeading: Álbumes
+  empty: Todavía no hay álbumes publicados.
+images:
+  one: "{{n}} imagen"
+  few: "{{n}} imágenes"
+  many: "{{n}} de imágenes"
+  other: "{{n}} imágenes"
+albums:
+  one: "{{n}} álbum"
+  few: "{{n}} álbumes"
+  many: "{{n}} de álbumes"
+  other: "{{n}} álbumes"
+notFound:
+  title: Página no encontrada
+  description: Esta dirección no es un álbum ni una página de la galería.
+  body: Esta dirección no es un álbum ni una página de la galería. Un álbum que no está publicado no tiene página.
+  back: Volver a los álbumes
+album:
+  nav: Álbum
+  back: Todos los álbumes
+  thumbnailSize: Tamaño de las miniaturas
+  small: Miniaturas pequeñas
+  medium: Miniaturas medianas
+  large: Miniaturas grandes
+viewer:
+  unknown: Desconocido
+  notPublished: No hay descripción publicada para esta imagen.
+  notLoaded: No se pudo cargar la descripción.
+  loading: Cargando la descripción…
+  imageFailed: No se pudo cargar la imagen.
+  copy: Copiar
+  copied: Copiado
+  copyFailed: Error al copiar
+  zoomIn: Acercar
+  zoomOut: Alejar
+  bytes: "{{n}} bytes"
+  zoomTitle: Zoom (+ / −)
+  details: Detalles
+  detailsTitle: Detalles (I)
+  close: Cerrar
+  closeTitle: Cerrar (Esc)
+  previous: Imagen anterior
+  previousTitle: Anterior (←)
+  next: Imagen siguiente
+  nextTitle: Siguiente (→)
+  panelLabel: Detalles de la imagen
+  key: Clave
+  pixelSize: Tamaño en píxeles
+  byteSize: Tamaño del archivo
+  positivePrompt: Prompt positivo
+  negativePrompt: Prompt negativo
+  seed: Semilla
+  generated: Generada

@@ -1,0 +1,63 @@
+siteDescription: Eine Galerie mit HagiCode-Arbeiten, als statische Seiten veröffentlicht.
+header:
+  language: Sprache
+  theme: Design
+  themeSystem: System
+  themeLight: Hell
+  themeDark: Dunkel
+home:
+  lede: "Die Bilder hinter HagiCode: Katzen-Avatare, Heldenporträts, Startbildschirm-Szenen. Jedes Bild wird mit img-gen erzeugt, in einem Album gesammelt und lässt sich mit dem Prompt öffnen, der es hervorgebracht hat."
+  browse: Alben ansehen
+  albumsHeading: Alben
+  empty: Es sind noch keine Alben veröffentlicht.
+images:
+  one: "{{n}} Bild"
+  few: "{{n}} Bilder"
+  many: "{{n}} Bilder"
+  other: "{{n}} Bilder"
+albums:
+  one: "{{n}} Album"
+  few: "{{n}} Alben"
+  many: "{{n}} Alben"
+  other: "{{n}} Alben"
+notFound:
+  title: Seite nicht gefunden
+  description: Diese Adresse ist weder ein Album noch eine Seite der Galerie.
+  body: Diese Adresse ist weder ein Album noch eine Seite der Galerie. Ein nicht veröffentlichtes Album hat keine Seite.
+  back: Zurück zu den Alben
+album:
+  nav: Album
+  back: Alle Alben
+  thumbnailSize: Vorschaugröße
+  small: Kleine Vorschaubilder
+  medium: Mittlere Vorschaubilder
+  large: Große Vorschaubilder
+viewer:
+  unknown: Unbekannt
+  notPublished: Für dieses Bild ist keine Beschreibung veröffentlicht.
+  notLoaded: Die Beschreibung konnte nicht geladen werden.
+  loading: Beschreibung wird geladen…
+  imageFailed: Das Bild konnte nicht geladen werden.
+  copy: Kopieren
+  copied: Kopiert
+  copyFailed: Kopieren fehlgeschlagen
+  zoomIn: Vergrößern
+  zoomOut: Verkleinern
+  bytes: "{{n}} Bytes"
+  zoomTitle: Zoom (+ / −)
+  details: Details
+  detailsTitle: Details (I)
+  close: Schließen
+  closeTitle: Schließen (Esc)
+  previous: Vorheriges Bild
+  previousTitle: Zurück (←)
+  next: Nächstes Bild
+  nextTitle: Weiter (→)
+  panelLabel: Bilddetails
+  key: Schlüssel
+  pixelSize: Größe in Pixeln
+  byteSize: Dateigröße
+  positivePrompt: Positiver Prompt
+  negativePrompt: Negativer Prompt
+  seed: Seed
+  generated: Erzeugt

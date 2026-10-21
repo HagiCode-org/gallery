@@ -1,0 +1,36 @@
+achievement-icons:
+  title: Icônes de succès
+  description: Icônes de badges pour les succès.
+agent-cli-default-cats:
+  title: Chats par défaut de l’agent CLI
+  description: Avatars de chats par défaut pour les sessions de l’agent CLI.
+anime-theme-backgrounds:
+  title: Arrière-plans du thème anime
+  description: Illustrations d’arrière-plan pour la série de thèmes anime.
+cat-head-gallery:
+  title: Galerie de têtes de chats
+  description: Portraits de têtes de chats.
+document-subject-theme-previews:
+  title: Aperçus des thèmes de documents
+  description: Images d’aperçu pour les thèmes de sujets de documents.
+hero-avatars:
+  title: Avatars de héros
+  description: Portraits d’avatars pour la section héros.
+preset-task-backgrounds:
+  title: Arrière-plans des tâches prédéfinies
+  description: Images d’arrière-plan pour les tâches prédéfinies.
+prompt-scenario-covers:
+  title: Couvertures des scénarios de prompts
+  description: Images de couverture pour les scénarios de prompts.
+session-favicons:
+  title: Favicons de sessions
+  description: Images de favicon pour les sessions.
+startup-splash:
+  title: Écran de démarrage
+  description: Images affichées pendant le démarrage de l’application.
+tier-rating-badges:
+  title: Badges de niveaux
+  description: Badges pour les niveaux d’évaluation.
+tokenmonitor-stage-illustrations:
+  title: Illustrations des étapes de TokenMonitor
+  description: Illustrations des étapes de TokenMonitor.

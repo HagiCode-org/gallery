@@ -1,0 +1,36 @@
+achievement-icons:
+  title: 成就图标
+  description: 成就徽章图标。
+agent-cli-default-cats:
+  title: 智能体 CLI 默认猫咪
+  description: 智能体 CLI 会话使用的默认猫咪头像。
+anime-theme-backgrounds:
+  title: 动漫主题背景
+  description: 动漫主题套装的背景插画。
+cat-head-gallery:
+  title: 猫头图库
+  description: 猫咪头部肖像。
+document-subject-theme-previews:
+  title: 文档主题预览
+  description: 文档主题的预览图。
+hero-avatars:
+  title: 英雄头像
+  description: 英雄区使用的头像肖像。
+preset-task-backgrounds:
+  title: 预设任务背景
+  description: 预设任务使用的背景图片。
+prompt-scenario-covers:
+  title: 提示词场景封面
+  description: 提示词场景的封面图片。
+session-favicons:
+  title: 会话图标
+  description: 会话使用的网站图标图片。
+startup-splash:
+  title: 启动画面
+  description: 应用启动时显示的图片。
+tier-rating-badges:
+  title: 等级评定徽章
+  description: 等级评定使用的徽章。
+tokenmonitor-stage-illustrations:
+  title: TokenMonitor 阶段插画
+  description: TokenMonitor 各阶段的插画。

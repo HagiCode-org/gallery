@@ -1,0 +1,63 @@
+siteDescription: HagiCode 작업물 갤러리입니다. 정적 페이지로 공유합니다.
+header:
+  language: 언어
+  theme: 테마
+  themeSystem: 시스템 설정
+  themeLight: 라이트
+  themeDark: 다크
+home:
+  lede: "HagiCode 뒤에 있는 이미지들: 고양이 아바타, 히어로 초상화, 스플래시 장면. 모두 img-gen으로 렌더링해 앨범으로 묶었고, 각 이미지를 만든 프롬프트와 함께 볼 수 있습니다."
+  browse: 앨범 둘러보기
+  albumsHeading: 앨범
+  empty: 아직 공개된 앨범이 없습니다.
+images:
+  one: 이미지 {{n}}장
+  few: 이미지 {{n}}장
+  many: 이미지 {{n}}장
+  other: 이미지 {{n}}장
+albums:
+  one: 앨범 {{n}}개
+  few: 앨범 {{n}}개
+  many: 앨범 {{n}}개
+  other: 앨범 {{n}}개
+notFound:
+  title: 페이지를 찾을 수 없습니다
+  description: 이 주소는 갤러리의 앨범이나 페이지가 아닙니다.
+  body: 이 주소는 갤러리의 앨범이나 페이지가 아닙니다. 공개되지 않은 앨범에는 페이지가 없습니다.
+  back: 앨범 목록으로 돌아가기
+album:
+  nav: 앨범
+  back: 모든 앨범
+  thumbnailSize: 썸네일 크기
+  small: 작은 썸네일
+  medium: 중간 썸네일
+  large: 큰 썸네일
+viewer:
+  unknown: 알 수 없음
+  notPublished: 이 이미지에 대한 설명이 공개되지 않았습니다.
+  notLoaded: 설명을 불러오지 못했습니다.
+  loading: 설명을 불러오는 중…
+  imageFailed: 이미지를 불러오지 못했습니다.
+  copy: 복사
+  copied: 복사됨
+  copyFailed: 복사 실패
+  zoomIn: 확대
+  zoomOut: 축소
+  bytes: "{{n}}바이트"
+  zoomTitle: 확대/축소 (+ / −)
+  details: 상세 정보
+  detailsTitle: 상세 정보 (I)
+  close: 닫기
+  closeTitle: 닫기 (Esc)
+  previous: 이전 이미지
+  previousTitle: 이전 (←)
+  next: 다음 이미지
+  nextTitle: 다음 (→)
+  panelLabel: 이미지 상세 정보
+  key: 키
+  pixelSize: 픽셀 크기
+  byteSize: 파일 크기
+  positivePrompt: 긍정 프롬프트
+  negativePrompt: 부정 프롬프트
+  seed: 시드
+  generated: 생성 시각

@@ -6,7 +6,140 @@
     --gutter: clamp(1rem, 3vw, 2.5rem);
     position: relative;
     z-index: 3;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
     padding: 0.875rem var(--gutter);
+  }
+
+  /* The controls stay on the right when the header wraps under the brand on a phone, so the language list, which opens
+     toward the left, always has room. */
+  .site-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-inline-start: auto;
+  }
+
+  /* The language menu is a native <details>; its list opens under the summary and never pushes the page down. */
+  .lang-menu {
+    position: relative;
+  }
+
+  .lang-summary,
+  .theme-option {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    color: var(--muted-foreground);
+    cursor: pointer;
+    transition:
+      color 0.2s var(--ease-out),
+      border-color 0.2s var(--ease-out);
+  }
+
+  .lang-summary {
+    gap: 0.4rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+    font-size: 0.875rem;
+    list-style: none;
+    user-select: none;
+  }
+
+  .lang-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .lang-caret {
+    transition: transform 0.2s var(--ease-out);
+  }
+
+  .lang-menu[open] .lang-caret {
+    transform: rotate(180deg);
+  }
+
+  .lang-summary:hover,
+  .lang-menu[open] .lang-summary {
+    color: var(--foreground);
+    border-color: var(--ring);
+  }
+
+  .lang-list {
+    position: absolute;
+    inset-block-start: calc(100% + 0.375rem);
+    inset-inline-end: 0;
+    z-index: 4;
+    display: grid;
+    min-width: 12rem;
+    max-height: min(28rem, 70dvh);
+    margin: 0;
+    padding: 0.25rem;
+    overflow-y: auto;
+    list-style: none;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--popover);
+    color: var(--popover-foreground);
+  }
+
+  .lang-link {
+    display: flex;
+    align-items: center;
+    min-height: 2.5rem;
+    padding: 0 0.75rem;
+    border-radius: calc(var(--radius) - 4px);
+    color: inherit;
+    font-size: 0.9375rem;
+    text-decoration: none;
+  }
+
+  .lang-link:hover {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+
+  .lang-link[aria-current='true'] {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+    font-weight: 700;
+  }
+
+  .theme-toggle {
+    display: inline-flex;
+    padding: 0.125rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card);
+  }
+
+  .theme-toggle[hidden] {
+    display: none;
+  }
+
+  .theme-option {
+    width: 2.5rem;
+    min-height: 2.5rem;
+    border: 0;
+    border-radius: calc(var(--radius) - 2px);
+    background: transparent;
+    transition:
+      color 0.2s var(--ease-out),
+      background-color 0.2s var(--ease-out);
+  }
+
+  .theme-option:hover {
+    color: var(--foreground);
+  }
+
+  .theme-option[aria-pressed='true'] {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
   }
 
   .site-brand {
@@ -18,6 +151,18 @@
     font-weight: 700;
     letter-spacing: -0.01em;
     text-decoration: none;
+  }
+
+  /* The 404 page holds the notice in every language but keeps one h1 (the default block's). The other blocks show this
+     in its place, so whichever language is visible reads as the page title. */
+  .not-found-title {
+    margin: 0 0 1rem;
+    color: var(--foreground);
+    font-size: clamp(2.25rem, 8vw, 3.5rem);
+    line-height: 1.04;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
   }
 
   .site-main {

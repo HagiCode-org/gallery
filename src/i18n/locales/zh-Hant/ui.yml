@@ -1,0 +1,63 @@
+siteDescription: HagiCode 作品圖庫，以靜態頁面呈現。
+header:
+  language: 語言
+  theme: 主題
+  themeSystem: 跟隨系統
+  themeLight: 淺色
+  themeDark: 深色
+home:
+  lede: HagiCode 背後的圖片：貓咪頭像、英雄肖像、啟動畫面。每一張都由 img-gen 渲染，歸入相簿，並附上產生它的提示詞。
+  browse: 瀏覽相簿
+  albumsHeading: 相簿
+  empty: 目前沒有已發佈的相簿。
+images:
+  one: "{{n}} 張圖片"
+  few: "{{n}} 張圖片"
+  many: "{{n}} 張圖片"
+  other: "{{n}} 張圖片"
+albums:
+  one: "{{n}} 個相簿"
+  few: "{{n}} 個相簿"
+  many: "{{n}} 個相簿"
+  other: "{{n}} 個相簿"
+notFound:
+  title: 找不到頁面
+  description: 此網址不是圖庫中的相簿或頁面。
+  body: 此網址不是圖庫中的相簿或頁面。尚未發佈的相簿沒有頁面。
+  back: 返回相簿列表
+album:
+  nav: 相簿
+  back: 所有相簿
+  thumbnailSize: 縮圖大小
+  small: 小縮圖
+  medium: 中縮圖
+  large: 大縮圖
+viewer:
+  unknown: 未知
+  notPublished: 這張圖片沒有發佈說明。
+  notLoaded: 無法載入說明。
+  loading: 正在載入說明…
+  imageFailed: 無法載入圖片。
+  copy: 複製
+  copied: 已複製
+  copyFailed: 複製失敗
+  zoomIn: 放大
+  zoomOut: 縮小
+  bytes: "{{n}} 位元組"
+  zoomTitle: 縮放（+ / −）
+  details: 詳細資料
+  detailsTitle: 詳細資料（I）
+  close: 關閉
+  closeTitle: 關閉（Esc）
+  previous: 上一張圖片
+  previousTitle: 上一張（←）
+  next: 下一張圖片
+  nextTitle: 下一張（→）
+  panelLabel: 圖片詳細資料
+  key: 鍵名
+  pixelSize: 像素尺寸
+  byteSize: 檔案大小
+  positivePrompt: 正向提示詞
+  negativePrompt: 反向提示詞
+  seed: 種子
+  generated: 產生時間

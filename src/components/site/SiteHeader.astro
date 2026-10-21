@@ -1,0 +1,23 @@
+---
+import { SITE_NAME, type Locale } from '@/config/site';
+import { localePath } from '@/i18n/locales';
+import type { Messages } from '@/i18n/messages';
+import LanguageMenu from './LanguageMenu.astro';
+import ThemeToggle from './ThemeToggle.astro';
+
+interface Props {
+  locale: Locale;
+  pagePath: string;
+  messages: Messages['header'];
+}
+
+const { locale, pagePath, messages } = Astro.props;
+---
+
+<header class="site-header">
+  <a href={localePath(locale, '/')} class="site-brand">{SITE_NAME}</a>
+  <div class="site-controls">
+    <LanguageMenu locale={locale} pagePath={pagePath} messages={messages} />
+    <ThemeToggle messages={messages} />
+  </div>
+</header>

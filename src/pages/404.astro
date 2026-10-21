@@ -1,18 +1,58 @@
 ---
-import { SITE_NAME, SITE_URL } from '@/config/site';
+import { DEFAULT_LOCALE, SITE_NAME, SITE_URL, SUPPORTED_LOCALES } from '@/config/site';
+import { localePath } from '@/i18n/locales';
+import { messagesFor } from '@/i18n/messages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
+
+// GitHub Pages serves this one file for every missing address, so the page cannot know the visitor's language at build
+// time. It renders the notice in all ten languages and shows the default one; the script below shows the language the
+// address carries (/ja-JP/albums/x/ is Japanese). With no script the default language stays.
+const messages = messagesFor(DEFAULT_LOCALE);
 ---
 
 <BaseLayout
-  title={`Page not found · ${SITE_NAME}`}
-  description="The address is not an album or a page of the gallery."
+  title={`${messages.notFound.title} · ${SITE_NAME}`}
+  description={messages.notFound.description}
   canonical={`${SITE_URL}/404.html`}
 >
   <div class="space-y-4">
-    <h1>Page not found</h1>
-    <p>This address is not an album or a page of the gallery. An album that is not published has no page.</p>
-    <p>
-      <a href={import.meta.env.BASE_URL}>Back to the albums</a>
-    </p>
+    {
+      SUPPORTED_LOCALES.map((locale) => {
+        const text = messagesFor(locale).notFound;
+        return (
+          <div lang={locale} data-not-found={locale} hidden={locale !== DEFAULT_LOCALE} class="space-y-4">
+            {locale === DEFAULT_LOCALE ? <h1>{text.title}</h1> : <p class="not-found-title">{text.title}</p>}
+            <p>{text.body}</p>
+            <p>
+              <a href={localePath(locale, '/')}>{text.back}</a>
+            </p>
+          </div>
+        );
+      })
+    }
   </div>
+  <script>
+    import { SUPPORTED_LOCALES } from '../config/site.ts';
+    import { splitLocalePath } from '../i18n/locales.ts';
+
+    // Swap which notice is visible. The h1 stays in the default block so every build has exactly one.
+    const { locale } = splitLocalePath(location.pathname);
+    if (SUPPORTED_LOCALES.includes(locale)) {
+      for (const block of document.querySelectorAll<HTMLElement>('[data-not-found]')) {
+        block.hidden = block.dataset.notFound !== locale;
+      }
+      document.documentElement.lang = locale;
+      // The header's language menu names the language too. The footer stays in the default language: it is Hagilight's.
+      const current = document.querySelector<HTMLElement>('.lang-current');
+      const link = document.querySelector<HTMLElement>(`.lang-link[data-locale="${locale}"]`);
+      if (current && link) {
+        current.textContent = link.textContent;
+        current.lang = locale;
+      }
+      for (const entry of document.querySelectorAll<HTMLElement>('.lang-link')) {
+        if (entry === link) entry.setAttribute('aria-current', 'true');
+        else entry.removeAttribute('aria-current');
+      }
+    }
+  </script>
 </BaseLayout>

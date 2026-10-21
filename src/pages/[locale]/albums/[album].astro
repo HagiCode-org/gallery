@@ -1,0 +1,23 @@
+---
+import AlbumPage from '@/components/pages/AlbumPage.astro';
+import type { Locale } from '@/config/site';
+import { PREFIXED_LOCALES } from '@/i18n/locales';
+import { loadAlbums, type LoadedAlbum } from '@/lib/gallery/albums';
+
+// Every published album in every language but the default, which lives under /albums/.
+export async function getStaticPaths() {
+  const albums = await loadAlbums();
+  return PREFIXED_LOCALES.flatMap((locale) =>
+    albums.map((loaded) => ({ params: { locale, album: loaded.album.slug }, props: { loaded } })),
+  );
+}
+
+interface Props {
+  loaded: LoadedAlbum;
+}
+
+const { loaded } = Astro.props;
+const locale = Astro.params.locale as Locale;
+---
+
+<AlbumPage loaded={loaded} locale={locale} />

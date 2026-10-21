@@ -1,13 +1,17 @@
 ---
 import { thumbnailFor, type LoadedAlbum } from '@/lib/gallery/albums';
 import { objectUrl } from '@/lib/gallery/source';
+import { DEFAULT_LOCALE, type Locale } from '@/config/site';
+import { albumText } from '@/i18n/albums';
 import Thumb from './Thumb.astro';
 
 interface Props {
   loaded: LoadedAlbum;
+  locale?: Locale;
 }
 
-const { loaded } = Astro.props;
+const { loaded, locale = DEFAULT_LOCALE } = Astro.props;
+const albumTitle = albumText(loaded.album, locale).title;
 
 // Each item links to the full image, so the grid works without JavaScript. gallery-client.ts reads the data-* values
 // to open the viewer and to upgrade thumbnails to cached copies. Index order is the order of the items.
@@ -39,7 +43,7 @@ const items = loaded.index.entries.map((entry, position) => {
           data-width={item.width}
           data-height={item.height}
           data-metadata={item.metadataUrl}
-          aria-label={`${item.key} – ${loaded.album.title}`}
+          aria-label={`${item.key} – ${albumTitle}`}
         >
           <Thumb thumb={item.thumbnail} class="gallery-thumb" cached eager={item.position < 12} />
           <span class="gallery-key">{item.key}</span>

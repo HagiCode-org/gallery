@@ -1,0 +1,63 @@
+siteDescription: HagiCode 作品图库，以静态页面呈现。
+header:
+  language: 语言
+  theme: 主题
+  themeSystem: 跟随系统
+  themeLight: 浅色
+  themeDark: 深色
+home:
+  lede: HagiCode 背后的图片：猫咪头像、英雄肖像、启动画面。每一张都由 img-gen 渲染，归入相册，并附带生成它的提示词。
+  browse: 浏览相册
+  albumsHeading: 相册
+  empty: 暂无已发布的相册。
+images:
+  one: "{{n}} 张图片"
+  few: "{{n}} 张图片"
+  many: "{{n}} 张图片"
+  other: "{{n}} 张图片"
+albums:
+  one: "{{n}} 个相册"
+  few: "{{n}} 个相册"
+  many: "{{n}} 个相册"
+  other: "{{n}} 个相册"
+notFound:
+  title: 页面不存在
+  description: 该地址不是图库中的相册或页面。
+  body: 该地址不是图库中的相册或页面。尚未发布的相册没有页面。
+  back: 返回相册列表
+album:
+  nav: 相册
+  back: 全部相册
+  thumbnailSize: 缩略图大小
+  small: 小缩略图
+  medium: 中缩略图
+  large: 大缩略图
+viewer:
+  unknown: 未知
+  notPublished: 这张图片没有发布说明。
+  notLoaded: 无法加载说明。
+  loading: 正在加载说明…
+  imageFailed: 无法加载图片。
+  copy: 复制
+  copied: 已复制
+  copyFailed: 复制失败
+  zoomIn: 放大
+  zoomOut: 缩小
+  bytes: "{{n}} 字节"
+  zoomTitle: 缩放（+ / −）
+  details: 详情
+  detailsTitle: 详情（I）
+  close: 关闭
+  closeTitle: 关闭（Esc）
+  previous: 上一张图片
+  previousTitle: 上一张（←）
+  next: 下一张图片
+  nextTitle: 下一张（→）
+  panelLabel: 图片详情
+  key: 键名
+  pixelSize: 像素尺寸
+  byteSize: 文件大小
+  positivePrompt: 正向提示词
+  negativePrompt: 反向提示词
+  seed: 种子
+  generated: 生成时间

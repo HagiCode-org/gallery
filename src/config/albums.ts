@@ -1,4 +1,5 @@
-// Albums published to img-gen.hagicode.com. Each album is one R2 prefix; the build reads its index.json.
+// Albums published to img-gen.hagicode.com. Each album is one R2 prefix; the build reads its index.json. The names and
+// descriptions shown to visitors are not here: they live per language in src/i18n/locales/<locale>/albums.yml, keyed by slug.
 //
 // Task 1.1 probe, `Origin: https://gallery.hagicode.com`:
 // - 2026-10-21, before the Cloudflare CORS rule `https://*.hagicode.com`: no Access-Control-Allow-Origin on the
@@ -16,82 +17,56 @@ export interface Album {
   readonly slug: string;
   // R2 prefix, the batch's output.publish.prefix. Unique across ALBUMS.
   readonly prefix: string;
-  readonly title: string;
-  readonly description: string;
 }
 
 export const ALBUMS: readonly Album[] = [
   {
     slug: 'achievement-icons',
     prefix: 'achievement-icons',
-    title: 'Achievement icons',
-    description: 'Badge icons for achievements.',
   },
   {
     slug: 'agent-cli-default-cats',
     prefix: 'agent-cli-default-cats',
-    title: 'Agent CLI default cats',
-    description: 'Default cat avatars for agent CLI sessions.',
   },
   {
     slug: 'anime-theme-backgrounds',
     prefix: 'anime-theme-backgrounds',
-    title: 'Anime theme backgrounds',
-    description: 'Background artwork for the anime theme set.',
   },
   {
     slug: 'cat-head-gallery',
     prefix: 'cat-head-gallery',
-    title: 'Cat head gallery',
-    description: 'Cat head portraits.',
   },
   {
     slug: 'document-subject-theme-previews',
     prefix: 'document-subject-theme-previews',
-    title: 'Document subject theme previews',
-    description: 'Preview images for document subject themes.',
   },
   {
     slug: 'hero-avatars',
     prefix: 'hero-avatars',
-    title: 'Hero avatars',
-    description: 'Avatar portraits for the hero section.',
   },
   {
     slug: 'preset-task-backgrounds',
     prefix: 'preset-task-backgrounds',
-    title: 'Preset task backgrounds',
-    description: 'Background images for preset tasks.',
   },
   {
     slug: 'prompt-scenario-covers',
     prefix: 'prompt-scenario-covers',
-    title: 'Prompt scenario covers',
-    description: 'Cover images for prompt scenarios.',
   },
   {
     slug: 'session-favicons',
     prefix: 'session-favicons',
-    title: 'Session favicons',
-    description: 'Favicon images for sessions.',
   },
   {
     slug: 'startup-splash',
     prefix: 'startup-splash',
-    title: 'Startup splash',
-    description: 'Images shown while the app starts.',
   },
   {
     slug: 'tier-rating-badges',
     prefix: 'tier-rating-badges',
-    title: 'Tier rating badges',
-    description: 'Badges for tier ratings.',
   },
   {
     slug: 'tokenmonitor-stage-illustrations',
     prefix: 'tokenmonitor-stage-illustrations',
-    title: 'TokenMonitor stage illustrations',
-    description: 'Stage illustrations for TokenMonitor.',
   },
 ];
 

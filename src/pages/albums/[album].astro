@@ -1,10 +1,6 @@
 ---
-import ImageDialog from '@/components/gallery/ImageDialog.astro';
-import ImageGrid from '@/components/gallery/ImageGrid.astro';
-import Thumb from '@/components/gallery/Thumb.astro';
-import { SITE_NAME } from '@/config/site';
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import { backgroundStyle, coverFor, dominantAspect, loadAlbums, type LoadedAlbum } from '@/lib/gallery/albums';
+import AlbumPage from '@/components/pages/AlbumPage.astro';
+import { loadAlbums, type LoadedAlbum } from '@/lib/gallery/albums';
 
 // One page per album that is published. An album without an index has no path, so it has no page.
 export async function getStaticPaths() {
@@ -17,45 +13,6 @@ interface Props {
 }
 
 const { loaded } = Astro.props;
-const count = loaded.index.range.count;
-const backHref = import.meta.env.BASE_URL;
-const cover = coverFor(loaded);
-const ratio = dominantAspect(loaded.index);
-const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
 ---
 
-<BaseLayout title={`${loaded.album.title} · ${SITE_NAME}`} description={loaded.album.description}>
-  <div class="album-page" style={`--ratio: ${ratio}; --ratio-n: ${(ratioWidth / ratioHeight).toFixed(4)};`}>
-    {cover && <div class="album-bleed" aria-hidden="true" style={backgroundStyle(cover)} />}
-    <nav class="album-bar" aria-label="Album" data-album-bar>
-      <a href={backHref} class="album-back">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"></path></svg>
-        All albums
-      </a>
-      <span class="album-bar-title" aria-hidden="true">{loaded.album.title}</span>
-      <span class="album-range" data-album-range hidden></span>
-      <div class="density" role="group" aria-label="Thumbnail size" data-density-control hidden>
-        <button type="button" data-density-step="small" aria-label="Small thumbnails" title="Small thumbnails" aria-pressed="false">S</button>
-        <button type="button" data-density-step="medium" aria-label="Medium thumbnails" title="Medium thumbnails" aria-pressed="true">M</button>
-        <button type="button" data-density-step="large" aria-label="Large thumbnails" title="Large thumbnails" aria-pressed="false">L</button>
-      </div>
-      <span class="album-progress" aria-hidden="true"></span>
-    </nav>
-    <header class="album-hero">
-      <div class="album-hero-text">
-        <h1>{loaded.album.title}</h1>
-        <p>{loaded.album.description}</p>
-        <p class="album-count-line">{count.toLocaleString('en-US')} {count === 1 ? 'image' : 'images'}</p>
-      </div>
-      {
-        cover && (
-          <div class="album-hero-art" aria-hidden="true">
-            <Thumb thumb={cover} class="album-hero-image" eager cached style={`view-transition-name: cover-${loaded.album.slug};`} />
-          </div>
-        )
-      }
-    </header>
-    {count > 0 && <ImageGrid loaded={loaded} />}
-    <ImageDialog />
-  </div>
-</BaseLayout>
+<AlbumPage loaded={loaded} />
