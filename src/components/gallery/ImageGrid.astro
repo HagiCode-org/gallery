@@ -1,6 +1,7 @@
 ---
 import { thumbnailFor, type LoadedAlbum } from '@/lib/gallery/albums';
 import { objectUrl } from '@/lib/gallery/source';
+import Thumb from './Thumb.astro';
 
 interface Props {
   loaded: LoadedAlbum;
@@ -9,7 +10,7 @@ interface Props {
 const { loaded } = Astro.props;
 
 // Each item links to the full image, so the grid works without JavaScript. gallery-client.ts reads the data-* values
-// to open the dialog and to upgrade thumbnails to cached copies. Index order is the order of the items.
+// to open the viewer and to upgrade thumbnails to cached copies. Index order is the order of the items.
 const items = loaded.index.entries.map((entry, position) => {
   const thumbnail = thumbnailFor(loaded.index, entry);
   return {
@@ -28,7 +29,7 @@ const items = loaded.index.entries.map((entry, position) => {
 <ul class="gallery-grid list-none p-0" data-gallery-grid>
   {
     items.map((item) => (
-      <li class="min-w-0">
+      <li class="min-w-0" style={item.position < 24 ? `--i: ${item.position};` : undefined}>
         <a
           class="gallery-item"
           href={item.href}
@@ -40,28 +41,9 @@ const items = loaded.index.entries.map((entry, position) => {
           data-metadata={item.metadataUrl}
           aria-label={`${item.key} – ${loaded.album.title}`}
         >
-          {item.thumbnail.kind === 'sheet' ? (
-            <span
-              class="gallery-thumb"
-              style={`background-image: url("${item.thumbnail.url}"); background-size: ${item.thumbnail.size}; background-position: ${item.thumbnail.position};`}
-              data-sheet-url={item.thumbnail.url}
-              data-sheet-bytes={item.thumbnail.bytes}
-              aria-hidden="true"
-            />
-          ) : (
-            <img
-              class="gallery-thumb"
-              src={item.thumbnail.url}
-              width={item.thumbnail.width}
-              height={item.thumbnail.height}
-              loading="lazy"
-              decoding="async"
-              alt=""
-              data-gallery-image
-              data-bytes={item.thumbnail.bytes}
-            />
-          )}
+          <Thumb thumb={item.thumbnail} class="gallery-thumb" cached eager={item.position < 12} />
           <span class="gallery-key">{item.key}</span>
+          <span class="gallery-spot" aria-hidden="true"></span>
         </a>
       </li>
     ))

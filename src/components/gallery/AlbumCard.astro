@@ -1,56 +1,67 @@
 ---
+import type { CSSProperties } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { coverFor, type LoadedAlbum } from '@/lib/gallery/albums';
+import { backgroundStyle, coverFor, dominantAspect, stackFor, type LoadedAlbum } from '@/lib/gallery/albums';
+import Thumb from './Thumb.astro';
 
 interface Props {
   loaded: LoadedAlbum;
+  // The first screen's cards load their pictures at once.
+  eager?: boolean;
 }
 
-const { loaded } = Astro.props;
+const { loaded, eager = false } = Astro.props;
 const cover = coverFor(loaded);
+const stack = stackFor(loaded);
 const count = loaded.index.range.count;
 const href = `${import.meta.env.BASE_URL}albums/${loaded.album.slug}/`;
+const ratio = dominantAspect(loaded.index);
+const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
+// The React Card takes a style object; the custom properties are what the stylesheet sizes the art from.
+const cardStyle = { '--ratio': ratio, '--ratio-n': (ratioWidth / ratioHeight).toFixed(4) } as CSSProperties;
+const titleId = `album-${loaded.album.slug}-title`;
 ---
 
-<Card className="min-w-0 gap-3 py-3">
-  <CardHeader className="gap-2">
+<Card
+  className="album-card gap-0 py-0"
+  data-album-card
+  style={cardStyle}
+>
+  <div class="album-art" aria-hidden="true">
+    {cover && <span class="album-wash" style={backgroundStyle(cover)} />}
+    {
+      stack.length > 0 && (
+        <div class="album-stack">
+          {
+            // Painted back to front: the cover is the first of the stack but the last one drawn, so it sits on top.
+            [...stack].reverse().map((thumb, drawn) => {
+              const depth = stack.length - 1 - drawn;
+              return (
+                <Thumb
+                  thumb={thumb}
+                  class={`album-sheet album-sheet-${depth}`}
+                  eager={eager && depth === 0}
+                  cached={depth === 0}
+                  style={depth === 0 ? `view-transition-name: cover-${loaded.album.slug};` : ''}
+                />
+              );
+            })
+          }
+        </div>
+      )
+    }
+    <span class="album-spot"></span>
+  </div>
+  <CardHeader className="album-body gap-1.5 px-4 pt-4">
     <CardTitle>
-      <h2 class="text-base font-semibold leading-snug">
-        <a href={href} class="text-foreground no-underline hover:underline">{loaded.album.title}</a>
+      <h2 id={titleId} class="album-title">
+        <a href={href} class="album-link">{loaded.album.title}</a>
       </h2>
     </CardTitle>
     <CardDescription>{loaded.album.description}</CardDescription>
   </CardHeader>
-  <CardContent className="space-y-3">
-    {
-      cover?.kind === 'sheet' && (
-        <span
-          class="gallery-thumb gallery-cover"
-          style={`background-image: url("${cover.url}"); background-size: ${cover.size}; background-position: ${cover.position};`}
-          data-sheet-url={cover.url}
-          data-sheet-bytes={cover.bytes}
-          aria-hidden="true"
-        />
-      )
-    }
-    {
-      cover?.kind === 'image' && (
-        <img
-          class="gallery-thumb gallery-cover"
-          src={cover.url}
-          width={cover.width}
-          height={cover.height}
-          loading="lazy"
-          decoding="async"
-          alt=""
-          data-gallery-image
-          data-bytes={cover.bytes}
-        />
-      )
-    }
-    <div class="flex flex-wrap items-center gap-2">
-      <Badge variant="secondary">{`${count} ${count === 1 ? 'image' : 'images'}`}</Badge>
-    </div>
+  <CardContent className="px-4 pb-4 pt-3">
+    <Badge variant="secondary" className="album-count">{`${count.toLocaleString('en-US')} ${count === 1 ? 'image' : 'images'}`}</Badge>
   </CardContent>
 </Card>

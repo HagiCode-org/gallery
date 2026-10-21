@@ -1,0 +1,43 @@
+---
+import { sheetStyle, type Thumbnail } from '@/lib/gallery/albums';
+
+interface Props {
+  thumb: Thumbnail;
+  class?: string;
+  // Loads at once and ahead of the rest. For the pictures in the first screen only.
+  eager?: boolean;
+  // Lets gallery-client.ts swap the picture for a cached copy. Off for decoration that is never worth a cache write.
+  cached?: boolean;
+  // Extra inline style, appended after the sheet geometry.
+  style?: string;
+}
+
+const { thumb, class: className, eager = false, cached = false, style = '' } = Astro.props;
+const inlineStyle = `${sheetStyle(thumb)}${style}`;
+---
+
+{
+  thumb.kind === 'sheet' ? (
+    <span
+      class={className}
+      style={inlineStyle || undefined}
+      data-sheet-url={thumb.url}
+      data-sheet-bytes={thumb.bytes}
+      aria-hidden="true"
+    />
+  ) : (
+    <img
+      class={className}
+      style={inlineStyle || undefined}
+      src={thumb.url}
+      width={thumb.width}
+      height={thumb.height}
+      loading={eager ? 'eager' : 'lazy'}
+      fetchpriority={eager ? 'high' : undefined}
+      decoding="async"
+      alt=""
+      data-gallery-image={cached ? '' : undefined}
+      data-bytes={cached ? thumb.bytes : undefined}
+    />
+  )
+}

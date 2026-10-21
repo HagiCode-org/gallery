@@ -1,0 +1,998 @@
+/* The gallery's own surfaces: the album wall, the album page and the viewer. Loaded after global.css, so the shadcn
+   tokens and the motion curves (--ease-out, --spring) are already defined. Colours come from tokens; the viewer is the
+   one place with its own palette, because a picture is judged against a dark room whatever the page theme is. */
+@layer components {
+  .site-header {
+    --gutter: clamp(1rem, 3vw, 2.5rem);
+    position: relative;
+    z-index: 3;
+    padding: 0.875rem var(--gutter);
+  }
+
+  .site-brand {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    color: var(--foreground);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    text-decoration: none;
+  }
+
+  .site-main {
+    --gutter: clamp(1rem, 3vw, 2.5rem);
+    width: 100%;
+    min-width: 0;
+    max-width: 120rem;
+    flex: 1;
+    margin-inline: auto;
+    padding: 0.5rem var(--gutter) 5rem;
+  }
+
+  /* ------------------------------------------------------------------ Home: the wall of albums */
+
+  .wall-intro {
+    display: grid;
+    gap: 1rem 3rem;
+    align-items: end;
+    padding: clamp(1.5rem, 5vw, 4rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .wall-intro h1 {
+    margin: 0;
+    font-size: clamp(2.75rem, 9vw, 6rem);
+  }
+
+  .wall-intro-aside p {
+    max-width: 40ch;
+    margin: 0;
+    font-size: 1.0625rem;
+  }
+
+  .wall-tally {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.75rem !important;
+    color: var(--foreground);
+    font-size: 0.9375rem !important;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wall-tally span[aria-hidden] {
+    color: var(--muted-foreground);
+  }
+
+  @media (min-width: 56rem) {
+    .wall-intro {
+      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    }
+  }
+
+  .album-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));
+    grid-auto-flow: dense;
+    gap: clamp(0.75rem, 1.6vw, 1.5rem);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 48rem) {
+    .album-wall[data-featured] > li:first-child {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+  }
+
+  /* The wall rises into place once, front to back. The keyframes have no `to`, so the resting state is the plain,
+     fully visible card: if the animation never runs, nothing is hidden. */
+  .album-wall > li {
+    display: flex;
+    animation: wall-in 0.95s var(--ease-out) calc(var(--i, 0) * 70ms) both;
+  }
+
+  @keyframes wall-in {
+    from {
+      opacity: 0;
+      translate: 0 2rem;
+      scale: 0.965;
+    }
+  }
+
+  .album-card {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    transition: translate 0.5s var(--ease-out);
+  }
+
+  .album-card:has(.album-link:focus-visible) {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+  }
+
+  .album-link {
+    color: var(--foreground);
+    text-decoration: none;
+  }
+
+  .album-link:focus-visible {
+    outline: none;
+  }
+
+  /* One link per card: its pseudo-element stretches over the whole card, so the card is the target. */
+  .album-link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+  }
+
+  .album-title {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+
+  .album-wall[data-featured] > li:first-child .album-title {
+    font-size: clamp(1.375rem, 2.4vw, 1.875rem);
+  }
+
+  .album-body [data-slot='card-description'] {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .album-count {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The art is a container, so the stack can size itself from the real shape of the album's pictures: it is as large
+     as the box allows while keeping --ratio, whether the album is square avatars or wide splash art. */
+  .album-art {
+    position: relative;
+    isolation: isolate;
+    container-type: size;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--muted);
+  }
+
+  .album-wall[data-featured] > li:first-child .album-art {
+    flex: 1 1 0;
+    min-height: 20rem;
+    aspect-ratio: auto;
+  }
+
+  /* The cover, blown up and blurred, tints the whole box with the colours of the album's own first picture. */
+  .album-wash {
+    position: absolute;
+    inset: -20%;
+    z-index: -1;
+    background-repeat: no-repeat;
+    filter: blur(36px) saturate(1.5);
+    opacity: 0.5;
+    transition: opacity 0.6s var(--ease-out);
+  }
+
+  .album-stack {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(72cqw, calc(70cqh * var(--ratio-n, 1)));
+    aspect-ratio: var(--ratio, 1 / 1);
+    translate: -50% -50%;
+  }
+
+  .album-sheet {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    background-color: var(--muted);
+    background-repeat: no-repeat;
+    box-shadow: 0 0.75rem 1.75rem -0.5rem rgb(5 8 14 / 0.5);
+    transform-origin: 50% 100%;
+    transition: transform 0.9s var(--spring);
+  }
+
+  .album-sheet-0 {
+    z-index: 3;
+  }
+
+  .album-sheet-1 {
+    z-index: 2;
+    transform: translate(4%, -3%) rotate(2.5deg) scale(0.95);
+  }
+
+  .album-sheet-2 {
+    z-index: 1;
+    transform: translate(-4%, -6%) rotate(-3deg) scale(0.9);
+  }
+
+  .album-spot,
+  .gallery-spot {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    background: radial-gradient(18rem circle at var(--mx, 50%) var(--my, 40%), rgb(255 255 255 / 0.2), transparent 62%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s var(--ease-out);
+  }
+
+  /* Hover effects belong to a fine pointer. A touch screen has no hover to fan a stack or follow a cursor. */
+  @media (hover: hover) and (pointer: fine) {
+    .album-card:hover {
+      translate: 0 -4px;
+    }
+
+    .album-card:hover .album-wash {
+      opacity: 0.85;
+    }
+
+    .album-card:hover .album-sheet-0 {
+      transform: translateY(3%) scale(1.02);
+    }
+
+    .album-card:hover .album-sheet-1 {
+      transform: translate(14%, -6%) rotate(8deg) scale(0.96);
+    }
+
+    .album-card:hover .album-sheet-2 {
+      transform: translate(-14%, -9%) rotate(-9deg) scale(0.93);
+    }
+
+    .album-card:hover .album-spot,
+    .gallery-item:hover .gallery-spot {
+      opacity: 1;
+    }
+  }
+
+  /* ------------------------------------------------------------------ Album page */
+
+  .album-page {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* The cover as a wide, soft glow behind the top of the page, fading to the page colour. It spans the viewport
+     while the page stays inside the gutters; body clips the overflow. */
+  .album-bleed {
+    position: absolute;
+    /* Reaches the top of the window: the site header is 4.5rem tall and main adds 0.5rem above this page. */
+    top: -5rem;
+    left: 50%;
+    z-index: -1;
+    width: 100vw;
+    height: 36rem;
+    translate: -50% 0;
+    background-repeat: no-repeat;
+    filter: blur(90px) saturate(1.6);
+    opacity: 0.34;
+    mask-image: linear-gradient(to bottom, #000, transparent);
+    pointer-events: none;
+  }
+
+  .album-bar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-height: 3.25rem;
+    margin-inline: calc(-1 * var(--gutter));
+    padding-inline: var(--gutter);
+    border-bottom: 1px solid var(--border);
+    background: color-mix(in oklab, var(--background) 80%, transparent);
+    backdrop-filter: blur(14px) saturate(1.4);
+  }
+
+  /* Where the browser can tie it to scroll, the bar is bare at the top of the page and gains its surface as the page
+     slides under it. Elsewhere it keeps the surface all the time. */
+  @supports (animation-timeline: scroll()) {
+    .album-bar {
+      border-bottom-color: transparent;
+      background: transparent;
+      backdrop-filter: none;
+      animation-name: bar-surface;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 2rem 6rem;
+    }
+  }
+
+  @keyframes bar-surface {
+    to {
+      border-bottom-color: var(--border);
+      background: color-mix(in oklab, var(--background) 80%, transparent);
+      backdrop-filter: blur(14px) saturate(1.4);
+    }
+  }
+
+  .album-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    min-height: 2.75rem;
+    color: var(--foreground);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .album-back svg {
+    transition: translate 0.3s var(--ease-out);
+  }
+
+  .album-back:hover svg {
+    translate: -3px 0;
+  }
+
+  .album-bar-title {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--muted-foreground);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .album-range {
+    margin-left: auto;
+    color: var(--muted-foreground);
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .density {
+    display: none;
+    gap: 0.125rem;
+    padding: 0.125rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+
+  .density button {
+    min-width: 2.25rem;
+    min-height: 2.25rem;
+    border: 0;
+    border-radius: calc(var(--radius-md) - 2px);
+    background: transparent;
+    color: var(--muted-foreground);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .density button[aria-pressed='true'] {
+    background: var(--secondary);
+    color: var(--secondary-foreground);
+  }
+
+  @media (min-width: 40rem) {
+    .density:not([hidden]) {
+      display: flex;
+    }
+  }
+
+  /* Scroll-driven bits are an enhancement, written as longhands so the minifier cannot fold animation-timeline into the
+     `animation` shorthand, which not every browser reads: without animation-timeline the title stays put and the line stays empty. */
+  .album-progress {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--primary);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    .album-progress {
+      animation-name: bar-fill;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+    }
+
+    .album-bar-title {
+      opacity: 0;
+      animation-name: bar-title;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-timeline: scroll(root);
+      animation-range: 7rem 12rem;
+    }
+  }
+
+  @keyframes bar-fill {
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  @keyframes bar-title {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .album-hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 6.5rem;
+    gap: 1.5rem 1.25rem;
+    align-items: end;
+    padding: clamp(1.5rem, 5vw, 4rem) 0 clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .album-hero h1 {
+    margin: 0 0 0.75rem;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+  }
+
+  .album-hero p {
+    max-width: 44ch;
+  }
+
+  .album-hero-text p:last-child {
+    margin-bottom: 0;
+  }
+
+  .album-count-line {
+    color: var(--foreground) !important;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .album-hero-art {
+    width: 100%;
+    aspect-ratio: var(--ratio, 1 / 1);
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    background: var(--muted);
+    box-shadow: 0 1.75rem 3.5rem -1.75rem rgb(5 8 14 / 0.6);
+  }
+
+  .album-hero-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (min-width: 48rem) {
+    .album-hero {
+      grid-template-columns: minmax(0, 1fr) minmax(0, min(20rem, 32%));
+      column-gap: 3rem;
+    }
+  }
+
+  .gallery-grid {
+    --cell: 9.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--cell)), 1fr));
+    gap: clamp(0.5rem, 1vw, 0.875rem);
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 40rem) {
+    .album-page[data-density='small'] .gallery-grid {
+      --cell: 6.5rem;
+    }
+
+    .album-page[data-density='large'] .gallery-grid {
+      --cell: 16rem;
+    }
+  }
+
+  /* The first rows arrive as one wave at load, from CSS alone. */
+  .gallery-grid > li[style] {
+    animation: rise 0.8s var(--ease-out) calc(var(--i, 0) * 28ms) both;
+  }
+
+  /* A thumbnail is clear until its picture has loaded, then fades in (grid-motion.ts sets data-loading). */
+  .gallery-thumb[data-loading] {
+    opacity: 0;
+  }
+
+  .gallery-item {
+    position: relative;
+    display: block;
+    min-width: 0;
+    aspect-ratio: var(--ratio, 1 / 1);
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    background: var(--muted);
+    color: #f4f7fb;
+    text-decoration: none;
+    transition:
+      transform 0.45s var(--ease-out),
+      box-shadow 0.45s var(--ease-out);
+  }
+
+  .gallery-item:active {
+    transform: scale(0.98);
+  }
+
+  .gallery-thumb {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-color: var(--muted);
+    background-repeat: no-repeat;
+    transition:
+      transform 0.9s var(--ease-out),
+      opacity 0.6s var(--ease-out);
+  }
+
+  .gallery-key {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    padding: 1.75rem 0.5rem 0.4rem;
+    background: linear-gradient(to top, rgb(5 8 14 / 0.78), transparent);
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: 0.6875rem;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    transition:
+      opacity 0.3s var(--ease-out),
+      translate 0.3s var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .gallery-key {
+      opacity: 0;
+      translate: 0 0.35rem;
+    }
+
+    .gallery-item:hover,
+    .gallery-item:focus-visible {
+      z-index: 2;
+      transform: scale(1.04);
+      box-shadow: 0 1.25rem 2.25rem -0.875rem rgb(5 8 14 / 0.6);
+    }
+
+    .gallery-item:hover .gallery-thumb,
+    .gallery-item:focus-visible .gallery-thumb {
+      transform: scale(1.07);
+    }
+
+    .gallery-item:hover .gallery-key,
+    .gallery-item:focus-visible .gallery-key {
+      opacity: 1;
+      translate: 0 0;
+    }
+  }
+
+  /* ------------------------------------------------------------------ Viewer */
+
+  .gallery-dialog {
+    --v-bg: #05070c;
+    --v-fg: #eef2f9;
+    --v-muted: #a5b3c9;
+    --v-line: rgb(255 255 255 / 0.14);
+    --v-panel: #0a0f19;
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    border: 0;
+    border-radius: 0;
+    background: var(--v-bg);
+    color: var(--v-fg);
+    color-scheme: dark;
+  }
+
+  .gallery-dialog::backdrop {
+    background: var(--v-bg);
+  }
+
+  .gallery-dialog :focus-visible {
+    outline-color: #a9c0ff;
+  }
+
+  /* No View Transitions: the viewer still arrives, with a short fade instead of the morph. */
+  .gallery-dialog[data-arrive='fade'] .viewer {
+    animation: viewer-fade 0.28s var(--ease-out) both;
+  }
+
+  @keyframes viewer-fade {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .viewer {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 0;
+    height: 100dvh;
+    transition: grid-template-columns 0.55s var(--ease-out);
+  }
+
+  .viewer[data-panel='open'] {
+    grid-template-columns: minmax(0, 1fr) min(26rem, 38vw);
+  }
+
+  .viewer-main {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  /* The ambient light: the picture on show, blown up, blurred and dimmed, filling the room behind it. Each image
+     arrives as a new layer that fades in over the last. */
+  .viewer-ambient {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .viewer-ambient > span {
+    position: absolute;
+    inset: -20%;
+    background-position: center;
+    background-size: cover;
+    filter: blur(80px) saturate(1.6) brightness(0.5);
+  }
+
+  .viewer-bar {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.625rem clamp(0.75rem, 2vw, 1.5rem);
+  }
+
+  .viewer-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.875rem;
+    min-width: 0;
+  }
+
+  .viewer-title {
+    min-width: 0;
+    margin: 0;
+    overflow: hidden;
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .viewer-count {
+    margin: 0;
+    color: var(--v-muted);
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: 0.8125rem;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .viewer-actions {
+    display: flex;
+    flex-shrink: 0;
+    gap: 0.25rem;
+  }
+
+  .viewer-button,
+  .viewer-nav {
+    display: inline-grid;
+    place-items: center;
+    border: 0;
+    color: var(--v-fg);
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      opacity 0.2s,
+      scale 0.3s var(--ease-out);
+  }
+
+  .viewer-button {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    background: transparent;
+  }
+
+  .viewer-button:hover,
+  .viewer-button[aria-expanded='true'] {
+    background: rgb(255 255 255 / 0.12);
+  }
+
+  .viewer-button:active,
+  .viewer-nav:active {
+    scale: 0.92;
+  }
+
+  .viewer-stage {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    container-type: size;
+    min-width: 0;
+    min-height: 0;
+    padding: 0 clamp(0.5rem, 5vw, 4.5rem) clamp(0.75rem, 3vh, 2rem);
+    overflow: hidden;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .viewer-figure {
+    display: grid;
+    place-items: center;
+    margin: 0;
+    transform-origin: 50% 50%;
+  }
+
+  /* The picture is exactly its own box: as wide as the stage allows without leaving it, never past twice its pixels.
+     --ar and --nw come from the index through the script. A box that is exactly the picture is what lets the
+     View Transition morph the thumbnail into it without squeezing. */
+  .gallery-dialog-image {
+    display: block;
+    width: min(100cqw, calc(100cqh * var(--ar, 1)), calc(var(--nw, 1024) * 2px));
+    height: auto;
+    aspect-ratio: var(--ar, 1);
+    border-radius: 0.375rem;
+    background: #101722;
+    box-shadow: 0 2rem 5rem -2rem rgb(0 0 0 / 0.85);
+    -webkit-user-drag: none;
+  }
+
+  .viewer[data-zoomed] .viewer-stage {
+    cursor: grab;
+  }
+
+  .viewer[data-panning] .viewer-stage {
+    cursor: grabbing;
+  }
+
+  .viewer-nav {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    width: 3rem;
+    height: 3rem;
+    translate: 0 -50%;
+    border-radius: 999px;
+    background: rgb(8 12 20 / 0.72);
+    box-shadow: inset 0 0 0 1px var(--v-line);
+  }
+
+  .viewer-nav:hover:not(:disabled) {
+    background: rgb(28 38 58 / 0.9);
+  }
+
+  .viewer-nav:disabled {
+    cursor: default;
+    opacity: 0.22;
+  }
+
+  .viewer-nav-previous {
+    left: clamp(0.5rem, 1.5vw, 1.25rem);
+  }
+
+  .viewer-nav-next {
+    right: clamp(0.5rem, 1.5vw, 1.25rem);
+  }
+
+  .viewer-panel {
+    grid-column: 2;
+    grid-row: 1;
+    width: min(26rem, 38vw);
+    min-width: 0;
+    padding: 1.25rem 1.25rem 2rem;
+    overflow: auto;
+    border-left: 1px solid var(--v-line);
+    background: var(--v-panel);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease-out);
+  }
+
+  .viewer[data-panel='open'] .viewer-panel {
+    opacity: 1;
+    transition-delay: 0.12s;
+  }
+
+  .viewer-status {
+    margin: 1rem 0 0;
+    color: var(--v-muted);
+    font-size: 0.875rem;
+  }
+
+  .gallery-facts {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.125rem 0.75rem;
+    margin: 0;
+    font-size: 0.875rem;
+  }
+
+  .gallery-facts dt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    color: var(--v-muted);
+    font-size: 0.8125rem;
+  }
+
+  .gallery-facts dt:first-child {
+    margin-top: 0;
+  }
+
+  .gallery-facts dd {
+    min-width: 0;
+    margin: 0 0 0.25rem;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    line-height: 1.55;
+  }
+
+  .gallery-facts dd[data-fact],
+  .gallery-facts dd[data-field='seed'],
+  .gallery-facts dd[data-field='generatedAt'] {
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .viewer-copy {
+    min-height: 1.75rem;
+    padding: 0 0.625rem;
+    border: 1px solid var(--v-line);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--v-muted);
+    font: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition:
+      background-color 0.2s,
+      color 0.2s;
+  }
+
+  .viewer-copy:hover:not(:disabled) {
+    background: rgb(255 255 255 / 0.1);
+    color: var(--v-fg);
+  }
+
+  .viewer-copy:disabled {
+    cursor: default;
+    opacity: 0.4;
+  }
+
+  /* A narrow screen has no room for a side panel: the details rise from the bottom edge over the picture. */
+  @media (max-width: 47.99rem) {
+    .viewer,
+    .viewer[data-panel='open'] {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .viewer-panel {
+      grid-area: auto;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 5;
+      width: auto;
+      max-height: 62dvh;
+      border-top: 1px solid var(--v-line);
+      border-left: 0;
+      opacity: 1;
+      translate: 0 102%;
+      transition: translate 0.5s var(--ease-out);
+    }
+
+    .viewer[data-panel='open'] .viewer-panel {
+      translate: 0 0;
+      transition-delay: 0s;
+    }
+
+    .viewer-nav {
+      top: auto;
+      bottom: 1rem;
+      translate: 0 0;
+      width: 2.75rem;
+      height: 2.75rem;
+    }
+  }
+
+  /* ------------------------------------------------------------------ Page-to-page and image morphs */
+
+  @media (prefers-reduced-motion: no-preference) {
+    @view-transition {
+      navigation: auto;
+    }
+  }
+
+  ::view-transition-group(root) {
+    animation-duration: 0.4s;
+    animation-timing-function: var(--ease-out);
+  }
+
+  /* A named picture is one object that travels: only its new state is drawn, so the morph never cross-fades two
+     copies of the same image. */
+  ::view-transition-group(viewer-photo),
+  ::view-transition-group(*.cover) {
+    animation-duration: 0.62s;
+    animation-timing-function: var(--ease-out);
+  }
+
+  ::view-transition-old(viewer-photo),
+  ::view-transition-old(*.cover) {
+    display: none;
+  }
+
+  ::view-transition-new(viewer-photo),
+  ::view-transition-new(*.cover) {
+    animation: none;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .album-sheet-0,
+  .album-hero-image {
+    view-transition-class: cover;
+  }
+
+  /* ------------------------------------------------------------------ Reduced motion */
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
+      transition-delay: 0ms !important;
+    }
+
+  }
+}

@@ -198,9 +198,22 @@ for (const file of albumPages) {
     `${page} must render the image grid, or the zero-image count when it lists no image`,
   );
   expect(html.includes('data-gallery-dialog'), `${page} must render the image dialog`);
+  // The viewer shell: stage, both arrows, close, and the details panel the script drives.
+  for (const marker of ['data-viewer-stage', 'data-dialog-previous', 'data-dialog-next', 'data-dialog-close', 'data-viewer-panel']) {
+    expect(html.includes(marker), `${page} viewer is missing ${marker}`);
+  }
   for (const item of items) {
     expect(/\sdata-key="[^"]+"/u.test(item) && /\saria-label="[^"]+"/u.test(item), `${page} grid item lacks data-key or an accessible name: ${item}`);
   }
+}
+
+// Scroll-driven animations must not be folded into the `animation` shorthand: browsers that do not read animation-timeline
+// there drop the whole declaration, and the effect disappears without an error.
+for (const file of filesUnder(join(dist, '_astro')).filter((candidate) => candidate.endsWith('.css'))) {
+  expect(
+    !/animation:[^;}]*scroll\(/u.test(readFileSync(file, 'utf8')),
+    `${relative(root, file)} folds animation-timeline into the animation shorthand; write the longhands`,
+  );
 }
 
 // Discovery files produced by Hagilight.

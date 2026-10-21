@@ -297,3 +297,50 @@ describe('album loading and geometry (task 1.5)', () => {
     });
   });
 });
+
+describe('home page and album page helpers', async () => {
+  const { dominantAspect, stackFor, backgroundStyle, sheetStyle } = await import('../../src/lib/gallery/albums.ts');
+
+  const entry = (key, width, height) => ({
+    key,
+    objectKey: `hero-avatars/${key}.avif`,
+    width,
+    height,
+    bytes: 10,
+    sheetCell: null,
+    metadata: null,
+  });
+  const index = (entries) => ({ version: 1, range: { count: entries.length, first: null, last: null }, sheet: null, entries });
+
+  it('reports the most common shape of an album', () => {
+    assert.equal(dominantAspect(index([entry('a', 1232, 704), entry('b', 1232, 704), entry('c', 1024, 1024)])), '1232 / 704');
+  });
+
+  it('breaks a tie towards the earlier entry and falls back to a square', () => {
+    assert.equal(dominantAspect(index([entry('a', 10, 20), entry('b', 20, 10)])), '10 / 20');
+    assert.equal(dominantAspect(index([])), '1 / 1');
+  });
+
+  it('spreads the stack through the album, cover first', () => {
+    const entries = Array.from({ length: 9 }, (_, step) => entry(`e${step}`, 1024, 1024));
+    const stack = stackFor({ album, index: index(entries) });
+    assert.deepEqual(
+      stack.map((item) => item.url.split('/').pop()),
+      ['e0.avif', 'e3.avif', 'e6.avif'],
+    );
+  });
+
+  it('shows fewer pictures for a small album and none for an empty one', () => {
+    assert.equal(stackFor({ album, index: index([entry('a', 1, 1)]) }).length, 1);
+    assert.equal(stackFor({ album, index: index([]) }).length, 0);
+  });
+
+  it('writes a background for each thumbnail kind', () => {
+    const image = { kind: 'image', url: 'https://img.example/a.avif', bytes: 1, width: 1, height: 1 };
+    const sheet = { kind: 'sheet', url: 'https://img.example/s.avif', bytes: 1, size: '200% 200%', position: '100% 0%' };
+    assert.equal(sheetStyle(image), '');
+    assert.match(sheetStyle(sheet), /background-size: 200% 200%; background-position: 100% 0%;/u);
+    assert.match(backgroundStyle(image), /url\("https:\/\/img\.example\/a\.avif"\); background-size: cover;/u);
+    assert.equal(backgroundStyle(sheet), sheetStyle(sheet));
+  });
+});

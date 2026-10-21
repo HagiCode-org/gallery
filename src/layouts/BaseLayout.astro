@@ -5,6 +5,7 @@ import { resolveFaviconHeadEntry } from '@hagicode/hagilight-core/favicon';
 import sharedFaviconUrl from '@hagicode/hagilight-core/favicon.ico';
 import { DEFAULT_LOCALE, SITE_DESCRIPTION, SITE_NAME, type Locale } from '@/config/site';
 import '@/styles/global.css';
+import '@/styles/gallery.css';
 
 interface Props {
   title?: string;
@@ -40,15 +41,10 @@ const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
     />
   </head>
   <body class="flex min-h-dvh flex-col">
-    <header class="border-b border-border">
-      <a
-        href={import.meta.env.BASE_URL}
-        class="block min-w-0 px-4 py-3 text-sm font-medium text-foreground no-underline lg:px-10"
-      >
-        {SITE_NAME}
-      </a>
+    <header class="site-header">
+      <a href={import.meta.env.BASE_URL} class="site-brand">{SITE_NAME}</a>
     </header>
-    <main class="mx-auto w-full min-w-0 max-w-3xl flex-1 px-4 py-8 lg:py-10">
+    <main class="site-main">
       <slot />
     </main>
     <Footer locale={locale} />

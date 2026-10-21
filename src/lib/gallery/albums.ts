@@ -92,3 +92,49 @@ export function coverFor(loaded: LoadedAlbum): Thumbnail | null {
   const [first] = loaded.index.entries;
   return first ? thumbnailFor(loaded.index, first) : null;
 }
+
+// The `width / height` pair most entries share, as CSS for `aspect-ratio`. Every published album so far is uniform, so
+// this is the real shape of each cell; a mixed album gets its most common shape and the rest crop. The earliest entry
+// wins a tie, and an empty index falls back to a square.
+export function dominantAspect(index: GalleryIndex): string {
+  const counts = new Map<string, number>();
+  for (const entry of index.entries) {
+    const shape = `${entry.width} / ${entry.height}`;
+    counts.set(shape, (counts.get(shape) ?? 0) + 1);
+  }
+  let best = '1 / 1';
+  let bestCount = 0;
+  for (const [shape, count] of counts) {
+    if (count > bestCount) {
+      best = shape;
+      bestCount = count;
+    }
+  }
+  return best;
+}
+
+// Up to `size` thumbnails spread evenly through the album, starting with the first entry, so the home page can fan a
+// few real pictures from one album. The first element is always the cover.
+export function stackFor(loaded: LoadedAlbum, size = 3): Thumbnail[] {
+  const { entries } = loaded.index;
+  const shown = Math.min(size, entries.length);
+  return Array.from({ length: shown }, (_, step) => {
+    const entry = entries[Math.floor((step * entries.length) / shown)] as IndexEntry;
+    return thumbnailFor(loaded.index, entry);
+  });
+}
+
+// Inline style that shows one thumbnail as a CSS background, for the elements that cannot be an <img>: sprite-sheet
+// cells and the blurred glow behind a page. Empty for a plain image, which the caller renders as an <img>.
+export function sheetStyle(thumbnail: Thumbnail): string {
+  return thumbnail.kind === 'sheet'
+    ? `background-image: url("${thumbnail.url}"); background-size: ${thumbnail.size}; background-position: ${thumbnail.position};`
+    : '';
+}
+
+// The same picture as a background for any thumbnail kind. A plain image fills the box; a sheet cell keeps its geometry.
+export function backgroundStyle(thumbnail: Thumbnail): string {
+  return thumbnail.kind === 'sheet'
+    ? sheetStyle(thumbnail)
+    : `background-image: url("${thumbnail.url}"); background-size: cover; background-position: center;`;
+}
