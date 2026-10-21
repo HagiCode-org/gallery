@@ -1,12 +1,13 @@
 // Albums published to img-gen.hagicode.com. Each album is one R2 prefix; the build reads its index.json.
 //
-// Task 1.1 probe, 2026-10-21, with `Origin: https://gallery.hagicode.com`:
-// - startup-splash/hagicode-splash-001.avif: 200, image/avif, 32949 bytes, and no Access-Control-Allow-Origin header
-//   on GET or HEAD. An OPTIONS preflight returns 403.
-// - hero-avatars, startup-splash and cat-head-gallery index.json: 404, so no album is published yet.
-// Consequence (design D7): fetch() from this origin is refused by the browser for these objects. Cache API writes
-// fail silently and metadata cannot be read until img-gen answers with Access-Control-Allow-Origin. Plain <img> and
-// CSS background loads are not affected. Re-run this probe when the R2 CORS rule changes.
+// Task 1.1 probe, `Origin: https://gallery.hagicode.com`:
+// - 2026-10-21, before the Cloudflare CORS rule `https://*.hagicode.com`: no Access-Control-Allow-Origin on the
+//   objects, an OPTIONS preflight returned 403, so fetch() from this origin was refused. Cache API writes failed
+//   silently and metadata could not be read. Plain <img> and CSS background loads were not affected.
+// - 2026-10-21, after the rule: the preflight returns 204 with Access-Control-Allow-Origin for the gallery origin, and
+//   fresh image and metadata responses carry it. A foreign origin gets no header. An object cached at the edge before
+//   the rule can keep answering without the header until it expires (max-age 86400), so purge it if it matters.
+// Re-run this probe when the R2 CORS rule changes.
 
 export const IMAGE_BASE_URL = 'https://img-gen.hagicode.com';
 
