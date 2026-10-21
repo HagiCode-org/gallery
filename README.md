@@ -1,7 +1,8 @@
 # HagiCode Gallery
 
-A static gallery site for HagiCode work, built with Astro and served as static files. The current home page is a
-placeholder that states the purpose and shows the shared shadcn/ui components. Gallery content is not added yet.
+A static gallery site for HagiCode work, built with Astro and served as static files. The home page lists the published
+image albums, and each album page shows its images as a grid. The images come from `img-gen`, which publishes each
+recipe set to R2 with an `index.json` that the build reads.
 
 ## Requirements
 
@@ -32,7 +33,66 @@ Run every command from the repository root.
 - **Hagilight** (`@hagicode/hagilight` and `@hagicode/hagilight-core`) for the SEO head, footer, favicon, sitemap,
   `robots.txt`, RSS, `llms.txt` and site metadata.
 
-No client script ships. Components do not use a `client:*` directive, so pages work with JavaScript disabled.
+No island ships. Components do not use a `client:*` directive, and no page contains `astro-island` or `hydrat`, so the
+pages are static HTML. The one client script is the plain module described under [Client script](#client-script). Every
+thumbnail is a link to its image file, so the album pages work with JavaScript disabled.
+
+## Albums and data source
+
+An album is one published R2 prefix of `img-gen`. The albums are listed in `src/config/albums.ts`, together with
+`IMAGE_BASE_URL` (`https://img-gen.hagicode.com`), which is the only place the public host and a prefix appear. Each
+album has a URL slug, an R2 prefix, a title and a description. Slugs and prefixes are unique, and the configuration
+check fails on a duplicate. Adding an album before its first publish is safe: it is omitted until its index exists.
+
+Each build requests `<base>/<prefix>/index.json` once per album and shares the result between the home page and the
+album pages. The index must be version 1, and every object key must lie under its album's prefix:
+
+- A `404` means the album is not published yet. The build omits it and prints one warning per album. A build with no
+  published album still succeeds, and the home page shows its empty state.
+- Any other failure, such as a network error, a 10-second timeout or an error status, is retried up to three times
+  with a short delay. After the last attempt the build fails and names the album.
+- A malformed index fails the build and names the album and the first bad field.
+
+The build needs network access to `img-gen.hagicode.com`. Metadata objects (`<stem>.metadata.json`) are not read at
+build time. The browser reads one when its image is opened.
+
+## Image cache
+
+Images, sprite sheets and metadata are kept in the browser's Cache API and nowhere else. No IndexedDB or web storage
+is used. The constants are in `src/lib/image-cache/cache.ts`.
+
+- **Names.** `hagicode-gallery-images-v1` for images and sprite sheets, `hagicode-gallery-metadata-v1` for metadata. A
+  new version gets a new name.
+- **Byte validation.** An entry is used only when the size stored with it equals the `bytes` the index gives for that
+  object. A re-rendered image with the same file name is therefore a miss.
+- **Read budget.** A read that is not done within 150 ms, a read that fails, and a browser without the Cache API are
+  all misses. A miss leaves the plain image URL in place, so the cache never hides an image.
+- **Deferred writes.** A missed object is downloaded only after the page's `load` event and an idle period, four at
+  a time, with `credentials: 'omit'`. Only a successful response whose size matches the index is stored. Other
+  outcomes leave the cache unchanged and raise no error.
+- **Pruning.** Once per page load, every cache whose name starts with `hagicode-gallery-` and is not a current name is
+  deleted. Caches of other applications on the origin are kept.
+- **Metadata.** A cached copy is shown at once and refreshed in the background. The copy is replaced only by a valid
+  version 1 body.
+- **CORS requirement.** Storing a copy means the browser fetches it, so `img-gen.hagicode.com` must send
+  `Access-Control-Allow-Origin` for `https://gallery.hagicode.com`. On 2026-10-21 it did not, so until the R2 CORS
+  rule changes, writes fail silently and the image dialog shows its "could not be loaded" notice for metadata. Images
+  still display from their own URLs. The probe is recorded at the top of `src/config/albums.ts`.
+
+## Client script
+
+`src/scripts/gallery-client.ts` is a plain module loaded by `ImageGrid.astro` and `index.astro`. It is not an island:
+it has no `client:*` directive and no hydration script. It does four things:
+
+- upgrades sprite sheets and visible lazy images to cached copies, and queues misses for deferred storage;
+- opens the native `<dialog>` for an unmodified click on a thumbnail, shows the image and its index facts, and loads
+  the metadata only at that moment;
+- moves between images with the previous and next controls and the arrow keys, and returns focus to the thumbnail on
+  close;
+- keeps the URL fragment `#<key>` in step: opening pushes it, moving replaces it, closing removes it, and Back closes the
+  dialog. A known fragment on load opens its image, and an unknown one is ignored.
+
+Prompt text is written with `textContent`, never as markup.
 
 ## Hagilight pinning and upgrades
 
@@ -77,9 +137,15 @@ astro.config.mjs            site URL, one-locale i18n, React, Tailwind, Hagiligh
 components.json             shadcn CLI configuration
 src/config/site.ts          site name, description, URL, locales (single source)
 src/layouts/BaseLayout.astro  the one <head> (SEOHead with favicon) and the one Footer
-src/pages/index.astro       home page
+src/config/albums.ts        image base URL and the album list (the one definition of both)
+src/pages/index.astro       home page: album cards or the empty state
+src/pages/albums/[album].astro  one static page per published album
+src/components/gallery/     AlbumCard, ImageGrid (grid and script) and ImageDialog (native dialog shell)
 src/components/ui/          shadcn components (added by the CLI only)
-src/styles/global.css       Tailwind, shadcn tokens for light and dark, base layer
+src/lib/gallery/            build time: index schema, index fetch with retries, album loader, thumbnail geometry
+src/lib/image-cache/        browser: Cache API helpers and the metadata loader (imports nothing from Astro)
+src/scripts/gallery-client.ts  the one plain client module (cache upgrades, dialog, fragment)
+src/styles/global.css       Tailwind, shadcn tokens for light and dark, base layer, gallery components
 src/lib/utils.ts            cn() helper
 scripts/verify-foundation.mjs      post-build checks on dist/
 scripts/assemble-gh-pages-payload.mjs   stages the gh-pages payload
