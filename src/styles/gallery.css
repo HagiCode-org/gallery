@@ -32,44 +32,6 @@
 
   /* ------------------------------------------------------------------ Home: the wall of albums */
 
-  .wall-intro {
-    display: grid;
-    gap: 1rem 3rem;
-    align-items: end;
-    padding: clamp(1.5rem, 5vw, 4rem) 0 clamp(1.5rem, 3vw, 2.5rem);
-  }
-
-  .wall-intro h1 {
-    margin: 0;
-    font-size: clamp(2.75rem, 9vw, 6rem);
-  }
-
-  .wall-intro-aside p {
-    max-width: 40ch;
-    margin: 0;
-    font-size: 1.0625rem;
-  }
-
-  .wall-tally {
-    display: flex;
-    gap: 0.6rem;
-    margin-top: 0.75rem !important;
-    color: var(--foreground);
-    font-size: 0.9375rem !important;
-    font-weight: 600;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .wall-tally span[aria-hidden] {
-    color: var(--muted-foreground);
-  }
-
-  @media (min-width: 56rem) {
-    .wall-intro {
-      grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
-    }
-  }
-
   .album-wall {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 18rem), 1fr));

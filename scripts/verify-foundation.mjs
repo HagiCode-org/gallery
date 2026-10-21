@@ -186,7 +186,9 @@ if (fileExists(homeFile)) {
     const url = siteUrl(href);
     expect(url !== null && distFileFor(url) !== null, `dist/index.html links to an album page missing from dist/: ${href}`);
   }
-  expect(homeLinks.length === albumPages.length, `dist/index.html links ${homeLinks.length} albums but dist/albums/ has ${albumPages.length} pages`);
+  // The sky and the album wall each link every album, so the distinct targets are what is counted.
+  const distinctLinks = new Set(homeLinks);
+  expect(distinctLinks.size === albumPages.length, `dist/index.html links ${distinctLinks.size} albums but dist/albums/ has ${albumPages.length} pages`);
 }
 for (const file of albumPages) {
   const page = `dist/${relative(dist, file).split(sep).join('/')}`;

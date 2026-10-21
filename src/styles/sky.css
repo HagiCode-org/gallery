@@ -1,0 +1,355 @@
+/* The home page's opening: a night sky with one star per album. The covers are real pictures; sky.ts moves them and
+   draws the lines between them on a canvas. Everything here is the resting state, so with no script, or with reduced
+   motion, the stars sit still where the build placed them and every album is still one link. The sky is its own dark
+   room whatever the page theme is, the way the viewer is, so it carries its own palette. */
+@layer components {
+  .sky {
+    --sky-deep: #080d19;
+    --sky-mid: #0f1a31;
+    --sky-fg: #eaf0fa;
+    --sky-muted: #b4c2d9;
+    --sky-line: #243453;
+    --sky-star: #8fb0ff;
+    --sky-ink: #0b1424;
+    --ease-sky: cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    min-height: clamp(30rem, calc(100svh - 8rem), 50rem);
+    overflow: clip;
+    border: 1px solid var(--sky-line);
+    border-radius: var(--radius-xl);
+    background:
+      radial-gradient(ellipse 52% 78% at 72% 52%, #16264b 0%, transparent 72%),
+      linear-gradient(180deg, var(--sky-mid), var(--sky-deep));
+    color: var(--sky-fg);
+  }
+
+  .sky ::selection {
+    background: color-mix(in oklab, var(--sky-star) 45%, transparent);
+    color: #fff;
+  }
+
+  .sky :focus-visible {
+    outline-color: var(--sky-star);
+  }
+
+  .sky-canvas {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  .sky-copy {
+    position: relative;
+    z-index: 2;
+    align-self: end;
+    box-sizing: border-box;
+    padding: clamp(1.5rem, 4vw, 3.5rem);
+  }
+
+  .sky h1 {
+    margin: 0 0 1.25rem;
+    color: var(--sky-fg);
+    font-size: clamp(2.75rem, 7.4vw, 5.75rem);
+    line-height: 1.04;
+    letter-spacing: -0.035em;
+  }
+
+  .sky .sky-lede {
+    max-width: 34ch;
+    margin: 0 0 1.75rem;
+    color: var(--sky-muted);
+    font-size: clamp(1rem, 1.5vw, 1.125rem);
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .sky-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    min-height: 2.75rem;
+    padding: 0 1.15rem 0 1.25rem;
+    border-radius: 0.625rem;
+    background: var(--sky-star);
+    color: var(--sky-ink);
+    font-size: 0.9375rem;
+    font-weight: 650;
+    text-decoration: none;
+    transition:
+      background-color 0.25s var(--ease-sky),
+      translate 0.25s var(--ease-sky);
+  }
+
+  .sky-cta svg {
+    transition: translate 0.4s var(--spring);
+  }
+
+  .sky-cta:hover {
+    background: #aac2ff;
+  }
+
+  .sky-cta:hover svg {
+    translate: 0 3px;
+  }
+
+  .sky-cta:active {
+    translate: 0 1px;
+  }
+
+  /* ---- The stars. Each album is a zero-size anchor at its place; the picture, its name and its satellites are placed
+     around that point, so sky.ts moves a whole album by moving one box. */
+
+  .sky-field {
+    position: relative;
+    z-index: 1;
+    height: var(--field);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sky-node {
+    position: absolute;
+    left: var(--nx);
+    top: var(--ny);
+    width: 0;
+    height: 0;
+  }
+
+  .sky-star {
+    --size: calc(var(--s) * 0.72px);
+    position: absolute;
+    left: calc(var(--size) * -0.5);
+    top: calc(var(--size) * -0.5);
+    z-index: 2;
+    display: block;
+    width: var(--size);
+    height: var(--size);
+    color: var(--sky-fg);
+    text-decoration: none;
+    animation: star-on 1.1s var(--ease-sky) calc(var(--i) * 90ms + 250ms) backwards;
+    transition: scale 0.7s var(--spring);
+  }
+
+  .sky-star:focus-visible {
+    outline: none;
+  }
+
+  .sky-cover {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border: 1px solid rgb(234 240 250 / 0.22);
+    border-radius: 0.875rem;
+    background: #16213a;
+    transition: border-color 0.3s var(--ease-sky);
+  }
+
+  .sky-star:focus-visible .sky-cover {
+    outline: 2px solid var(--sky-star);
+    outline-offset: 4px;
+  }
+
+  .sky-img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background-repeat: no-repeat;
+  }
+
+  /* The name sits under its star: always readable, with the image count joining it when the star is the one in play. */
+  .sky-label {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    left: 50%;
+    display: flex;
+    align-items: baseline;
+    max-width: 14rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.375rem;
+    background: rgb(8 13 25 / 0.92);
+    color: var(--sky-fg);
+    font-size: 0.75rem;
+    line-height: 1.5;
+    white-space: nowrap;
+    translate: -50% 0;
+    pointer-events: none;
+  }
+
+  .sky-label strong {
+    overflow: hidden;
+    font-weight: 600;
+    text-overflow: ellipsis;
+  }
+
+  .sky-count {
+    display: inline-block;
+    max-width: 0;
+    overflow: hidden;
+    color: var(--sky-muted);
+    font-variant-numeric: tabular-nums;
+    opacity: 0;
+    transition:
+      max-width 0.45s var(--ease-sky),
+      margin 0.45s var(--ease-sky),
+      opacity 0.3s var(--ease-sky);
+  }
+
+  .sky-sat {
+    --size: calc(var(--ss) * 0.72px);
+    position: absolute;
+    left: calc(var(--sx) * 0.72px - var(--size) / 2);
+    top: calc(var(--sy) * 0.72px - var(--size) / 2);
+    z-index: 1;
+    width: var(--size);
+    height: var(--size);
+    overflow: hidden;
+    border: 1px solid rgb(234 240 250 / 0.16);
+    border-radius: 0.5rem;
+    background: #16213a;
+    opacity: 0.8;
+    pointer-events: none;
+    animation: sat-on 1.2s var(--ease-sky) calc(var(--i) * 90ms + var(--k) * 110ms + 700ms) backwards;
+  }
+
+  /* The keyframes have no `to`: the resting state is the plain, visible star, so a page where the animation never runs
+     still shows every album. */
+  @keyframes star-on {
+    from {
+      opacity: 0;
+      scale: 0.4;
+      filter: blur(10px);
+    }
+  }
+
+  @keyframes sat-on {
+    from {
+      opacity: 0;
+      scale: 0.2;
+    }
+  }
+
+  /* An album in play: from a pointer or from the keyboard. */
+  @media (hover: hover) and (pointer: fine) {
+    .sky-star:hover {
+      scale: 1.1;
+    }
+  }
+
+  .sky-star:hover .sky-cover,
+  .sky-star:focus-visible .sky-cover {
+    border-color: rgb(143 176 255 / 0.85);
+  }
+
+  .sky-star:hover .sky-count,
+  .sky-star:focus-visible .sky-count {
+    max-width: 6.5rem;
+    margin-left: 0.5rem;
+    opacity: 1;
+  }
+
+  .sky-star:focus-visible {
+    scale: 1.1;
+  }
+
+  /* The album in play rises above its neighbours' pictures, so its name is never covered. */
+  .sky-star:hover,
+  .sky-star:focus-visible {
+    z-index: 4;
+  }
+
+  /* ---- Wide: the copy sits at the lower left and the field covers the whole sky behind it. */
+  @media (min-width: 56rem) {
+    .sky {
+      grid-template-columns: minmax(0, 44%) minmax(0, 1fr);
+    }
+
+    .sky h1 {
+      font-size: clamp(2.5rem, 5.6vw, 5.75rem);
+    }
+
+    .sky-field {
+      position: absolute;
+      inset: 0;
+      height: auto;
+    }
+
+    .sky-node {
+      left: var(--wx);
+      top: var(--wy);
+    }
+
+    .sky-star {
+      --size: calc(var(--s) * 1px);
+    }
+
+    .sky-sat {
+      --size: calc(var(--ss) * 1px);
+      left: calc(var(--sx) * 1px - var(--size) / 2);
+      top: calc(var(--sy) * 1px - var(--size) / 2);
+    }
+  }
+
+  /* ---- Narrow: the copy comes first and the stars fill their own block under it. */
+  @media (max-width: 55.99rem) {
+    .sky {
+      grid-template-rows: auto 1fr;
+      min-height: 0;
+    }
+
+    .sky-copy {
+      align-self: start;
+      padding-bottom: 0.5rem;
+    }
+  }
+
+  /* ---- The album list that follows the sky. */
+  .wall {
+    scroll-margin-top: 1rem;
+    padding-top: clamp(1.75rem, 4vw, 3rem);
+  }
+
+  .wall-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .wall-title {
+    margin: 0;
+    color: var(--foreground);
+    font-size: 1.125rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .wall-tally {
+    display: flex;
+    gap: 0.6rem;
+    margin: 0;
+    color: var(--foreground);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .wall-tally span[aria-hidden] {
+    color: var(--muted-foreground);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}

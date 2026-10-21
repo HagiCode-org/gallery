@@ -1,8 +1,10 @@
 ---
 import AlbumCard from '@/components/gallery/AlbumCard.astro';
-import { SITE_DESCRIPTION, SITE_NAME } from '@/config/site';
+import Thumb from '@/components/gallery/Thumb.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { loadAlbums } from '@/lib/gallery/albums';
+import { coverFor, loadAlbums, stackFor, type LoadedAlbum, type Thumbnail } from '@/lib/gallery/albums';
+import { layoutSky, narrowFieldRem, satellitesPerStar } from '@/lib/gallery/constellation';
+import { SITE_NAME } from '@/config/site';
 
 // The same memoized load serves the album pages, so each album's index is requested once per build.
 const albums = await loadAlbums();
@@ -12,13 +14,87 @@ const number = (value: number) => value.toLocaleString('en-US');
 const EAGER_CARDS = 4;
 // The first album is shown larger only when there are enough neighbours to make a wall of it.
 const featured = albums.length >= 3;
+
+// One star per album, placed by the same geometry on every build. Its covers and the small pictures that hang off it are
+// real images from the album's own index.
+const bodies = layoutSky(albums.map((loaded) => loaded.index.range.count));
+const hanging = satellitesPerStar(albums.length);
+const stars = albums.flatMap((loaded, position) => {
+  const body = bodies[position];
+  const cover = coverFor(loaded);
+  if (!body || !cover) return [];
+  // The evenly spread pictures after the cover. Fewer than asked for when the album is short.
+  const extras: Thumbnail[] = stackFor(loaded, hanging + 1).slice(1);
+  return [{ loaded, position, body, cover, extras }];
+});
+const skyStyle = `--n:${albums.length};--field:${narrowFieldRem(albums.length)}rem;`;
+const starStyle = (position: number, size: number, wx: number, wy: number, nx: number, ny: number) =>
+  `--i:${position};--s:${size};--wx:${wx}%;--wy:${wy}%;--nx:${nx}%;--ny:${ny}%;`;
+const label = (loaded: LoadedAlbum) =>
+  `${loaded.album.title}, ${number(loaded.index.range.count)} ${loaded.index.range.count === 1 ? 'image' : 'images'}`;
 ---
 
 <BaseLayout>
-  <header class="wall-intro">
-    <h1>{SITE_NAME}</h1>
-    <div class="wall-intro-aside">
-      <p>{SITE_DESCRIPTION}</p>
+  <section class="sky" data-sky style={skyStyle} aria-labelledby="sky-title">
+    <canvas class="sky-canvas" data-sky-canvas aria-hidden="true"></canvas>
+    <div class="sky-copy">
+      <h1 id="sky-title">{SITE_NAME}</h1>
+      <p class="sky-lede">
+        The pictures behind HagiCode: cat avatars, hero portraits, splash scenes. Each one is rendered with img-gen, grouped
+        into an album, and opens with the prompt that made it.
+      </p>
+      <a class="sky-cta" href="#albums">
+        Browse the albums
+        <svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M8 3v10M3.5 8.5 8 13l4.5-4.5"></path>
+        </svg>
+      </a>
+    </div>
+    {
+      stars.length > 0 && (
+        <ul class="sky-field" data-sky-field>
+          {stars.map(({ loaded, position, body, cover, extras }) => (
+            <li
+              class="sky-node"
+              data-sky-node
+              style={starStyle(position, body.size, body.wideX, body.wideY, body.narrowX, body.narrowY)}
+            >
+              <a
+                class="sky-star"
+                href={`${import.meta.env.BASE_URL}albums/${loaded.album.slug}/`}
+                aria-label={label(loaded)}
+                data-sky-star
+              >
+                <span class="sky-cover" aria-hidden="true">
+                  <Thumb thumb={cover} class="sky-img" eager={position < 5} cached />
+                </span>
+                <span class="sky-label" aria-hidden="true">
+                  <strong>{loaded.album.title}</strong>
+                  <span class="sky-count">{number(loaded.index.range.count)} {loaded.index.range.count === 1 ? 'image' : 'images'}</span>
+                </span>
+              </a>
+              {extras.map((thumb, step) => {
+                const satellite = body.satellites[step];
+                return satellite ? (
+                  <span
+                    class="sky-sat"
+                    data-sky-sat
+                    aria-hidden="true"
+                    style={`--sx:${satellite.sx};--sy:${satellite.sy};--ss:${satellite.size};--k:${step};`}
+                  >
+                    <Thumb thumb={thumb} class="sky-img" />
+                  </span>
+                ) : null;
+              })}
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
+  <section class="wall" id="albums" aria-labelledby="albums-title">
+    <div class="wall-head">
+      <p class="wall-title" id="albums-title">Albums</p>
       {
         albums.length > 0 && (
           <p class="wall-tally">
@@ -29,21 +105,22 @@ const featured = albums.length >= 3;
         )
       }
     </div>
-  </header>
-  {
-    albums.length === 0 ? (
-      <p>No albums are published yet.</p>
-    ) : (
-      <ul class="album-wall" data-featured={featured ? '' : undefined} data-album-wall>
-        {albums.map((loaded, position) => (
-          <li class="min-w-0" style={`--i: ${position};`}>
-            <AlbumCard loaded={loaded} eager={position < EAGER_CARDS} />
-          </li>
-        ))}
-      </ul>
-    )
-  }
+    {
+      albums.length === 0 ? (
+        <p>No albums are published yet.</p>
+      ) : (
+        <ul class="album-wall" data-featured={featured ? '' : undefined} data-album-wall aria-labelledby="albums-title">
+          {albums.map((loaded, position) => (
+            <li class="min-w-0" style={`--i: ${position};`}>
+              <AlbumCard loaded={loaded} eager={position < EAGER_CARDS} />
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </section>
   <script>
     import '../scripts/gallery-client.ts';
+    import '../scripts/sky.ts';
   </script>
 </BaseLayout>
