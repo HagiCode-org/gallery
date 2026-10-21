@@ -1,0 +1,18 @@
+---
+import { SITE_NAME, SITE_URL } from '@/config/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title={`Page not found · ${SITE_NAME}`}
+  description="The address is not an album or a page of the gallery."
+  canonical={`${SITE_URL}/404.html`}
+>
+  <div class="space-y-4">
+    <h1>Page not found</h1>
+    <p>This address is not an album or a page of the gallery. An album that is not published has no page.</p>
+    <p>
+      <a href={import.meta.env.BASE_URL}>Back to the albums</a>
+    </p>
+  </div>
+</BaseLayout>

@@ -1,0 +1,56 @@
+---
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { coverFor, type LoadedAlbum } from '@/lib/gallery/albums';
+
+interface Props {
+  loaded: LoadedAlbum;
+}
+
+const { loaded } = Astro.props;
+const cover = coverFor(loaded);
+const count = loaded.index.range.count;
+const href = `${import.meta.env.BASE_URL}albums/${loaded.album.slug}/`;
+---
+
+<Card className="min-w-0 gap-3 py-3">
+  <CardHeader className="gap-2">
+    <CardTitle>
+      <h2 class="text-base font-semibold leading-snug">
+        <a href={href} class="text-foreground no-underline hover:underline">{loaded.album.title}</a>
+      </h2>
+    </CardTitle>
+    <CardDescription>{loaded.album.description}</CardDescription>
+  </CardHeader>
+  <CardContent className="space-y-3">
+    {
+      cover?.kind === 'sheet' && (
+        <span
+          class="gallery-thumb gallery-cover"
+          style={`background-image: url("${cover.url}"); background-size: ${cover.size}; background-position: ${cover.position};`}
+          data-sheet-url={cover.url}
+          data-sheet-bytes={cover.bytes}
+          aria-hidden="true"
+        />
+      )
+    }
+    {
+      cover?.kind === 'image' && (
+        <img
+          class="gallery-thumb gallery-cover"
+          src={cover.url}
+          width={cover.width}
+          height={cover.height}
+          loading="lazy"
+          decoding="async"
+          alt=""
+          data-gallery-image
+          data-bytes={cover.bytes}
+        />
+      )
+    }
+    <div class="flex flex-wrap items-center gap-2">
+      <Badge variant="secondary">{`${count} ${count === 1 ? 'image' : 'images'}`}</Badge>
+    </div>
+  </CardContent>
+</Card>

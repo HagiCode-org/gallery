@@ -1,0 +1,36 @@
+---
+import ImageDialog from '@/components/gallery/ImageDialog.astro';
+import ImageGrid from '@/components/gallery/ImageGrid.astro';
+import { SITE_NAME } from '@/config/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { loadAlbums, type LoadedAlbum } from '@/lib/gallery/albums';
+
+// One page per album that is published. An album without an index has no path, so it has no page.
+export async function getStaticPaths() {
+  const albums = await loadAlbums();
+  return albums.map((loaded) => ({ params: { album: loaded.album.slug }, props: { loaded } }));
+}
+
+interface Props {
+  loaded: LoadedAlbum;
+}
+
+const { loaded } = Astro.props;
+const count = loaded.index.range.count;
+const backHref = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title={`${loaded.album.title} · ${SITE_NAME}`} description={loaded.album.description}>
+  <div class="space-y-6">
+    <p>
+      <a href={backHref} class="text-sm">All albums</a>
+    </p>
+    <header class="space-y-2">
+      <h1>{loaded.album.title}</h1>
+      <p>{loaded.album.description}</p>
+      <p class="text-sm">{count} {count === 1 ? 'image' : 'images'}</p>
+    </header>
+    {count > 0 && <ImageGrid loaded={loaded} />}
+    <ImageDialog />
+  </div>
+</BaseLayout>

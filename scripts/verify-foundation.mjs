@@ -156,9 +156,12 @@ for (const file of htmlFiles) {
     expect(distFileFor(url) !== null, `${page} links to a target missing from dist/: ${decoded}`);
   }
 
-  // shadcn content: the seed components render with their markers, and the stylesheet defines the tokens they use.
+  // One top-level heading per page: the site name on the home page, the album title on an album page.
+  expect((html.match(/<h1\b/giu) ?? []).length === 1, `${page} must contain exactly one <h1>`);
+
+  // shadcn content: the stylesheet defines the tokens the seed components use. The home page is checked because every
+  // page links the same stylesheet. The seed cards appear only when albums are published, so no marker is required.
   if (page === 'dist/index.html') {
-    expect(html.includes('data-slot="card"'), 'dist/index.html must render the shadcn card marker data-slot="card"');
     const stylesheetFile = linkTags
       .filter((tag) => /\brel="stylesheet"/u.test(tag))
       .map((tag) => siteUrl(decodeAttr(attr(tag, 'href') ?? '')))
@@ -170,6 +173,33 @@ for (const file of htmlFiles) {
       expect(css.includes(`--${token}:`), `linked stylesheet is missing the shadcn token --${token}`);
     }
     expect(css.includes('.bg-card{'), 'linked stylesheet is missing the bg-card utility');
+  }
+}
+
+// Album pages: each one renders its grid with the data the client script reads, and the image dialog. Every album link
+// on the home page must resolve to a built album page. Album pages are built only for albums the index published.
+const albumPages = htmlFiles.filter((file) => relative(dist, file).split(sep).join('/').startsWith('albums/'));
+const homeFile = join(dist, 'index.html');
+if (fileExists(homeFile)) {
+  const homeLinks = [...readFileSync(homeFile, 'utf8').matchAll(/<a\b[^>]*\shref="(\/albums\/[^"]*)"/giu)].map((match) => decodeAttr(match[1]));
+  for (const href of homeLinks) {
+    const url = siteUrl(href);
+    expect(url !== null && distFileFor(url) !== null, `dist/index.html links to an album page missing from dist/: ${href}`);
+  }
+  expect(homeLinks.length === albumPages.length, `dist/index.html links ${homeLinks.length} albums but dist/albums/ has ${albumPages.length} pages`);
+}
+for (const file of albumPages) {
+  const page = `dist/${relative(dist, file).split(sep).join('/')}`;
+  const html = readFileSync(file, 'utf8');
+  const items = html.match(/<a\b[^>]*class="gallery-item"[^>]*>/giu) ?? [];
+  // An album whose index lists no image shows its count and no grid.
+  expect(
+    items.length === 0 ? /\b0 images\b/u.test(html) : html.includes('data-gallery-grid'),
+    `${page} must render the image grid, or the zero-image count when it lists no image`,
+  );
+  expect(html.includes('data-gallery-dialog'), `${page} must render the image dialog`);
+  for (const item of items) {
+    expect(/\sdata-key="[^"]+"/u.test(item) && /\saria-label="[^"]+"/u.test(item), `${page} grid item lacks data-key or an accessible name: ${item}`);
   }
 }
 

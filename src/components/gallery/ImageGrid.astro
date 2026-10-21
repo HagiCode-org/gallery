@@ -1,0 +1,73 @@
+---
+import { thumbnailFor, type LoadedAlbum } from '@/lib/gallery/albums';
+import { objectUrl } from '@/lib/gallery/source';
+
+interface Props {
+  loaded: LoadedAlbum;
+}
+
+const { loaded } = Astro.props;
+
+// Each item links to the full image, so the grid works without JavaScript. gallery-client.ts reads the data-* values
+// to open the dialog and to upgrade thumbnails to cached copies. Index order is the order of the items.
+const items = loaded.index.entries.map((entry, position) => {
+  const thumbnail = thumbnailFor(loaded.index, entry);
+  return {
+    key: entry.key,
+    position,
+    href: objectUrl(entry.objectKey),
+    bytes: entry.bytes,
+    width: entry.width,
+    height: entry.height,
+    metadataUrl: entry.metadata ? objectUrl(entry.metadata.objectKey) : undefined,
+    thumbnail,
+  };
+});
+---
+
+<ul class="gallery-grid list-none p-0" data-gallery-grid>
+  {
+    items.map((item) => (
+      <li class="min-w-0">
+        <a
+          class="gallery-item"
+          href={item.href}
+          data-key={item.key}
+          data-index={item.position}
+          data-bytes={item.bytes}
+          data-width={item.width}
+          data-height={item.height}
+          data-metadata={item.metadataUrl}
+          aria-label={`${item.key} – ${loaded.album.title}`}
+        >
+          {item.thumbnail.kind === 'sheet' ? (
+            <span
+              class="gallery-thumb"
+              style={`background-image: url("${item.thumbnail.url}"); background-size: ${item.thumbnail.size}; background-position: ${item.thumbnail.position};`}
+              data-sheet-url={item.thumbnail.url}
+              data-sheet-bytes={item.thumbnail.bytes}
+              aria-hidden="true"
+            />
+          ) : (
+            <img
+              class="gallery-thumb"
+              src={item.thumbnail.url}
+              width={item.thumbnail.width}
+              height={item.thumbnail.height}
+              loading="lazy"
+              decoding="async"
+              alt=""
+              data-gallery-image
+              data-bytes={item.thumbnail.bytes}
+            />
+          )}
+          <span class="gallery-key">{item.key}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<script>
+  import '../../scripts/gallery-client.ts';
+</script>

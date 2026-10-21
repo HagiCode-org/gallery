@@ -10,9 +10,17 @@ interface Props {
   title?: string;
   description?: string;
   locale?: Locale;
+  // Absolute URL for the canonical link. Left unset, Hagilight uses the request path, which is right for every page
+  // except one that Astro writes to a file name, such as 404.astro.
+  canonical?: string;
 }
 
-const { title = SITE_NAME, description = SITE_DESCRIPTION, locale = DEFAULT_LOCALE } = Astro.props;
+const {
+  title = SITE_NAME,
+  description = SITE_DESCRIPTION,
+  locale = DEFAULT_LOCALE,
+  canonical,
+} = Astro.props;
 
 // hagilightFavicon() only edits Astro's config head, which this layout does not render. The shared
 // icon is therefore supplied here, through SEOHead, so the page links it.
@@ -26,7 +34,7 @@ const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
     <title>{title}</title>
     <SEOHead
       site={Astro.site}
-      page={{ title, description }}
+      page={{ title, description, url: canonical }}
       head={faviconEntry ? [faviconEntry] : []}
       siteSeo={{ title: SITE_NAME, description: SITE_DESCRIPTION }}
     />
