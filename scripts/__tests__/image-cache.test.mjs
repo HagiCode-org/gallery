@@ -145,7 +145,7 @@ describe('image cache (task 3.1)', () => {
     assert.equal(await storeCached(URL_ONE, 4, { storage: full, fetch: async () => new Response('abcd') }), false);
   });
 
-  it('sends the download without credentials and with no custom header', async () => {
+  it('sends the download without credentials, past the HTTP cache, and with no custom header', async () => {
     const seen = [];
     const { storage } = fakeStorage();
     await storeCached(URL_ONE, 4, {
@@ -155,7 +155,7 @@ describe('image cache (task 3.1)', () => {
         return new Response('abcd');
       },
     });
-    assert.deepEqual(seen, [{ url: URL_ONE, init: { credentials: 'omit' } }]);
+    assert.deepEqual(seen, [{ url: URL_ONE, init: { credentials: 'omit', cache: 'reload' } }]);
   });
 
   it('keys each entry by the full public URL', async () => {

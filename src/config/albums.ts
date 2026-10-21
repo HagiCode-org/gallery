@@ -5,6 +5,9 @@
 // - 2026-10-21, before the Cloudflare CORS rule `https://*.hagicode.com`: no Access-Control-Allow-Origin on the
 //   objects, an OPTIONS preflight returned 403, so fetch() from this origin was refused. Cache API writes failed
 //   silently and metadata could not be read. Plain <img> and CSS background loads were not affected.
+// - A plain <img> sends no Origin, so R2 answers without Access-Control-Allow-Origin and the browser keeps that answer
+//   in its HTTP cache; a later fetch() reuses it and is blocked. The image download in image-cache/cache.ts therefore
+//   uses cache: 'reload', which skips the browser's HTTP cache and asks the network with an Origin.
 // - 2026-10-21, after the rule: the preflight returns 204 with Access-Control-Allow-Origin for the gallery origin, and
 //   fresh image and metadata responses carry it. A foreign origin gets no header. An object cached at the edge before
 //   the rule can keep answering without the header until it expires (max-age 86400), so purge it if it matters.
