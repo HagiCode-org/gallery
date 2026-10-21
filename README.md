@@ -72,7 +72,8 @@ is used. The constants are in `src/lib/image-cache/cache.ts`.
 - **Read budget.** A read that is not done within 150 ms, a read that fails, and a browser without the Cache API are
   all misses. A miss leaves the plain image URL in place, so the cache never hides an image.
 - **Deferred writes.** A missed object is downloaded only after the page's `load` event and an idle period, four at
-  a time, with `credentials: 'omit'`. Only a successful response whose size matches the index is stored. Other
+  a time, with `credentials: 'omit'` and `cache: 'reload'` (a plain `<img>` load leaves a copy without CORS headers
+  in the browser's HTTP cache, which a normal `fetch` would reuse and be blocked by). Only a successful response whose size matches the index is stored. Other
   outcomes leave the cache unchanged and raise no error.
 - **Pruning.** Once per page load, every cache whose name starts with `hagicode-gallery-` and is not a current name is
   deleted. Caches of other applications on the origin are kept.
