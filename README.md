@@ -75,24 +75,52 @@ is used. The constants are in `src/lib/image-cache/cache.ts`.
 - **Metadata.** A cached copy is shown at once and refreshed in the background. The copy is replaced only by a valid
   version 1 body.
 - **CORS requirement.** Storing a copy means the browser fetches it, so `img-gen.hagicode.com` must send
-  `Access-Control-Allow-Origin` for `https://gallery.hagicode.com`. On 2026-10-21 it did not, so until the R2 CORS
-  rule changes, writes fail silently and the image dialog shows its "could not be loaded" notice for metadata. Images
-  still display from their own URLs. The probe is recorded at the top of `src/config/albums.ts`.
+  `Access-Control-Allow-Origin` for `https://gallery.hagicode.com`. The Cloudflare rule `https://*.hagicode.com` provides
+  this (set 2026-10-21). If the rule is removed, writes fail silently and the image dialog shows its "could not be
+  loaded" notice for metadata, while images still display from their own URLs. The probe is recorded at the top of
+  `src/config/albums.ts`.
 
 ## Client script
 
 `src/scripts/gallery-client.ts` is a plain module loaded by `ImageGrid.astro` and `index.astro`. It is not an island:
-it has no `client:*` directive and no hydration script. It does four things:
+it has no `client:*` directive and no hydration script. It upgrades sprite sheets and visible lazy images to cached
+copies (queueing misses for deferred storage) and starts two modules:
 
-- upgrades sprite sheets and visible lazy images to cached copies, and queues misses for deferred storage;
-- opens the native `<dialog>` for an unmodified click on a thumbnail, shows the image and its index facts, and loads
-  the metadata only at that moment;
-- moves between images with the previous and next controls and the arrow keys, and returns focus to the thumbnail on
-  close;
-- keeps the URL fragment `#<key>` in step: opening pushes it, moving replaces it, closing removes it, and Back closes the
-  dialog. A known fragment on load opens its image, and an unknown one is ignored.
+- `src/scripts/grid-motion.ts`: the pointer spotlight, the develop-on-load fade of thumbnails (tied to the real image load, so it costs nothing on a
+  long album), the
+  S / M / L thumbnail-size control (remembered in `localStorage`, keeping the middle of the screen in place) and the
+  `001 – 016 / 720` range readout in the album bar;
+- `src/scripts/viewer.ts`: the image viewer, described below.
 
-Prompt text is written with `textContent`, never as markup.
+Every part is an enhancement over markup that already works, and steps aside for `prefers-reduced-motion` or a missing
+browser feature.
+
+### The viewer
+
+A click on a thumbnail opens the native `<dialog>` as a full-screen viewer; without script the thumbnail still links to
+the image file.
+
+- **Morph.** Where View Transitions exist, the clicked thumbnail travels into the picture and back on close (Escape, the
+  close button, a swipe down and Back all take the same road). Without them the viewer fades in.
+- **Ambient light.** The picture on show, blurred and dimmed, fills the room behind it and cross-fades between images.
+- **Zoom and pan.** Wheel or trackpad pinch zooms around the cursor, `+` `-` `0` and the zoom button step it, double
+  click or double tap toggles 2.5x, a drag pans, and two fingers pinch. The geometry is pure and tested in
+  `src/lib/viewer/transform.ts`.
+- **Swipe.** At rest scale a one-finger drag sideways moves one image (the picture follows the finger), and a drag down
+  closes. Arrow keys, Home, End and the previous and next buttons do the same.
+- **Details.** The `i` key or the info button opens a side panel (a bottom sheet on a narrow screen) with the key, pixel
+  and byte size, both prompts with copy buttons, the seed and the generation time. The metadata is still requested only
+  when the viewer opens. The panel state is remembered.
+- **Fragment.** The URL fragment `#<key>` stays in step: opening pushes it, moving replaces it, closing removes it, and
+  Back closes the viewer. A known fragment on load opens its image, and an unknown one is ignored.
+- **Focus.** Closing returns focus to the thumbnail of the image that was last on show, which is where the page has
+  scrolled to.
+
+The next and previous pictures are fetched ahead as plain images, so an arrow key never waits on the network. Prompt
+text is written with `textContent`, never as markup.
+
+Between pages, `@view-transition { navigation: auto }` morphs an album's cover from the home page into the album
+header and back. That is CSS only, and browsers without cross-document View Transitions navigate normally.
 
 ## Hagilight pinning and upgrades
 
@@ -117,15 +145,22 @@ package import, which the foundation test rejects. Then run `npm test` and `npm 
 
 ## Design rules
 
-The gallery inherits the visual rules of the fullstack site until it has its own design document:
-
-- One blue for links, actions and focus.
-- Colour comes from tokens only. Components contain no hex, `oklch` or `rgb` literals.
-- No box shadows. Surfaces are separated by a ring (`ring-1 ring-foreground/10`) or a border.
-- A native system font stack. No web font is loaded.
-- One `h1` per page. The site name in the top bar is a link, not a heading.
-- Lucide icons at 16 px, hidden from assistive technology when decorative.
-- Primary actions are full width below the `sm` breakpoint.
+- One blue for links, actions and focus. Colour comes from the shadcn tokens; `gallery.css` adds a palette only for the
+  viewer, because a picture is judged in a dark room whatever the page theme is.
+- Seed components in `src/components/ui/` apply no box shadow. In `gallery.css` a shadow marks only a lifted picture (a
+  hovered thumbnail, the album stack, the album cover, the viewer's picture), always with an offset and a blur.
+- The pictures lead. The page chrome is quiet: no cards around thumbnails, keys on a scrim over the picture, one `h1` per
+  page (the site name in the top bar is a link, not a heading).
+- Motion has one authored moment per surface: the wall rising on the home page, the thumbnail morphing into the viewer.
+  Everything else is a short transition. Curves are `--ease-out` and `--spring` in `global.css`.
+- A native system font stack. No web font is loaded; `scripts/__tests__/shadcn-foundation.test.mjs` enforces it.
+- Scroll-driven animations are written as longhands (`animation-name`, `animation-timeline`, ...). The minifier folds a
+  complete `animation` shorthand into one declaration that some browsers drop, which silently removes the effect;
+  `scripts/verify-foundation.mjs` checks the built CSS for it.
+- Hover effects sit behind `(hover: hover) and (pointer: fine)`; reduced motion switches every animation and transition
+  off.
+- Lucide icons at 16 px in the shadcn components, and one authored 24-unit, 1.75-stroke icon set in the viewer, hidden from
+  assistive technology when decorative.
 - `min-w-0` on flex and grid children, so long labels wrap at 360 px.
 
 The theme follows `prefers-color-scheme`. There is no theme toggle.
@@ -140,12 +175,16 @@ src/layouts/BaseLayout.astro  the one <head> (SEOHead with favicon) and the one 
 src/config/albums.ts        image base URL and the album list (the one definition of both)
 src/pages/index.astro       home page: album cards or the empty state
 src/pages/albums/[album].astro  one static page per published album
-src/components/gallery/     AlbumCard, ImageGrid (grid and script) and ImageDialog (native dialog shell)
+src/components/gallery/     AlbumCard (fanned stack), Thumb, ImageGrid and ImageDialog (the viewer's markup)
 src/components/ui/          shadcn components (added by the CLI only)
 src/lib/gallery/            build time: index schema, index fetch with retries, album loader, thumbnail geometry
 src/lib/image-cache/        browser: Cache API helpers and the metadata loader (imports nothing from Astro)
-src/scripts/gallery-client.ts  the one plain client module (cache upgrades, dialog, fragment)
-src/styles/global.css       Tailwind, shadcn tokens for light and dark, base layer, gallery components
+src/lib/viewer/transform.ts browser, pure: zoom, pan, pinch and swipe geometry
+src/scripts/gallery-client.ts  the one plain client module (cache upgrades; starts the two below)
+src/scripts/grid-motion.ts  spotlight, develop-on-load fade, thumbnail size, range readout
+src/scripts/viewer.ts       the image viewer (morph, zoom, swipe, details panel, fragment)
+src/styles/global.css       Tailwind, shadcn tokens for light and dark, base layer, motion curves
+src/styles/gallery.css      the album wall, the album page and the viewer
 src/lib/utils.ts            cn() helper
 scripts/verify-foundation.mjs      post-build checks on dist/
 scripts/assemble-gh-pages-payload.mjs   stages the gh-pages payload
