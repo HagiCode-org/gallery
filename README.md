@@ -95,6 +95,14 @@ copies (queueing misses for deferred storage) and starts two modules:
 Every part is an enhancement over markup that already works, and steps aside for `prefers-reduced-motion` or a missing
 browser feature.
 
+`src/scripts/sky.ts` is a second plain module, loaded by `index.astro` only. It animates the home page's hero, a night sky
+with one star per album. The build places each star (`src/lib/gallery/constellation.ts`, pure geometry, same result on
+every build) and the page is complete without script: every star is a link to its album, with the covers and the small
+pictures around it taken from the album's own index. With script, the stars drift and lean toward a fine pointer, a
+canvas draws the lines between neighbouring albums, and the album in play (hover or keyboard focus) lights its lines and
+sends a pulse along them. Frames run only while the sky is on screen and the tab is visible. With
+`prefers-reduced-motion` nothing moves; the canvas is drawn once and again when an album is lit.
+
 ### The viewer
 
 A click on a thumbnail opens the native `<dialog>` as a full-screen viewer; without script the thumbnail still links to
@@ -173,18 +181,20 @@ components.json             shadcn CLI configuration
 src/config/site.ts          site name, description, URL, locales (single source)
 src/layouts/BaseLayout.astro  the one <head> (SEOHead with favicon) and the one Footer
 src/config/albums.ts        image base URL and the album list (the one definition of both)
-src/pages/index.astro       home page: album cards or the empty state
+src/pages/index.astro       home page: the sky hero (one star per album), then album cards or the empty state
 src/pages/albums/[album].astro  one static page per published album
 src/components/gallery/     AlbumCard (fanned stack), Thumb, ImageGrid and ImageDialog (the viewer's markup)
 src/components/ui/          shadcn components (added by the CLI only)
-src/lib/gallery/            build time: index schema, index fetch with retries, album loader, thumbnail geometry
+src/lib/gallery/            build time: index schema, index fetch with retries, album loader, thumbnail geometry, sky layout
 src/lib/image-cache/        browser: Cache API helpers and the metadata loader (imports nothing from Astro)
 src/lib/viewer/transform.ts browser, pure: zoom, pan, pinch and swipe geometry
 src/scripts/gallery-client.ts  the one plain client module (cache upgrades; starts the two below)
 src/scripts/grid-motion.ts  spotlight, develop-on-load fade, thumbnail size, range readout
 src/scripts/viewer.ts       the image viewer (morph, zoom, swipe, details panel, fragment)
+src/scripts/sky.ts          the home hero: drift, pointer lean, constellation canvas, lit-album pulse
 src/styles/global.css       Tailwind, shadcn tokens for light and dark, base layer, motion curves
 src/styles/gallery.css      the album wall, the album page and the viewer
+src/styles/sky.css          the home hero and the album list's heading row
 src/lib/utils.ts            cn() helper
 scripts/verify-foundation.mjs      post-build checks on dist/
 scripts/assemble-gh-pages-payload.mjs   stages the gh-pages payload
