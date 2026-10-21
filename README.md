@@ -19,6 +19,8 @@ Run every command from the repository root.
 | `npm run dev` | Start the development server on all interfaces |
 | `npm run build` | Build the static site into `dist/` |
 | `npm run preview` | Serve the built `dist/` locally |
+| `npm run i18n:check` | Audit the YAML locale files with hagi18n (`audit` and `doctor`) |
+| `npm run i18n:generate` | Generate `src/i18n/generated/` from the YAML (the other scripts run it for you) |
 | `npm run check` | Run `astro check` and the TypeScript type check |
 | `npm test` | Run the `node --test` suites in `scripts/__tests__/` |
 | `npm run verify` | Build, then run `scripts/verify-foundation.mjs` against `dist/` |
@@ -34,14 +36,16 @@ Run every command from the repository root.
   `robots.txt`, RSS, `llms.txt` and site metadata.
 
 No island ships. Components do not use a `client:*` directive, and no page contains `astro-island` or `hydrat`, so the
-pages are static HTML. The one client script is the plain module described under [Client script](#client-script). Every
-thumbnail is a link to its image file, so the album pages work with JavaScript disabled.
+pages are static HTML. The client scripts are plain modules: the header's theme and language controls
+(`src/scripts/site-controls.ts`, see [Languages and theme](#languages-and-theme)) and the album script described under
+[Client script](#client-script). Every thumbnail is a link to its image file, so the album pages work with JavaScript
+disabled.
 
 ## Albums and data source
 
 An album is one published R2 prefix of `img-gen`. The albums are listed in `src/config/albums.ts`, together with
 `IMAGE_BASE_URL` (`https://img-gen.hagicode.com`), which is the only place the public host and a prefix appear. Each
-album has a URL slug, an R2 prefix, a title and a description. Slugs and prefixes are unique, and the configuration
+album has a URL slug and an R2 prefix; its name and description are per-language text in `albums.yml` (see [Languages and theme](#languages-and-theme)). Slugs and prefixes are unique, and the configuration
 check fails on a duplicate. Adding an album before its first publish is safe: it is omitted until its index exists.
 
 Each build requests `<base>/<prefix>/index.json` once per album and shares the result between the home page and the
@@ -79,6 +83,37 @@ is used. The constants are in `src/lib/image-cache/cache.ts`.
   this (set 2026-10-21). If the rule is removed, writes fail silently and the image dialog shows its "could not be
   loaded" notice for metadata, while images still display from their own URLs. The probe is recorded at the top of
   `src/config/albums.ts`.
+
+## Languages and theme
+
+The site ships in the ten languages Hagilight's footer knows: `en-US` (default, at the root), `zh-CN`, `zh-Hant`,
+`ja-JP`, `ko-KR`, `de-DE`, `fr-FR`, `es-ES`, `pt-BR` and `ru-RU`. The list is `SUPPORTED_LOCALES` in `src/config/site.ts`
+and the Astro `i18n` block reads it. Every other language lives under `/<locale>/`, for example `/ja-JP/albums/hero-avatars/`,
+so a build holds ten copies of the home page and of each published album page.
+
+- **Strings.** The source is YAML: `src/i18n/locales/<locale>/ui.yml` (interface text) and `albums.yml` (album names and
+  descriptions, keyed by album slug), maintained with [`@hagicode/hagi18n`](../hagi18n) through `hagi18n.yaml`.
+  `scripts/generate-i18n-resources.mjs` turns them into JSON under `src/i18n/generated/` (git-ignored), which the site
+  imports; `dev`, `build`, `check` and `test` run it first. The viewer script's strings travel on the dialog as
+  `data-messages` JSON, written at build time. Counts use the language's CLDR plural forms through `Intl.PluralRules`, so
+  every catalog defines `one`, `few`, `many` and `other` (a language that does not tell them apart repeats the text) with
+  a `{{n}}` placeholder.
+- **Adding or changing text.** Edit `en-US` first, then run `npm run i18n:sync` to see what the other nine are missing
+  (`i18n:sync:write` fills them with English copies, which must then be translated). Adding an album means one entry in
+  `src/config/albums.ts` and one per language in `albums.yml`; `scripts/__tests__/i18n.test.mjs` fails until they match.
+- **Checking.** `npm run i18n:check` runs `hagi18n audit` and `doctor` (missing or extra keys, placeholder mismatches,
+  values identical to English). Values that are meant to match English (loanwords such as "Album", the byte unit) are
+  listed in `auditIdenticalAllowlist` in `hagi18n.yaml`. The published hagi18n 0.2.0 reads that list without applying it,
+  so `scripts/i18n-audit.mjs` applies it and fails on anything else; CI runs the check before the type check.
+- **Language menu.** A `<details>` list of plain links in the header. Each link points at the same page in another
+  language, so it works without JavaScript. Pages carry `hreflang` alternates (with `x-default`) and `og:locale`; the
+  footer, sitemap and per-language RSS feeds come from Hagilight.
+- **404.** `404.html` is one file for every missing address, so it renders the notice in all ten languages and a small
+  script shows the one the address carries (`/ko-KR/missing/` shows Korean). The footer on that page stays English.
+- **Theme.** Three choices in the header: system, light, dark. Light and dark set `data-theme` on `<html>` and store the
+  choice under `starlight-theme`, the key the other HagiCode sites use; system removes both and the
+  `prefers-color-scheme` rules decide. An inline script in the head applies the stored choice before first paint, and a
+  change in another tab is followed through the `storage` event. The toggle is hidden until its script runs.
 
 ## Client script
 
@@ -176,26 +211,38 @@ The theme follows `prefers-color-scheme`. There is no theme toggle.
 ## Project layout
 
 ```text
-astro.config.mjs            site URL, one-locale i18n, React, Tailwind, Hagilight integrations
+astro.config.mjs            site URL, ten-locale i18n, React, Tailwind, Hagilight integrations
 components.json             shadcn CLI configuration
 src/config/site.ts          site name, description, URL, locales (single source)
 src/layouts/BaseLayout.astro  the one <head> (SEOHead with favicon) and the one Footer
 src/config/albums.ts        image base URL and the album list (the one definition of both)
-src/pages/index.astro       home page: the sky hero (one star per album), then album cards or the empty state
-src/pages/albums/[album].astro  one static page per published album
+src/pages/index.astro       English home page; src/pages/[locale]/ holds the other nine languages' routes
+src/pages/albums/[album].astro  one static page per published album (English)
+src/components/pages/       HomePage (the sky hero, then album cards or the empty state) and AlbumPage, shared by all routes
+src/components/site/        header: SiteHeader, LanguageMenu, ThemeToggle
+src/i18n/locales.ts         locale helpers (paths, plural counts, labels)
+src/i18n/messages/          the message type and the loader of the generated catalogs
+src/i18n/albums.ts          loader of the per-language album text
+src/i18n/locales/           YAML sources per language: ui.yml and albums.yml (hagi18n)
+src/i18n/generated/         JSON built from the YAML (git-ignored)
+hagi18n.yaml                hagi18n configuration for the locale tree
 src/components/gallery/     AlbumCard (fanned stack), Thumb, ImageGrid and ImageDialog (the viewer's markup)
 src/components/ui/          shadcn components (added by the CLI only)
 src/lib/gallery/            build time: index schema, index fetch with retries, album loader, thumbnail geometry, sky layout
 src/lib/image-cache/        browser: Cache API helpers and the metadata loader (imports nothing from Astro)
 src/lib/viewer/transform.ts browser, pure: zoom, pan, pinch and swipe geometry
-src/scripts/gallery-client.ts  the one plain client module (cache upgrades; starts the two below)
+src/scripts/site-controls.ts   header: theme choice and language menu
+src/scripts/gallery-client.ts  the plain client module for album pages (cache upgrades; starts the two below)
 src/scripts/grid-motion.ts  spotlight, develop-on-load fade, thumbnail size, range readout
 src/scripts/viewer.ts       the image viewer (morph, zoom, swipe, details panel, fragment)
 src/scripts/sky.ts          the home hero: drift, pointer lean, constellation canvas, lit-album pulse
 src/styles/global.css       Tailwind, shadcn tokens for light and dark, base layer, motion curves
 src/styles/gallery.css      the album wall, the album page and the viewer
 src/styles/sky.css          the home hero and the album list's heading row
+src/lib/theme.ts            theme choice and its storage key
 src/lib/utils.ts            cn() helper
+scripts/generate-i18n-resources.mjs   YAML locale tree to JSON
+scripts/i18n-audit.mjs      hagi18n audit and doctor with the identical-value allowlist applied
 scripts/verify-foundation.mjs      post-build checks on dist/
 scripts/assemble-gh-pages-payload.mjs   stages the gh-pages payload
 scripts/warm-deployment-domains.mjs     bounded-retry warmup of the live domains
