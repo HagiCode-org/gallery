@@ -3,6 +3,7 @@ import { defineConfig } from 'astro/config';
 import react from '@astrojs/react';
 import { hagilight, hagilightFavicon } from '@hagicode/hagilight/integration';
 import tailwindcss from '@tailwindcss/vite';
+import { IMAGE_BASE_URL } from './src/config/albums.ts';
 import { DEFAULT_LOCALE, SITE_URL, SUPPORTED_LOCALES } from './src/config/site.ts';
 
 // https://astro.build/config
@@ -16,6 +17,10 @@ export default defineConfig({
         routing: {
             prefixDefaultLocale: false,
         },
+    },
+    // Link previews re-encode an album's first image, which lives on the image host, so Astro must be allowed to fetch it.
+    image: {
+        domains: [new URL(IMAGE_BASE_URL).hostname],
     },
     vite: {
         plugins: [tailwindcss()],
