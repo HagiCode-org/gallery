@@ -8,6 +8,8 @@ import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { backgroundStyle, coverFor, dominantAspect, type LoadedAlbum } from '@/lib/gallery/albums';
+import { ogImageFor } from '@/lib/gallery/ogImage';
+import { albumMetaDescription, albumStructuredData } from '@/lib/seo';
 
 interface Props {
   loaded: LoadedAlbum;
@@ -22,13 +24,24 @@ const backHref = localePath(locale, '/');
 const cover = coverFor(loaded);
 const ratio = dominantAspect(loaded.index);
 const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
+const metaDescription = albumMetaDescription(text.description, formatCount(locale, messages.images, count));
+const structuredData = albumStructuredData({
+  locale,
+  slug: loaded.album.slug,
+  title: text.title,
+  description: metaDescription,
+  index: loaded.index,
+  homeLabel: SITE_NAME,
+});
 ---
 
 <BaseLayout
   title={`${text.title} · ${SITE_NAME}`}
-  description={text.description}
+  description={metaDescription}
   locale={locale}
   pagePath={`/albums/${loaded.album.slug}/`}
+  image={await ogImageFor(loaded)}
+  structuredData={structuredData}
 >
   <div class="album-page" style={`--ratio: ${ratio}; --ratio-n: ${(ratioWidth / ratioHeight).toFixed(4)};`}>
     {cover && <div class="album-bleed" aria-hidden="true" style={backgroundStyle(cover)} />}
@@ -55,7 +68,7 @@ const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
       {
         cover && (
           <div class="album-hero-art" aria-hidden="true">
-            <Thumb thumb={cover} class="album-hero-image" eager cached style={`view-transition-name: cover-${loaded.album.slug};`} />
+            <Thumb thumb={cover} class="album-hero-image" eager cached alt={text.title} style={`view-transition-name: cover-${loaded.album.slug};`} />
           </div>
         )
       }

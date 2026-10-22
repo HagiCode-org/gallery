@@ -6,6 +6,8 @@ import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
 import { coverFor, loadAlbums, stackFor, type LoadedAlbum, type Thumbnail } from '@/lib/gallery/albums';
+import { ogImageFor } from '@/lib/gallery/ogImage';
+import { homeStructuredData } from '@/lib/seo';
 import { layoutSky, narrowFieldRem, satellitesPerStar } from '@/lib/gallery/constellation';
 import { DEFAULT_LOCALE, SITE_NAME, type Locale } from '@/config/site';
 
@@ -37,6 +39,12 @@ const stars = albums.flatMap((loaded, position) => {
   const extras: Thumbnail[] = stackFor(loaded, hanging + 1).slice(1);
   return [{ loaded, position, body, cover, extras }];
 });
+const [firstAlbum] = albums;
+const structuredData = homeStructuredData(
+  locale,
+  messages.siteDescription,
+  albums.map((loaded) => ({ slug: loaded.album.slug, title: albumText(loaded.album, locale).title })),
+);
 const skyStyle = `--n:${albums.length};--field:${narrowFieldRem(albums.length)}rem;`;
 const starStyle = (position: number, size: number, wx: number, wy: number, nx: number, ny: number) =>
   `--i:${position};--s:${size};--wx:${wx}%;--wy:${wy}%;--nx:${nx}%;--ny:${ny}%;`;
@@ -44,7 +52,12 @@ const label = (loaded: LoadedAlbum) => `${albumText(loaded.album, locale).title}
 const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.album.slug}/`);
 ---
 
-<BaseLayout locale={locale} pagePath="/">
+<BaseLayout
+  locale={locale}
+  pagePath="/"
+  image={firstAlbum ? await ogImageFor(firstAlbum) : undefined}
+  structuredData={structuredData}
+>
   <section class="sky" data-sky style={skyStyle} aria-labelledby="sky-title">
     <canvas class="sky-canvas" data-sky-canvas aria-hidden="true"></canvas>
     <div class="sky-copy">
@@ -75,7 +88,7 @@ const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.
                 data-sky-star
               >
                 <span class="sky-cover" aria-hidden="true">
-                  <Thumb thumb={cover} class="sky-img" eager={position < 5} cached />
+                  <Thumb thumb={cover} class="sky-img" eager={position < 5} cached alt={albumText(loaded.album, locale).title} />
                 </span>
                 <span class="sky-label" aria-hidden="true">
                   <strong>{albumText(loaded.album, locale).title}</strong>

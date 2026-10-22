@@ -10,9 +10,11 @@ interface Props {
   cached?: boolean;
   // Extra inline style, appended after the sheet geometry.
   style?: string;
+  // What the picture shows. Empty for decoration that a nearby label already names.
+  alt?: string;
 }
 
-const { thumb, class: className, eager = false, cached = false, style = '' } = Astro.props;
+const { thumb, class: className, eager = false, cached = false, style = '', alt = '' } = Astro.props;
 const inlineStyle = `${sheetStyle(thumb)}${style}`;
 ---
 
@@ -35,7 +37,7 @@ const inlineStyle = `${sheetStyle(thumb)}${style}`;
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : undefined}
       decoding="async"
-      alt=""
+      alt={alt}
       data-gallery-image={cached ? '' : undefined}
       data-bytes={cached ? thumb.bytes : undefined}
     />

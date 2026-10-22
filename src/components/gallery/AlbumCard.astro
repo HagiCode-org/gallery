@@ -49,6 +49,7 @@ const titleId = `album-${loaded.album.slug}-title`;
                   class={`album-sheet album-sheet-${depth}`}
                   eager={eager && depth === 0}
                   cached={depth === 0}
+                  alt={depth === 0 ? text.title : ''}
                   style={depth === 0 ? `view-transition-name: cover-${loaded.album.slug};` : ''}
                 />
               );

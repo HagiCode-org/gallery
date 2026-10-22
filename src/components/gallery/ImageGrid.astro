@@ -3,6 +3,7 @@ import { thumbnailFor, type LoadedAlbum } from '@/lib/gallery/albums';
 import { objectUrl } from '@/lib/gallery/source';
 import { DEFAULT_LOCALE, type Locale } from '@/config/site';
 import { albumText } from '@/i18n/albums';
+import { imageAlt } from '@/lib/seo';
 import Thumb from './Thumb.astro';
 
 interface Props {
@@ -45,7 +46,7 @@ const items = loaded.index.entries.map((entry, position) => {
           data-metadata={item.metadataUrl}
           aria-label={`${item.key} – ${albumTitle}`}
         >
-          <Thumb thumb={item.thumbnail} class="gallery-thumb" cached eager={item.position < 12} />
+          <Thumb thumb={item.thumbnail} class="gallery-thumb" cached eager={item.position < 12} alt={imageAlt(item.key, albumTitle)} />
           <span class="gallery-key">{item.key}</span>
           <span class="gallery-spot" aria-hidden="true"></span>
         </a>

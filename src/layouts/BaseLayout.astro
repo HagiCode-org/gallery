@@ -22,12 +22,18 @@ interface Props {
   // Absolute URL for the canonical link. Left unset, Hagilight uses the request path, which is right for every page
   // except one that Astro writes to a file name, such as 404.astro.
   canonical?: string;
+  // Site-root path or absolute URL of the link-preview picture. Without one the page is shared as a plain summary card.
+  image?: string;
+  // JSON-LD objects for the page, each with its own @context.
+  structuredData?: Record<string, unknown>[];
 }
 
 const {
   locale = DEFAULT_LOCALE,
   pagePath,
   canonical,
+  image,
+  structuredData = [],
 } = Astro.props;
 const messages = messagesFor(locale);
 const { title = SITE_NAME, description = messages.siteDescription } = Astro.props;
@@ -41,6 +47,16 @@ const alternates = pagePath
   : [];
 const localeMeta = { tag: 'meta' as const, attrs: { property: 'og:locale', content: ogLocale(locale) } };
 
+// Hagilight writes the title, description and image tags; the rest of the Open Graph card and the Twitter card type are
+// added here. og:url repeats the canonical address, which for a page without an explicit one is the request path.
+const pageUrl = canonical ?? new URL(Astro.url.pathname, SITE_URL).href;
+const cardMeta = [
+  { property: 'og:type', content: 'website' },
+  { property: 'og:site_name', content: SITE_NAME },
+  { property: 'og:url', content: pageUrl },
+  { name: 'twitter:card', content: image ? 'summary_large_image' : 'summary' },
+].map((attrs) => ({ tag: 'meta' as const, attrs }));
+
 // hagilightFavicon() only edits Astro's config head, which this layout does not render. The shared
 // icon is therefore supplied here, through SEOHead, so the page links it.
 const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
@@ -53,9 +69,10 @@ const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
     <title>{title}</title>
     <SEOHead
       site={Astro.site}
-      page={{ title, description, url: canonical }}
-      head={[...(faviconEntry ? [faviconEntry] : []), ...alternates, localeMeta]}
+      page={{ title, description, url: canonical, image }}
+      head={[...(faviconEntry ? [faviconEntry] : []), ...alternates, localeMeta, ...cardMeta]}
       siteSeo={{ title: SITE_NAME, description: messages.siteDescription }}
+      structuredData={structuredData}
     />
     <!-- Applies a stored light or dark choice before first paint, so a reload does not flash the other theme. It repeats
          the one-line rule of src/lib/theme.ts, because it must run before any module loads. -->
