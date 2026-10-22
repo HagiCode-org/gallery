@@ -10,18 +10,27 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Галерея кошачьих мордочек
   description: Портреты кошачьих мордочек.
+deepseek-whale-girl-gallery:
+  title: Галерея девушки-кита DeepSeek
+  description: Персонаж горничной-кита в разных стилях, пропорциях и сценах.
 document-subject-theme-previews:
   title: Превью тем документов
   description: Превью-изображения для тем по предмету документа.
 hero-avatars:
   title: Аватары героев
   description: Портреты-аватары для раздела героев.
+planning-direction-icons:
+  title: Значки направлений планирования
+  description: Значки-эмблемы для направлений планирования предложений.
 preset-task-backgrounds:
   title: Фоны предустановленных задач
   description: Фоновые изображения для предустановленных задач.
 prompt-scenario-covers:
   title: Обложки сценариев промптов
   description: Обложки для сценариев промптов.
+scenario-stage-backgrounds:
+  title: Фоны этапов сценариев
+  description: Фоновые изображения для этапов сценариев и задач.
 session-favicons:
   title: Фавиконки сеансов
   description: Изображения фавиконок для сеансов.

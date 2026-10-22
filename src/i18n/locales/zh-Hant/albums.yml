@@ -10,18 +10,27 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: 貓頭圖庫
   description: 貓咪頭部肖像。
+deepseek-whale-girl-gallery:
+  title: DeepSeek 鯨魚少女圖集
+  description: 鯨魚女僕角色的多種風格、身形與場景繪製。
 document-subject-theme-previews:
   title: 文件主題預覽
   description: 文件主題的預覽圖。
 hero-avatars:
   title: 英雄頭像
   description: 英雄區使用的頭像肖像。
+planning-direction-icons:
+  title: 規劃方向圖示
+  description: 提案規劃方向使用的徽記圖示。
 preset-task-backgrounds:
   title: 預設任務背景
   description: 預設任務使用的背景圖片。
 prompt-scenario-covers:
   title: 提示詞情境封面
   description: 提示詞情境的封面圖片。
+scenario-stage-backgrounds:
+  title: 場景階段背景
+  description: 場景階段與任務使用的背景圖片。
 session-favicons:
   title: 工作階段圖示
   description: 工作階段使用的網站圖示圖片。

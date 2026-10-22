@@ -10,18 +10,27 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Katzenkopf-Galerie
   description: Porträts von Katzenköpfen.
+deepseek-whale-girl-gallery:
+  title: DeepSeek-Walmädchen-Galerie
+  description: Die Wal-Maid-Figur in vielen Stilen, Proportionen und Szenen.
 document-subject-theme-previews:
   title: Vorschauen der Dokumentthemen
   description: Vorschaubilder für Dokumentthemen.
 hero-avatars:
   title: Helden-Avatare
   description: Avatar-Porträts für den Heldenbereich.
+planning-direction-icons:
+  title: Planungsrichtungs-Symbole
+  description: Emblem-Symbole für die Planungsrichtungen der Vorschläge.
 preset-task-backgrounds:
   title: Hintergründe für Aufgabenvorlagen
   description: Hintergrundbilder für Aufgabenvorlagen.
 prompt-scenario-covers:
   title: Titelbilder der Prompt-Szenarien
   description: Titelbilder für Prompt-Szenarien.
+scenario-stage-backgrounds:
+  title: Szenario-Stufen-Hintergründe
+  description: Hintergrundbilder für Szenario-Stufen und Aufgaben.
 session-favicons:
   title: Sitzungs-Favicons
   description: Favicon-Bilder für Sitzungen.

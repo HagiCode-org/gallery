@@ -10,18 +10,27 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Cat head gallery
   description: Cat head portraits.
+deepseek-whale-girl-gallery:
+  title: DeepSeek whale girl gallery
+  description: The whale-maid character drawn in many styles, proportions and scenes.
 document-subject-theme-previews:
   title: Document subject theme previews
   description: Preview images for document subject themes.
 hero-avatars:
   title: Hero avatars
   description: Avatar portraits for the hero section.
+planning-direction-icons:
+  title: Planning direction icons
+  description: Emblem icons for the proposal planning directions.
 preset-task-backgrounds:
   title: Preset task backgrounds
   description: Background images for preset tasks.
 prompt-scenario-covers:
   title: Prompt scenario covers
   description: Cover images for prompt scenarios.
+scenario-stage-backgrounds:
+  title: Scenario stage backgrounds
+  description: Background images for scenario stages and tasks.
 session-favicons:
   title: Session favicons
   description: Favicon images for sessions.

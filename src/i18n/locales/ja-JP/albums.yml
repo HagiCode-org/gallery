@@ -10,18 +10,27 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: ネコの顔ギャラリー
   description: ネコの顔のポートレート。
+deepseek-whale-girl-gallery:
+  title: DeepSeek クジラ少女ギャラリー
+  description: クジラのメイド少女を、さまざまな画風・頭身・シーンで描いたものです。
 document-subject-theme-previews:
   title: ドキュメント主題テーマのプレビュー
   description: ドキュメント主題テーマのプレビュー画像。
 hero-avatars:
   title: ヒーローのアバター
   description: ヒーローセクション用のアバターポートレート。
+planning-direction-icons:
+  title: プランニング方向アイコン
+  description: 提案のプランニング方向に使うエンブレムアイコン。
 preset-task-backgrounds:
   title: プリセットタスクの背景
   description: プリセットタスク用の背景画像。
 prompt-scenario-covers:
   title: プロンプトシナリオのカバー
   description: プロンプトシナリオ用のカバー画像。
+scenario-stage-backgrounds:
+  title: シナリオステージ背景
+  description: シナリオのステージやタスクに使う背景画像。
 session-favicons:
   title: セッションのファビコン
   description: セッション用のファビコン画像。

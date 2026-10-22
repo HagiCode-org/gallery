@@ -10,18 +10,27 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: 고양이 얼굴 갤러리
   description: 고양이 얼굴 초상화입니다.
+deepseek-whale-girl-gallery:
+  title: DeepSeek 고래 소녀 갤러리
+  description: 고래 메이드 캐릭터를 다양한 화풍, 신체 비율, 장면으로 그린 이미지입니다.
 document-subject-theme-previews:
   title: 문서 주제 테마 미리보기
   description: 문서 주제 테마의 미리보기 이미지입니다.
 hero-avatars:
   title: 히어로 아바타
   description: 히어로 섹션용 아바타 초상화입니다.
+planning-direction-icons:
+  title: 기획 방향 아이콘
+  description: 제안 기획 방향에 쓰는 엠블럼 아이콘.
 preset-task-backgrounds:
   title: 프리셋 작업 배경
   description: 프리셋 작업용 배경 이미지입니다.
 prompt-scenario-covers:
   title: 프롬프트 시나리오 표지
   description: 프롬프트 시나리오용 표지 이미지입니다.
+scenario-stage-backgrounds:
+  title: 시나리오 단계 배경
+  description: 시나리오 단계와 작업에 쓰는 배경 이미지.
 session-favicons:
   title: 세션 파비콘
   description: 세션용 파비콘 이미지입니다.

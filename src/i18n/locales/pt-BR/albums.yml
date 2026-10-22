@@ -10,18 +10,27 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Galeria de cabeças de gato
   description: Retratos de cabeças de gato.
+deepseek-whale-girl-gallery:
+  title: Galeria da garota baleia DeepSeek
+  description: A personagem da empregada baleia em muitos estilos, proporções e cenas.
 document-subject-theme-previews:
   title: Prévias dos temas de documentos
   description: Imagens de prévia dos temas por assunto de documento.
 hero-avatars:
   title: Avatares de heróis
   description: Retratos de avatares para a seção de heróis.
+planning-direction-icons:
+  title: Ícones de direção de planejamento
+  description: Ícones de emblema para as direções de planejamento das propostas.
 preset-task-backgrounds:
   title: Planos de fundo de tarefas predefinidas
   description: Imagens de fundo para tarefas predefinidas.
 prompt-scenario-covers:
   title: Capas de cenários de prompts
   description: Imagens de capa para cenários de prompts.
+scenario-stage-backgrounds:
+  title: Fundos de etapas de cenário
+  description: Imagens de fundo para as etapas e tarefas dos cenários.
 session-favicons:
   title: Favicons de sessões
   description: Imagens de favicon para sessões.

@@ -37,6 +37,10 @@ export const ALBUMS: readonly Album[] = [
     prefix: 'cat-head-gallery',
   },
   {
+    slug: 'deepseek-whale-girl-gallery',
+    prefix: 'deepseek-whale-girl-gallery',
+  },
+  {
     slug: 'document-subject-theme-previews',
     prefix: 'document-subject-theme-previews',
   },
@@ -45,12 +49,20 @@ export const ALBUMS: readonly Album[] = [
     prefix: 'hero-avatars',
   },
   {
+    slug: 'planning-direction-icons',
+    prefix: 'planning-direction-icons',
+  },
+  {
     slug: 'preset-task-backgrounds',
     prefix: 'preset-task-backgrounds',
   },
   {
     slug: 'prompt-scenario-covers',
     prefix: 'prompt-scenario-covers',
+  },
+  {
+    slug: 'scenario-stage-backgrounds',
+    prefix: 'scenario-stage-backgrounds',
   },
   {
     slug: 'session-favicons',
