@@ -1,4 +1,4 @@
-siteDescription: Eine Galerie mit HagiCode-Arbeiten, als statische Seiten veröffentlicht.
+siteDescription: Bilder aus der img-gen-Pipeline von HagiCode ansehen. Jedes Bild zeigt seine Prompts, den Seed und die Details der Erzeugung.
 header:
   language: Sprache
   theme: Design

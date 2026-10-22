@@ -1,4 +1,4 @@
-siteDescription: HagiCode の作品ギャラリー。静的ページとして公開しています。
+siteDescription: HagiCode の img-gen パイプラインで生成した画像を閲覧できます。各画像にプロンプト、シード、生成の詳細を表示します。
 header:
   language: 言語
   theme: テーマ

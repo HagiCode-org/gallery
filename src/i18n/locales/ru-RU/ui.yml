@@ -1,4 +1,4 @@
-siteDescription: Галерея работ HagiCode в виде статических страниц.
+siteDescription: Изображения из пайплайна img-gen HagiCode. Для каждой картинки показаны промпты, seed и сведения о генерации.
 header:
   language: Язык
   theme: Тема

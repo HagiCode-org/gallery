@@ -1,4 +1,4 @@
-siteDescription: Une galerie des créations HagiCode, partagée sous forme de pages statiques.
+siteDescription: Parcourez les images de la chaîne img-gen de HagiCode. Chaque image affiche ses prompts, sa seed et les détails de génération.
 header:
   language: Langue
   theme: Thème

@@ -1,4 +1,4 @@
-siteDescription: HagiCode 작업물 갤러리입니다. 정적 페이지로 공유합니다.
+siteDescription: HagiCode의 img-gen 파이프라인으로 만든 이미지를 둘러보세요. 모든 이미지에 프롬프트, 시드, 생성 정보가 함께 표시됩니다.
 header:
   language: 언어
   theme: 테마

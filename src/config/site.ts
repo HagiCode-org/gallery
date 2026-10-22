@@ -1,7 +1,7 @@
 // Single source for the site identity. The layout, the home page and Hagilight metadata read from here.
 export const SITE_NAME = 'HagiCode Gallery';
 
-export const SITE_DESCRIPTION = 'A gallery of HagiCode work, shared as static pages.';
+export const SITE_DESCRIPTION = "Browse images from HagiCode's img-gen pipeline. Every image shows its prompts, seed and generation details.";
 
 // Production origin. Hagilight needs an absolute URL for the sitemap, robots.txt, RSS, llms.txt and metadata.
 export const SITE_URL = 'https://gallery.hagicode.com';

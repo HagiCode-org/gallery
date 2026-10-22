@@ -1,4 +1,4 @@
-siteDescription: Uma galeria de trabalhos do HagiCode, compartilhada como páginas estáticas.
+siteDescription: Explore as imagens do pipeline img-gen do HagiCode. Cada imagem mostra seus prompts, sua seed e os detalhes de geração.
 header:
   language: Idioma
   theme: Tema
