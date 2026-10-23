@@ -5,7 +5,7 @@ import { resolveFaviconHeadEntry } from '@hagicode/hagilight-core/favicon';
 import sharedFaviconUrl from '@hagicode/hagilight-core/favicon.ico';
 import SiteHeader from '@/components/site/SiteHeader.astro';
 import { DEFAULT_LOCALE, SITE_NAME, SITE_URL, SUPPORTED_LOCALES, type Locale } from '@/config/site';
-import { localePath, ogLocale } from '@/i18n/locales';
+import { localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
 import '@/styles/global.css';
 import '@/styles/gallery.css';
@@ -45,18 +45,6 @@ const alternates = pagePath
       { hreflang: 'x-default', href: `${SITE_URL}${localePath(DEFAULT_LOCALE, pagePath)}` },
     ].map(({ hreflang, href }) => ({ tag: 'link' as const, attrs: { rel: 'alternate', hreflang, href } }))
   : [];
-const localeMeta = { tag: 'meta' as const, attrs: { property: 'og:locale', content: ogLocale(locale) } };
-
-// Hagilight writes the title, description and image tags; the rest of the Open Graph card and the Twitter card type are
-// added here. og:url repeats the canonical address, which for a page without an explicit one is the request path.
-const pageUrl = canonical ?? new URL(Astro.url.pathname, SITE_URL).href;
-const cardMeta = [
-  { property: 'og:type', content: 'website' },
-  { property: 'og:site_name', content: SITE_NAME },
-  { property: 'og:url', content: pageUrl },
-  { name: 'twitter:card', content: image ? 'summary_large_image' : 'summary' },
-].map((attrs) => ({ tag: 'meta' as const, attrs }));
-
 // hagilightFavicon() only edits Astro's config head, which this layout does not render. The shared
 // icon is therefore supplied here, through SEOHead, so the page links it.
 const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
@@ -70,7 +58,8 @@ const faviconEntry = resolveFaviconHeadEntry([], { href: sharedFaviconUrl });
     <SEOHead
       site={Astro.site}
       page={{ title, description, url: canonical, image }}
-      head={[...(faviconEntry ? [faviconEntry] : []), ...alternates, localeMeta, ...cardMeta]}
+      head={[...(faviconEntry ? [faviconEntry] : []), ...alternates]}
+      locale={locale}
       siteSeo={{ title: SITE_NAME, description: messages.siteDescription }}
       structuredData={structuredData}
     />

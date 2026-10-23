@@ -106,7 +106,7 @@ so a build holds ten copies of the home page and of each published album page.
   listed in `auditIdenticalAllowlist` in `hagi18n.yaml`. The published hagi18n 0.2.0 reads that list without applying it,
   so `scripts/i18n-audit.mjs` applies it and fails on anything else; CI runs the check before the type check.
 - **Language menu.** A `<details>` list of plain links in the header. Each link points at the same page in another
-  language, so it works without JavaScript. Pages carry `hreflang` alternates (with `x-default`) and `og:locale`; the
+  language, so it works without JavaScript. Pages carry `hreflang` alternates (with `x-default`); `og:locale`, the
   footer, sitemap and per-language RSS feeds come from Hagilight.
 - **404.** `404.html` is one file for every missing address, so it renders the notice in all ten languages and a small
   script shows the one the address carries (`/ko-KR/missing/` shows Korean). The footer on that page stays English.

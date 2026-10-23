@@ -58,8 +58,3 @@ export function formatCount(locale: Locale, forms: PluralForms, count: number): 
   const template = forms[category as keyof PluralForms] ?? forms.other;
   return template.replace('{{n}}', count.toLocaleString(locale));
 }
-
-// The Open Graph spelling of a locale: en-US is en_US, and Traditional Chinese is zh_TW.
-export function ogLocale(locale: Locale): string {
-  return locale === 'zh-Hant' ? 'zh_TW' : locale.replace('-', '_');
-}

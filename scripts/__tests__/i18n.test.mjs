@@ -12,7 +12,6 @@ import {
   formatCount,
   isLocale,
   localePath,
-  ogLocale,
   splitLocalePath,
 } from '../../src/i18n/locales.ts';
 import { MESSAGES } from '../../src/i18n/messages/index.ts';
@@ -59,11 +58,6 @@ describe('locale paths', () => {
     assert.deepEqual(splitLocalePath('/404.html'), { locale: 'en-US', path: '/404.html' });
     assert.deepEqual(splitLocalePath('/albums/en-US/'), { locale: 'en-US', path: '/albums/en-US/' });
     assert.equal(isLocale('xx-XX'), false);
-  });
-
-  it('spells Open Graph locales with an underscore', () => {
-    assert.equal(ogLocale('en-US'), 'en_US');
-    assert.equal(ogLocale('zh-Hant'), 'zh_TW');
   });
 });
 
