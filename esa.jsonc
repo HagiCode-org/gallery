@@ -1,0 +1,8 @@
+{
+  "name": "hagicode gallery",
+  "installCommand": "echo nice",
+  "buildCommand": "echo nice",
+  "assets": {
+    "directory": "./dist"
+  }
+}

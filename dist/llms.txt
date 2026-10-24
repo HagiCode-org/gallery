@@ -1,0 +1,31 @@
+# HagiCode Gallery
+
+> Browse images from HagiCode's img-gen pipeline. Every image shows its prompts, seed and generation details.
+
+## Overview
+
+- [HagiCode Gallery](https://gallery.hagicode.com/): Browse images from HagiCode's img-gen pipeline. Every image shows its prompts, seed and generation details.
+
+## Albums
+
+- [Agent CLI default cats](https://gallery.hagicode.com/albums/agent-cli-default-cats/): Default cat avatars for agent CLI sessions. 1 image
+- [Cat head gallery](https://gallery.hagicode.com/albums/cat-head-gallery/): Cat head portraits. 1,000 images
+- [DeepSeek whale girl gallery](https://gallery.hagicode.com/albums/deepseek-whale-girl-gallery/): The whale-maid character drawn in many styles, proportions and scenes. 1,000 images
+- [Hero avatars](https://gallery.hagicode.com/albums/hero-avatars/): Avatar portraits for the hero section. 720 images
+- [Planning direction icons](https://gallery.hagicode.com/albums/planning-direction-icons/): Emblem icons for the proposal planning directions. 8 images
+- [Prompt scenario covers](https://gallery.hagicode.com/albums/prompt-scenario-covers/): Cover images for prompt scenarios. 14 images
+- [Scenario stage backgrounds](https://gallery.hagicode.com/albums/scenario-stage-backgrounds/): Background images for scenario stages and tasks. 27 images
+- [Startup splash](https://gallery.hagicode.com/albums/startup-splash/): Images shown while the app starts. 600 images
+- [TokenMonitor stage illustrations](https://gallery.hagicode.com/albums/tokenmonitor-stage-illustrations/): Stage illustrations for TokenMonitor. 15 images
+
+## Optional
+
+- [de-DE](https://gallery.hagicode.com/de-DE/)
+- [es-ES](https://gallery.hagicode.com/es-ES/)
+- [fr-FR](https://gallery.hagicode.com/fr-FR/)
+- [ja-JP](https://gallery.hagicode.com/ja-JP/)
+- [ko-KR](https://gallery.hagicode.com/ko-KR/)
+- [pt-BR](https://gallery.hagicode.com/pt-BR/)
+- [ru-RU](https://gallery.hagicode.com/ru-RU/)
+- [zh-CN](https://gallery.hagicode.com/zh-CN/)
+- [zh-Hant](https://gallery.hagicode.com/zh-Hant/)
