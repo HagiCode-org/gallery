@@ -25,6 +25,9 @@ doubao-sunny-girl-gallery:
 gemini-twin-star-girl-gallery:
   title: Gemini twin-star girl gallery
   description: The Gemini girl, drawn in many styles and scenes.
+glm-black-book-girl-gallery:
+  title: GLM black book girl gallery
+  description: The GLM girl, drawn in many styles and scenes.
 gpt-knot-girl-gallery:
   title: GPT knot girl gallery
   description: The GPT girl, drawn in many styles and scenes.
@@ -34,9 +37,15 @@ grok-punk-girl-gallery:
 hero-avatars:
   title: Hero avatars
   description: Avatar portraits for the hero section.
+hunyuan-neon-girl-gallery:
+  title: Hunyuan neon girl gallery
+  description: The Hunyuan girl, drawn in many styles and scenes.
 kimi-moon-girl-gallery:
   title: Kimi moon girl gallery
   description: The Kimi girl, drawn in many styles and scenes.
+minimax-conch-girl-gallery:
+  title: MiniMax conch girl gallery
+  description: The MiniMax girl, drawn in many styles and scenes.
 planning-direction-icons:
   title: Planning direction icons
   description: Emblem icons for the proposal planning directions.

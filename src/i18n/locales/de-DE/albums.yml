@@ -25,6 +25,9 @@ doubao-sunny-girl-gallery:
 gemini-twin-star-girl-gallery:
   title: Gemini-Zwillingsstern-Mädchen-Galerie
   description: Das Gemini-Mädchen in vielen Stilen und Szenen.
+glm-black-book-girl-gallery:
+  title: GLM-Schwarzbuch-Mädchen-Galerie
+  description: Das GLM-Mädchen in vielen Stilen und Szenen.
 gpt-knot-girl-gallery:
   title: GPT-Knoten-Mädchen-Galerie
   description: Das GPT-Mädchen in vielen Stilen und Szenen.
@@ -34,9 +37,15 @@ grok-punk-girl-gallery:
 hero-avatars:
   title: Helden-Avatare
   description: Avatar-Porträts für den Heldenbereich.
+hunyuan-neon-girl-gallery:
+  title: Hunyuan-Neon-Mädchen-Galerie
+  description: Das Hunyuan-Mädchen in vielen Stilen und Szenen.
 kimi-moon-girl-gallery:
   title: Kimi-Mond-Mädchen-Galerie
   description: Das Kimi-Mädchen in vielen Stilen und Szenen.
+minimax-conch-girl-gallery:
+  title: MiniMax-Muschel-Mädchen-Galerie
+  description: Das MiniMax-Mädchen in vielen Stilen und Szenen.
 planning-direction-icons:
   title: Planungsrichtungs-Symbole
   description: Emblem-Symbole für die Planungsrichtungen der Vorschläge.

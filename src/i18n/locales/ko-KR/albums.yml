@@ -25,6 +25,9 @@ doubao-sunny-girl-gallery:
 gemini-twin-star-girl-gallery:
   title: Gemini 쌍둥이별 소녀 갤러리
   description: Gemini 소녀를 다양한 화풍과 장면으로 그렸습니다.
+glm-black-book-girl-gallery:
+  title: GLM 검은 책 소녀 갤러리
+  description: GLM 소녀를 다양한 화풍과 장면으로 그렸습니다.
 gpt-knot-girl-gallery:
   title: GPT 매듭 소녀 갤러리
   description: GPT 소녀를 다양한 화풍과 장면으로 그렸습니다.
@@ -34,9 +37,15 @@ grok-punk-girl-gallery:
 hero-avatars:
   title: 히어로 아바타
   description: 히어로 섹션용 아바타 초상화입니다.
+hunyuan-neon-girl-gallery:
+  title: Hunyuan 네온 소녀 갤러리
+  description: Hunyuan 소녀를 다양한 화풍과 장면으로 그렸습니다.
 kimi-moon-girl-gallery:
   title: Kimi 달 소녀 갤러리
   description: Kimi 소녀를 다양한 화풍과 장면으로 그렸습니다.
+minimax-conch-girl-gallery:
+  title: MiniMax 소라 소녀 갤러리
+  description: MiniMax 소녀를 다양한 화풍과 장면으로 그렸습니다.
 planning-direction-icons:
   title: 기획 방향 아이콘
   description: 제안 기획 방향에 쓰는 엠블럼 아이콘.

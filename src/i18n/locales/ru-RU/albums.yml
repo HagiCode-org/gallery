@@ -25,6 +25,9 @@ doubao-sunny-girl-gallery:
 gemini-twin-star-girl-gallery:
   title: Галерея девушки с двойной звездой Gemini
   description: Девушка Gemini в разных стилях и сценах.
+glm-black-book-girl-gallery:
+  title: Галерея девушки с чёрной книгой GLM
+  description: Девушка GLM в разных стилях и сценах.
 gpt-knot-girl-gallery:
   title: Галерея девушки с узлом GPT
   description: Девушка GPT в разных стилях и сценах.
@@ -34,9 +37,15 @@ grok-punk-girl-gallery:
 hero-avatars:
   title: Аватары героев
   description: Портреты-аватары для раздела героев.
+hunyuan-neon-girl-gallery:
+  title: Галерея неоновой девушки Hunyuan
+  description: Девушка Hunyuan в разных стилях и сценах.
 kimi-moon-girl-gallery:
   title: Галерея девушки-луны Kimi
   description: Девушка Kimi в разных стилях и сценах.
+minimax-conch-girl-gallery:
+  title: Галерея девушки-ракушки MiniMax
+  description: Девушка MiniMax в разных стилях и сценах.
 planning-direction-icons:
   title: Значки направлений планирования
   description: Значки-эмблемы для направлений планирования предложений.

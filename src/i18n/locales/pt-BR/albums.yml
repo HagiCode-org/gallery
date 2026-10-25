@@ -25,6 +25,9 @@ doubao-sunny-girl-gallery:
 gemini-twin-star-girl-gallery:
   title: Galeria da garota das estrelas gêmeas Gemini
   description: A garota Gemini, desenhada em muitos estilos e cenas.
+glm-black-book-girl-gallery:
+  title: Galeria da garota do livro preto GLM
+  description: A garota GLM, desenhada em muitos estilos e cenas.
 gpt-knot-girl-gallery:
   title: Galeria da garota do nó GPT
   description: A garota GPT, desenhada em muitos estilos e cenas.
@@ -34,9 +37,15 @@ grok-punk-girl-gallery:
 hero-avatars:
   title: Avatares de heróis
   description: Retratos de avatares para a seção de heróis.
+hunyuan-neon-girl-gallery:
+  title: Galeria da garota neon Hunyuan
+  description: A garota Hunyuan, desenhada em muitos estilos e cenas.
 kimi-moon-girl-gallery:
   title: Galeria da garota da lua Kimi
   description: A garota Kimi, desenhada em muitos estilos e cenas.
+minimax-conch-girl-gallery:
+  title: Galeria da garota concha MiniMax
+  description: A garota MiniMax, desenhada em muitos estilos e cenas.
 planning-direction-icons:
   title: Ícones de direção de planejamento
   description: Ícones de emblema para as direções de planejamento das propostas.

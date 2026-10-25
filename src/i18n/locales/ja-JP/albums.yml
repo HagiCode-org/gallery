@@ -25,6 +25,9 @@ doubao-sunny-girl-gallery:
 gemini-twin-star-girl-gallery:
   title: Gemini 双子星の少女ギャラリー
   description: Gemini の少女を、さまざまな画風とシーンで描いたものです。
+glm-black-book-girl-gallery:
+  title: GLM 黒い本の少女ギャラリー
+  description: GLM の少女を、さまざまな画風とシーンで描いたものです。
 gpt-knot-girl-gallery:
   title: GPT 結び目の少女ギャラリー
   description: GPT の少女を、さまざまな画風とシーンで描いたものです。
@@ -34,9 +37,15 @@ grok-punk-girl-gallery:
 hero-avatars:
   title: ヒーローのアバター
   description: ヒーローセクション用のアバターポートレート。
+hunyuan-neon-girl-gallery:
+  title: Hunyuan ネオン少女ギャラリー
+  description: Hunyuan の少女を、さまざまな画風とシーンで描いたものです。
 kimi-moon-girl-gallery:
   title: Kimi 月の少女ギャラリー
   description: Kimi の少女を、さまざまな画風とシーンで描いたものです。
+minimax-conch-girl-gallery:
+  title: MiniMax 巻貝の少女ギャラリー
+  description: MiniMax の少女を、さまざまな画風とシーンで描いたものです。
 planning-direction-icons:
   title: プランニング方向アイコン
   description: 提案のプランニング方向に使うエンブレムアイコン。

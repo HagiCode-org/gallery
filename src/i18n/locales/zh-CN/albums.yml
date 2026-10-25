@@ -25,6 +25,9 @@ doubao-sunny-girl-gallery:
 gemini-twin-star-girl-gallery:
   title: Gemini 双子星少女图集
   description: Gemini 少女角色，以多种风格与场景绘制。
+glm-black-book-girl-gallery:
+  title: GLM 黑书少女图集
+  description: GLM 少女角色，以多种风格与场景绘制。
 gpt-knot-girl-gallery:
   title: GPT 绳结少女图集
   description: GPT 少女角色，以多种风格与场景绘制。
@@ -34,9 +37,15 @@ grok-punk-girl-gallery:
 hero-avatars:
   title: 英雄头像
   description: 英雄区使用的头像肖像。
+hunyuan-neon-girl-gallery:
+  title: 混元 霓虹少女图集
+  description: 混元 少女角色，以多种风格与场景绘制。
 kimi-moon-girl-gallery:
   title: Kimi 月亮少女图集
   description: Kimi 少女角色，以多种风格与场景绘制。
+minimax-conch-girl-gallery:
+  title: MiniMax 海螺少女图集
+  description: MiniMax 少女角色，以多种风格与场景绘制。
 planning-direction-icons:
   title: 规划方向图标
   description: 提案规划方向使用的徽记图标。

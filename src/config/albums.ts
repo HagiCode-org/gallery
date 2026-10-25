@@ -66,6 +66,11 @@ export const ALBUMS: readonly Album[] = [
     featuredOnHome: true,
   },
   {
+    slug: 'glm-black-book-girl-gallery',
+    prefix: 'glm-black-book-girl-gallery',
+    featuredOnHome: true,
+  },
+  {
     slug: 'gpt-knot-girl-gallery',
     prefix: 'gpt-knot-girl-gallery',
     featuredOnHome: true,
@@ -80,8 +85,18 @@ export const ALBUMS: readonly Album[] = [
     prefix: 'hero-avatars',
   },
   {
+    slug: 'hunyuan-neon-girl-gallery',
+    prefix: 'hunyuan-neon-girl-gallery',
+    featuredOnHome: true,
+  },
+  {
     slug: 'kimi-moon-girl-gallery',
     prefix: 'kimi-moon-girl-gallery',
+    featuredOnHome: true,
+  },
+  {
+    slug: 'minimax-conch-girl-gallery',
+    prefix: 'minimax-conch-girl-gallery',
     featuredOnHome: true,
   },
   {
