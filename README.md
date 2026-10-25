@@ -6,7 +6,7 @@ pipeline publishes.
 
 ## What you get
 
-- **A home page of albums.** Each published album is listed with its name and description. The agent and model albums (`featuredOnHome` in `src/config/albums.ts`) stand in their own dark room under the sky, one panel each: on a mouse the open panel follows the pointer or keyboard focus, on touch the panels swipe. Every other album stays on the wall below.
+- **A home page of albums.** Each published album is listed with its name and description. The agent and model albums (`featuredOnHome` in `src/config/albums.ts`) stand in their own dark room under the sky, one panel each: on a mouse the open panel follows the pointer or keyboard focus, on touch the panels swipe. Every other album stays on the wall below. The pictures on the home page, and which model panel starts open, are drawn at random once per build and cut to small AVIF files (`src/lib/gallery/homeThumbs.ts`, written under `/_astro/`), so every visitor gets the same few small files until the next build.
   Selected agent and model albums take turns in the first spot on each visit or refresh once published. Agent CLI
   default cats stays in the regular album list. Covers, stacks and sky
   pictures are sampled from each album on every visit; the same cover appears in the sky and on its card.
