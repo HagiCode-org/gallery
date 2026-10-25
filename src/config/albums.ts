@@ -45,7 +45,6 @@ export const ALBUMS: readonly Album[] = [
     slug: 'claude-antler-girl-gallery',
     prefix: 'claude-antler-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'deepseek-whale-girl-gallery',
