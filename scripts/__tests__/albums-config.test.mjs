@@ -54,6 +54,20 @@ describe('album configuration (task 1.2)', () => {
     assert.equal(new Set(ALBUMS.map((album) => album.prefix)).size, ALBUMS.length);
   });
 
+  it('includes agent and model albums in the home page rotation', () => {
+    assert.deepEqual(ALBUMS.filter((album) => album.featuredOnHome).map((album) => album.slug), [
+      'agent-cli-default-cats',
+      'claude-antler-girl-gallery',
+      'deepseek-whale-girl-gallery',
+      'doubao-sunny-girl-gallery',
+      'gemini-twin-star-girl-gallery',
+      'gpt-knot-girl-gallery',
+      'grok-punk-girl-gallery',
+      'kimi-moon-girl-gallery',
+      'qwen-porcelain-girl-gallery',
+    ]);
+  });
+
   it('refuses a duplicate slug and names it', () => {
     assert.throws(
       () => assertUniqueAlbums([

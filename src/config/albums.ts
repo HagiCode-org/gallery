@@ -17,6 +17,8 @@ export interface Album {
   readonly slug: string;
   // R2 prefix, the batch's output.publish.prefix. Unique across ALBUMS.
   readonly prefix: string;
+  // Agent and model albums that take turns leading the home page once they have images.
+  readonly featuredOnHome?: true;
   // List the album before img-gen has published its index. It then shows with no images and a "coming soon" note, and
   // fills in on the first build after the publish. Remove the flag once the album is published.
   readonly listBeforePublish?: true;
@@ -30,6 +32,7 @@ export const ALBUMS: readonly Album[] = [
   {
     slug: 'agent-cli-default-cats',
     prefix: 'agent-cli-default-cats',
+    featuredOnHome: true,
   },
   {
     slug: 'anime-theme-backgrounds',
@@ -42,11 +45,13 @@ export const ALBUMS: readonly Album[] = [
   {
     slug: 'claude-antler-girl-gallery',
     prefix: 'claude-antler-girl-gallery',
+    featuredOnHome: true,
     listBeforePublish: true,
   },
   {
     slug: 'deepseek-whale-girl-gallery',
     prefix: 'deepseek-whale-girl-gallery',
+    featuredOnHome: true,
   },
   {
     slug: 'document-subject-theme-previews',
@@ -55,21 +60,25 @@ export const ALBUMS: readonly Album[] = [
   {
     slug: 'doubao-sunny-girl-gallery',
     prefix: 'doubao-sunny-girl-gallery',
+    featuredOnHome: true,
     listBeforePublish: true,
   },
   {
     slug: 'gemini-twin-star-girl-gallery',
     prefix: 'gemini-twin-star-girl-gallery',
+    featuredOnHome: true,
     listBeforePublish: true,
   },
   {
     slug: 'gpt-knot-girl-gallery',
     prefix: 'gpt-knot-girl-gallery',
+    featuredOnHome: true,
     listBeforePublish: true,
   },
   {
     slug: 'grok-punk-girl-gallery',
     prefix: 'grok-punk-girl-gallery',
+    featuredOnHome: true,
     listBeforePublish: true,
   },
   {
@@ -79,6 +88,7 @@ export const ALBUMS: readonly Album[] = [
   {
     slug: 'kimi-moon-girl-gallery',
     prefix: 'kimi-moon-girl-gallery',
+    featuredOnHome: true,
     listBeforePublish: true,
   },
   {
@@ -96,6 +106,7 @@ export const ALBUMS: readonly Album[] = [
   {
     slug: 'qwen-porcelain-girl-gallery',
     prefix: 'qwen-porcelain-girl-gallery',
+    featuredOnHome: true,
     listBeforePublish: true,
   },
   {
