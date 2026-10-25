@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Galerie de têtes de chats
   description: Portraits de têtes de chats.
+claude-antler-girl-gallery:
+  title: Galerie de la fille aux bois Claude
+  description: La fille Claude, dessinée dans de nombreux styles et scènes.
 deepseek-whale-girl-gallery:
   title: Galerie de la fille baleine DeepSeek
   description: Le personnage de la servante baleine dans de nombreux styles, proportions et scènes.
 document-subject-theme-previews:
   title: Aperçus des thèmes de documents
   description: Images d’aperçu pour les thèmes de sujets de documents.
+doubao-sunny-girl-gallery:
+  title: Galerie de la fille ensoleillée Doubao
+  description: La fille Doubao, dessinée dans de nombreux styles et scènes.
+gemini-twin-star-girl-gallery:
+  title: Galerie de la fille aux étoiles jumelles Gemini
+  description: La fille Gemini, dessinée dans de nombreux styles et scènes.
+gpt-knot-girl-gallery:
+  title: Galerie de la fille au nœud GPT
+  description: La fille GPT, dessinée dans de nombreux styles et scènes.
+grok-punk-girl-gallery:
+  title: Galerie de la fille punk Grok
+  description: La fille Grok, dessinée dans de nombreux styles et scènes.
 hero-avatars:
   title: Avatars de héros
   description: Portraits d’avatars pour la section héros.
+kimi-moon-girl-gallery:
+  title: Galerie de la fille lune Kimi
+  description: La fille Kimi, dessinée dans de nombreux styles et scènes.
 planning-direction-icons:
   title: Icônes des directions de planification
   description: Icônes emblèmes des directions de planification des propositions.
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: Couvertures des scénarios de prompts
   description: Images de couverture pour les scénarios de prompts.
+qwen-porcelain-girl-gallery:
+  title: Galerie de la fille porcelaine Qwen
+  description: La fille Qwen, dessinée dans de nombreux styles et scènes.
 scenario-stage-backgrounds:
   title: Arrière-plans des étapes de scénario
   description: Images d’arrière-plan pour les étapes et les tâches des scénarios.

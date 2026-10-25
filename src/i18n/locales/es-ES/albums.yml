@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Galería de cabezas de gato
   description: Retratos de cabezas de gato.
+claude-antler-girl-gallery:
+  title: Galería de la chica de las astas Claude
+  description: La chica Claude, dibujada en muchos estilos y escenas.
 deepseek-whale-girl-gallery:
   title: Galería de la chica ballena DeepSeek
   description: El personaje de la criada ballena en muchos estilos, proporciones y escenas.
 document-subject-theme-previews:
   title: Vistas previas de temas de documentos
   description: Imágenes de vista previa de los temas por asunto de documento.
+doubao-sunny-girl-gallery:
+  title: Galería de la chica soleada Doubao
+  description: La chica Doubao, dibujada en muchos estilos y escenas.
+gemini-twin-star-girl-gallery:
+  title: Galería de la chica de las estrellas gemelas Gemini
+  description: La chica Gemini, dibujada en muchos estilos y escenas.
+gpt-knot-girl-gallery:
+  title: Galería de la chica del nudo GPT
+  description: La chica GPT, dibujada en muchos estilos y escenas.
+grok-punk-girl-gallery:
+  title: Galería de la chica punk Grok
+  description: La chica Grok, dibujada en muchos estilos y escenas.
 hero-avatars:
   title: Avatares de héroes
   description: Retratos de avatares para la sección de héroes.
+kimi-moon-girl-gallery:
+  title: Galería de la chica de la luna Kimi
+  description: La chica Kimi, dibujada en muchos estilos y escenas.
 planning-direction-icons:
   title: Iconos de dirección de planificación
   description: Iconos emblema para las direcciones de planificación de las propuestas.
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: Portadas de escenarios de prompts
   description: Imágenes de portada para los escenarios de prompts.
+qwen-porcelain-girl-gallery:
+  title: Galería de la chica de porcelana Qwen
+  description: La chica Qwen, dibujada en muchos estilos y escenas.
 scenario-stage-backgrounds:
   title: Fondos de etapas de escenario
   description: Imágenes de fondo para las etapas y tareas de los escenarios.

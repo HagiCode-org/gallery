@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: 고양이 얼굴 갤러리
   description: 고양이 얼굴 초상화입니다.
+claude-antler-girl-gallery:
+  title: Claude 사슴뿔 소녀 갤러리
+  description: Claude 소녀를 다양한 화풍과 장면으로 그렸습니다.
 deepseek-whale-girl-gallery:
   title: DeepSeek 고래 소녀 갤러리
   description: 고래 메이드 캐릭터를 다양한 화풍, 신체 비율, 장면으로 그린 이미지입니다.
 document-subject-theme-previews:
   title: 문서 주제 테마 미리보기
   description: 문서 주제 테마의 미리보기 이미지입니다.
+doubao-sunny-girl-gallery:
+  title: Doubao 햇살 소녀 갤러리
+  description: Doubao 소녀를 다양한 화풍과 장면으로 그렸습니다.
+gemini-twin-star-girl-gallery:
+  title: Gemini 쌍둥이별 소녀 갤러리
+  description: Gemini 소녀를 다양한 화풍과 장면으로 그렸습니다.
+gpt-knot-girl-gallery:
+  title: GPT 매듭 소녀 갤러리
+  description: GPT 소녀를 다양한 화풍과 장면으로 그렸습니다.
+grok-punk-girl-gallery:
+  title: Grok 펑크 소녀 갤러리
+  description: Grok 소녀를 다양한 화풍과 장면으로 그렸습니다.
 hero-avatars:
   title: 히어로 아바타
   description: 히어로 섹션용 아바타 초상화입니다.
+kimi-moon-girl-gallery:
+  title: Kimi 달 소녀 갤러리
+  description: Kimi 소녀를 다양한 화풍과 장면으로 그렸습니다.
 planning-direction-icons:
   title: 기획 방향 아이콘
   description: 제안 기획 방향에 쓰는 엠블럼 아이콘.
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: 프롬프트 시나리오 표지
   description: 프롬프트 시나리오용 표지 이미지입니다.
+qwen-porcelain-girl-gallery:
+  title: Qwen 자기 소녀 갤러리
+  description: Qwen 소녀를 다양한 화풍과 장면으로 그렸습니다.
 scenario-stage-backgrounds:
   title: 시나리오 단계 배경
   description: 시나리오 단계와 작업에 쓰는 배경 이미지.

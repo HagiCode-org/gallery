@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Galeria de cabeças de gato
   description: Retratos de cabeças de gato.
+claude-antler-girl-gallery:
+  title: Galeria da garota de chifres Claude
+  description: A garota Claude, desenhada em muitos estilos e cenas.
 deepseek-whale-girl-gallery:
   title: Galeria da garota baleia DeepSeek
   description: A personagem da empregada baleia em muitos estilos, proporções e cenas.
 document-subject-theme-previews:
   title: Prévias dos temas de documentos
   description: Imagens de prévia dos temas por assunto de documento.
+doubao-sunny-girl-gallery:
+  title: Galeria da garota ensolarada Doubao
+  description: A garota Doubao, desenhada em muitos estilos e cenas.
+gemini-twin-star-girl-gallery:
+  title: Galeria da garota das estrelas gêmeas Gemini
+  description: A garota Gemini, desenhada em muitos estilos e cenas.
+gpt-knot-girl-gallery:
+  title: Galeria da garota do nó GPT
+  description: A garota GPT, desenhada em muitos estilos e cenas.
+grok-punk-girl-gallery:
+  title: Galeria da garota punk Grok
+  description: A garota Grok, desenhada em muitos estilos e cenas.
 hero-avatars:
   title: Avatares de heróis
   description: Retratos de avatares para a seção de heróis.
+kimi-moon-girl-gallery:
+  title: Galeria da garota da lua Kimi
+  description: A garota Kimi, desenhada em muitos estilos e cenas.
 planning-direction-icons:
   title: Ícones de direção de planejamento
   description: Ícones de emblema para as direções de planejamento das propostas.
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: Capas de cenários de prompts
   description: Imagens de capa para cenários de prompts.
+qwen-porcelain-girl-gallery:
+  title: Galeria da garota de porcelana Qwen
+  description: A garota Qwen, desenhada em muitos estilos e cenas.
 scenario-stage-backgrounds:
   title: Fundos de etapas de cenário
   description: Imagens de fundo para as etapas e tarefas dos cenários.

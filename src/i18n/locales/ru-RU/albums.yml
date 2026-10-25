@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Галерея кошачьих мордочек
   description: Портреты кошачьих мордочек.
+claude-antler-girl-gallery:
+  title: Галерея девушки с рогами Claude
+  description: Девушка Claude в разных стилях и сценах.
 deepseek-whale-girl-gallery:
   title: Галерея девушки-кита DeepSeek
   description: Персонаж горничной-кита в разных стилях, пропорциях и сценах.
 document-subject-theme-previews:
   title: Превью тем документов
   description: Превью-изображения для тем по предмету документа.
+doubao-sunny-girl-gallery:
+  title: Галерея солнечной девушки Doubao
+  description: Девушка Doubao в разных стилях и сценах.
+gemini-twin-star-girl-gallery:
+  title: Галерея девушки с двойной звездой Gemini
+  description: Девушка Gemini в разных стилях и сценах.
+gpt-knot-girl-gallery:
+  title: Галерея девушки с узлом GPT
+  description: Девушка GPT в разных стилях и сценах.
+grok-punk-girl-gallery:
+  title: Галерея панк-девушки Grok
+  description: Девушка Grok в разных стилях и сценах.
 hero-avatars:
   title: Аватары героев
   description: Портреты-аватары для раздела героев.
+kimi-moon-girl-gallery:
+  title: Галерея девушки-луны Kimi
+  description: Девушка Kimi в разных стилях и сценах.
 planning-direction-icons:
   title: Значки направлений планирования
   description: Значки-эмблемы для направлений планирования предложений.
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: Обложки сценариев промптов
   description: Обложки для сценариев промптов.
+qwen-porcelain-girl-gallery:
+  title: Галерея фарфоровой девушки Qwen
+  description: Девушка Qwen в разных стилях и сценах.
 scenario-stage-backgrounds:
   title: Фоны этапов сценариев
   description: Фоновые изображения для этапов сценариев и задач.

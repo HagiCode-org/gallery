@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Katzenkopf-Galerie
   description: Porträts von Katzenköpfen.
+claude-antler-girl-gallery:
+  title: Claude-Geweih-Mädchen-Galerie
+  description: Das Claude-Mädchen in vielen Stilen und Szenen.
 deepseek-whale-girl-gallery:
   title: DeepSeek-Walmädchen-Galerie
   description: Die Wal-Maid-Figur in vielen Stilen, Proportionen und Szenen.
 document-subject-theme-previews:
   title: Vorschauen der Dokumentthemen
   description: Vorschaubilder für Dokumentthemen.
+doubao-sunny-girl-gallery:
+  title: Doubao-Sonnen-Mädchen-Galerie
+  description: Das Doubao-Mädchen in vielen Stilen und Szenen.
+gemini-twin-star-girl-gallery:
+  title: Gemini-Zwillingsstern-Mädchen-Galerie
+  description: Das Gemini-Mädchen in vielen Stilen und Szenen.
+gpt-knot-girl-gallery:
+  title: GPT-Knoten-Mädchen-Galerie
+  description: Das GPT-Mädchen in vielen Stilen und Szenen.
+grok-punk-girl-gallery:
+  title: Grok-Punk-Mädchen-Galerie
+  description: Das Grok-Mädchen in vielen Stilen und Szenen.
 hero-avatars:
   title: Helden-Avatare
   description: Avatar-Porträts für den Heldenbereich.
+kimi-moon-girl-gallery:
+  title: Kimi-Mond-Mädchen-Galerie
+  description: Das Kimi-Mädchen in vielen Stilen und Szenen.
 planning-direction-icons:
   title: Planungsrichtungs-Symbole
   description: Emblem-Symbole für die Planungsrichtungen der Vorschläge.
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: Titelbilder der Prompt-Szenarien
   description: Titelbilder für Prompt-Szenarien.
+qwen-porcelain-girl-gallery:
+  title: Qwen-Porzellan-Mädchen-Galerie
+  description: Das Qwen-Mädchen in vielen Stilen und Szenen.
 scenario-stage-backgrounds:
   title: Szenario-Stufen-Hintergründe
   description: Hintergrundbilder für Szenario-Stufen und Aufgaben.

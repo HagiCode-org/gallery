@@ -14,12 +14,19 @@ const EXPECTED_PREFIXES = [
   'agent-cli-default-cats',
   'anime-theme-backgrounds',
   'cat-head-gallery',
+  'claude-antler-girl-gallery',
   'deepseek-whale-girl-gallery',
   'document-subject-theme-previews',
+  'doubao-sunny-girl-gallery',
+  'gemini-twin-star-girl-gallery',
+  'gpt-knot-girl-gallery',
+  'grok-punk-girl-gallery',
   'hero-avatars',
+  'kimi-moon-girl-gallery',
   'planning-direction-icons',
   'preset-task-backgrounds',
   'prompt-scenario-covers',
+  'qwen-porcelain-girl-gallery',
   'scenario-stage-backgrounds',
   'session-favicons',
   'startup-splash',
@@ -38,7 +45,7 @@ async function sourceFiles(dir = path.join(root, 'src')) {
 }
 
 describe('album configuration (task 1.2)', () => {
-  it('lists the twelve recipe-set prefixes in the design order', () => {
+  it('lists the recipe-set prefixes in slug order', () => {
     assert.deepEqual(ALBUMS.map((album) => album.prefix), EXPECTED_PREFIXES);
   });
 

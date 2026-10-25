@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: 貓頭圖庫
   description: 貓咪頭部肖像。
+claude-antler-girl-gallery:
+  title: Claude 鹿角少女圖集
+  description: Claude 少女角色，以多種風格與場景繪製。
 deepseek-whale-girl-gallery:
   title: DeepSeek 鯨魚少女圖集
   description: 鯨魚女僕角色的多種風格、身形與場景繪製。
 document-subject-theme-previews:
   title: 文件主題預覽
   description: 文件主題的預覽圖。
+doubao-sunny-girl-gallery:
+  title: 豆包 陽光少女圖集
+  description: 豆包 少女角色，以多種風格與場景繪製。
+gemini-twin-star-girl-gallery:
+  title: Gemini 雙子星少女圖集
+  description: Gemini 少女角色，以多種風格與場景繪製。
+gpt-knot-girl-gallery:
+  title: GPT 繩結少女圖集
+  description: GPT 少女角色，以多種風格與場景繪製。
+grok-punk-girl-gallery:
+  title: Grok 龐克少女圖集
+  description: Grok 少女角色，以多種風格與場景繪製。
 hero-avatars:
   title: 英雄頭像
   description: 英雄區使用的頭像肖像。
+kimi-moon-girl-gallery:
+  title: Kimi 月亮少女圖集
+  description: Kimi 少女角色，以多種風格與場景繪製。
 planning-direction-icons:
   title: 規劃方向圖示
   description: 提案規劃方向使用的徽記圖示。
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: 提示詞情境封面
   description: 提示詞情境的封面圖片。
+qwen-porcelain-girl-gallery:
+  title: Qwen 瓷紋少女圖集
+  description: Qwen 少女角色，以多種風格與場景繪製。
 scenario-stage-backgrounds:
   title: 場景階段背景
   description: 場景階段與任務使用的背景圖片。

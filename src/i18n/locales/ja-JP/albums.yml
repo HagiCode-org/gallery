@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: ネコの顔ギャラリー
   description: ネコの顔のポートレート。
+claude-antler-girl-gallery:
+  title: Claude 鹿角の少女ギャラリー
+  description: Claude の少女を、さまざまな画風とシーンで描いたものです。
 deepseek-whale-girl-gallery:
   title: DeepSeek クジラ少女ギャラリー
   description: クジラのメイド少女を、さまざまな画風・頭身・シーンで描いたものです。
 document-subject-theme-previews:
   title: ドキュメント主題テーマのプレビュー
   description: ドキュメント主題テーマのプレビュー画像。
+doubao-sunny-girl-gallery:
+  title: Doubao 太陽の少女ギャラリー
+  description: Doubao の少女を、さまざまな画風とシーンで描いたものです。
+gemini-twin-star-girl-gallery:
+  title: Gemini 双子星の少女ギャラリー
+  description: Gemini の少女を、さまざまな画風とシーンで描いたものです。
+gpt-knot-girl-gallery:
+  title: GPT 結び目の少女ギャラリー
+  description: GPT の少女を、さまざまな画風とシーンで描いたものです。
+grok-punk-girl-gallery:
+  title: Grok パンクな少女ギャラリー
+  description: Grok の少女を、さまざまな画風とシーンで描いたものです。
 hero-avatars:
   title: ヒーローのアバター
   description: ヒーローセクション用のアバターポートレート。
+kimi-moon-girl-gallery:
+  title: Kimi 月の少女ギャラリー
+  description: Kimi の少女を、さまざまな画風とシーンで描いたものです。
 planning-direction-icons:
   title: プランニング方向アイコン
   description: 提案のプランニング方向に使うエンブレムアイコン。
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: プロンプトシナリオのカバー
   description: プロンプトシナリオ用のカバー画像。
+qwen-porcelain-girl-gallery:
+  title: Qwen 磁器の少女ギャラリー
+  description: Qwen の少女を、さまざまな画風とシーンで描いたものです。
 scenario-stage-backgrounds:
   title: シナリオステージ背景
   description: シナリオのステージやタスクに使う背景画像。

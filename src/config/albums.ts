@@ -40,6 +40,11 @@ export const ALBUMS: readonly Album[] = [
     prefix: 'cat-head-gallery',
   },
   {
+    slug: 'claude-antler-girl-gallery',
+    prefix: 'claude-antler-girl-gallery',
+    listBeforePublish: true,
+  },
+  {
     slug: 'deepseek-whale-girl-gallery',
     prefix: 'deepseek-whale-girl-gallery',
   },
@@ -48,8 +53,33 @@ export const ALBUMS: readonly Album[] = [
     prefix: 'document-subject-theme-previews',
   },
   {
+    slug: 'doubao-sunny-girl-gallery',
+    prefix: 'doubao-sunny-girl-gallery',
+    listBeforePublish: true,
+  },
+  {
+    slug: 'gemini-twin-star-girl-gallery',
+    prefix: 'gemini-twin-star-girl-gallery',
+    listBeforePublish: true,
+  },
+  {
+    slug: 'gpt-knot-girl-gallery',
+    prefix: 'gpt-knot-girl-gallery',
+    listBeforePublish: true,
+  },
+  {
+    slug: 'grok-punk-girl-gallery',
+    prefix: 'grok-punk-girl-gallery',
+    listBeforePublish: true,
+  },
+  {
     slug: 'hero-avatars',
     prefix: 'hero-avatars',
+  },
+  {
+    slug: 'kimi-moon-girl-gallery',
+    prefix: 'kimi-moon-girl-gallery',
+    listBeforePublish: true,
   },
   {
     slug: 'planning-direction-icons',
@@ -62,6 +92,11 @@ export const ALBUMS: readonly Album[] = [
   {
     slug: 'prompt-scenario-covers',
     prefix: 'prompt-scenario-covers',
+  },
+  {
+    slug: 'qwen-porcelain-girl-gallery',
+    prefix: 'qwen-porcelain-girl-gallery',
+    listBeforePublish: true,
   },
   {
     slug: 'scenario-stage-backgrounds',

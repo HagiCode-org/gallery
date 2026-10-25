@@ -10,15 +10,33 @@ anime-theme-backgrounds:
 cat-head-gallery:
   title: Cat head gallery
   description: Cat head portraits.
+claude-antler-girl-gallery:
+  title: Claude antler girl gallery
+  description: The Claude girl, drawn in many styles and scenes.
 deepseek-whale-girl-gallery:
   title: DeepSeek whale girl gallery
   description: The whale-maid character drawn in many styles, proportions and scenes.
 document-subject-theme-previews:
   title: Document subject theme previews
   description: Preview images for document subject themes.
+doubao-sunny-girl-gallery:
+  title: Doubao sunny girl gallery
+  description: The Doubao girl, drawn in many styles and scenes.
+gemini-twin-star-girl-gallery:
+  title: Gemini twin-star girl gallery
+  description: The Gemini girl, drawn in many styles and scenes.
+gpt-knot-girl-gallery:
+  title: GPT knot girl gallery
+  description: The GPT girl, drawn in many styles and scenes.
+grok-punk-girl-gallery:
+  title: Grok punk girl gallery
+  description: The Grok girl, drawn in many styles and scenes.
 hero-avatars:
   title: Hero avatars
   description: Avatar portraits for the hero section.
+kimi-moon-girl-gallery:
+  title: Kimi moon girl gallery
+  description: The Kimi girl, drawn in many styles and scenes.
 planning-direction-icons:
   title: Planning direction icons
   description: Emblem icons for the proposal planning directions.
@@ -28,6 +46,9 @@ preset-task-backgrounds:
 prompt-scenario-covers:
   title: Prompt scenario covers
   description: Cover images for prompt scenarios.
+qwen-porcelain-girl-gallery:
+  title: Qwen porcelain girl gallery
+  description: The Qwen girl, drawn in many styles and scenes.
 scenario-stage-backgrounds:
   title: Scenario stage backgrounds
   description: Background images for scenario stages and tasks.
