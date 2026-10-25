@@ -424,6 +424,8 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
     if (!item) return null;
     current = index;
     setView(REST, false);
+    // A new picture's prompts start at their first line, wherever the last one was scrolled to.
+    panel.scrollTop = 0;
     showFacts(item, index);
     status.textContent = '';
     const image = showImage(item, direction);

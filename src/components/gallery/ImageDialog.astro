@@ -59,29 +59,45 @@ const scriptMessages: ViewerScriptMessages = {
       </button>
     </div>
     <aside id="viewer-panel" class="viewer-panel" aria-label={m.panelLabel} tabindex="0" data-viewer-panel inert>
-      <dl class="gallery-facts min-w-0">
-        <dt>{m.key}</dt>
-        <dd data-fact="key"></dd>
-        <dt>{m.pixelSize}</dt>
-        <dd data-fact="size"></dd>
-        <dt>{m.byteSize}</dt>
-        <dd data-fact="bytes"></dd>
-        <dt>
-          {m.positivePrompt}
-          <button type="button" class="viewer-copy" data-copy="positive" disabled>{m.copy}</button>
-        </dt>
-        <dd data-field="positive"></dd>
-        <dt>
-          {m.negativePrompt}
-          <button type="button" class="viewer-copy" data-copy="negative" disabled>{m.copy}</button>
-        </dt>
-        <dd data-field="negative"></dd>
-        <dt>{m.seed}</dt>
-        <dd data-field="seed"></dd>
-        <dt>{m.generated}</dt>
-        <dd data-field="generatedAt"></dd>
-      </dl>
+      <!-- Sits above the facts so a load failure is read next to the prompts it explains. Empty, it takes no room. -->
       <p class="viewer-status" role="status" data-dialog-status></p>
+      <!-- The prompts lead: they are what a visitor opens the panel for. The short facts follow as a group. -->
+      <dl class="gallery-facts min-w-0">
+        <div class="gallery-prompt">
+          <dt>
+            {m.positivePrompt}
+            <button type="button" class="viewer-copy" data-copy="positive" disabled>{m.copy}</button>
+          </dt>
+          <dd data-field="positive"></dd>
+        </div>
+        <div class="gallery-prompt" data-secondary>
+          <dt>
+            {m.negativePrompt}
+            <button type="button" class="viewer-copy" data-copy="negative" disabled>{m.copy}</button>
+          </dt>
+          <dd data-field="negative"></dd>
+        </div>
+        <div class="gallery-fact gallery-fact-wide">
+          <dt>{m.key}</dt>
+          <dd data-fact="key"></dd>
+        </div>
+        <div class="gallery-fact">
+          <dt>{m.pixelSize}</dt>
+          <dd data-fact="size"></dd>
+        </div>
+        <div class="gallery-fact">
+          <dt>{m.byteSize}</dt>
+          <dd data-fact="bytes"></dd>
+        </div>
+        <div class="gallery-fact">
+          <dt>{m.seed}</dt>
+          <dd data-field="seed"></dd>
+        </div>
+        <div class="gallery-fact">
+          <dt>{m.generated}</dt>
+          <dd data-field="generatedAt"></dd>
+        </div>
+      </dl>
     </aside>
   </div>
 </dialog>

@@ -304,6 +304,21 @@
       min-height: 0;
     }
 
+    /* The field is a container so a name can be kept inside it: a star near an edge shifts its label inward instead of
+       the sky clipping the name. --nxn is the star's own x as a plain number of percent. */
+    .sky-field {
+      container-type: inline-size;
+    }
+
+    .sky-label {
+      translate: clamp(
+          calc(0.5rem - var(--nxn) * 1cqw),
+          -50%,
+          calc(100cqw - 0.5rem - var(--nxn) * 1cqw - 100%)
+        )
+        0;
+    }
+
     .sky-copy {
       align-self: start;
       padding-bottom: 0.5rem;

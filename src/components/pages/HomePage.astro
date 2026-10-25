@@ -51,7 +51,7 @@ const structuredData = homeStructuredData(
 );
 const skyStyle = `--n:${skyAlbums.length};--field:${narrowFieldRem(skyAlbums.length)}rem;`;
 const starStyle = (position: number, size: number, wx: number, wy: number, nx: number, ny: number) =>
-  `--i:${position};--s:${size};--wx:${wx}%;--wy:${wy}%;--nx:${nx}%;--ny:${ny}%;`;
+  `--i:${position};--s:${size};--wx:${wx}%;--wy:${wy}%;--nx:${nx}%;--nxn:${nx};--ny:${ny}%;`;
 const label = (loaded: LoadedAlbum) =>
   `${albumText(loaded.album, locale).title}, ${isPending(loaded) ? messages.album.pending : images(loaded.index.range.count)}`;
 const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.album.slug}/`);

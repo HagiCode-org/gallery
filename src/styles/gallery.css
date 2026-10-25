@@ -56,6 +56,29 @@
     display: none;
   }
 
+  /* On a phone the brand, the language and the theme share one row: the language shows its globe alone (its name stays
+     in the accessible label), so the header costs one row instead of two. */
+  @media (max-width: 35.99rem) {
+    .site-header {
+      flex-wrap: nowrap;
+      gap: 0.5rem;
+    }
+
+    .site-brand {
+      min-width: 0;
+    }
+
+    .lang-summary {
+      width: 2.75rem;
+      padding: 0;
+    }
+
+    .lang-current,
+    .lang-caret {
+      display: none;
+    }
+  }
+
   .lang-caret {
     transition: transform 0.2s var(--ease-out);
   }
@@ -366,6 +389,41 @@
     }
   }
 
+  /* On a phone sixteen full-width cards are nine screens of scrolling. After the lead album, each card becomes a row:
+     the stack on the left, the name, description and count on the right, so a screen shows five albums at a glance.
+     The Card component sets display and padding with utilities, which sit above this layer, hence the !important. */
+  @media (max-width: 39.99rem) {
+    .album-wall[data-featured] > li:not(:first-child) .album-card {
+      display: grid !important;
+      grid-template-columns: 7.25rem minmax(0, 1fr);
+      grid-template-rows: 1fr auto;
+      grid-template-areas:
+        'art head'
+        'art meta';
+    }
+
+    .album-wall[data-featured] > li:not(:first-child) .album-art {
+      grid-area: art;
+      aspect-ratio: auto;
+      min-height: 7.25rem;
+    }
+
+    .album-wall[data-featured] > li:not(:first-child) .album-body {
+      grid-area: head;
+      align-self: end;
+      padding: 0.75rem 0.875rem 0 !important;
+    }
+
+    .album-wall[data-featured] > li:not(:first-child) .album-card [data-slot='card-content'] {
+      grid-area: meta;
+      padding: 0.5rem 0.875rem 0.75rem !important;
+    }
+
+    .album-wall[data-featured] > li:not(:first-child) .album-title {
+      font-size: 1rem;
+    }
+  }
+
   /* ------------------------------------------------------------------ Album page */
 
   .album-page {
@@ -426,6 +484,17 @@
       border-bottom-color: var(--border);
       background: color-mix(in oklab, var(--background) 80%, transparent);
       backdrop-filter: blur(14px) saturate(1.4);
+    }
+  }
+
+  /* The title that fades in on scroll has no room beside the back link, the range and the size control. */
+  @media (max-width: 39.99rem) {
+    .album-bar {
+      gap: 0.5rem;
+    }
+
+    .album-bar-title {
+      display: none;
     }
   }
 
@@ -496,10 +565,8 @@
     color: var(--secondary-foreground);
   }
 
-  @media (min-width: 40rem) {
-    .density:not([hidden]) {
-      display: flex;
-    }
+  .density:not([hidden]) {
+    display: flex;
   }
 
   /* Scroll-driven bits are an enhancement, written as longhands so the minifier cannot fold animation-timeline into the
@@ -588,6 +655,38 @@
     object-fit: cover;
   }
 
+  /* On a phone the title takes the full width, so a short name stays on one line, and the description and count sit
+     beside the cover under it. The text block dissolves into the grid for that, so the DOM order stays title, text, count. */
+  @media (max-width: 47.99rem) {
+    .album-hero {
+      grid-template-areas:
+        'title title'
+        'text art';
+      align-items: start;
+      gap: 0.75rem 1.25rem;
+      padding-top: 1.25rem;
+    }
+
+    .album-hero-text {
+      display: contents;
+    }
+
+    .album-hero h1 {
+      grid-area: title;
+      margin: 0;
+      font-size: clamp(2.25rem, 11vw, 2.75rem);
+    }
+
+    .album-hero-text p {
+      grid-column: 1;
+    }
+
+    .album-hero-art {
+      grid-area: art;
+      grid-row: 2 / span 2;
+    }
+  }
+
   @media (min-width: 48rem) {
     .album-hero {
       grid-template-columns: minmax(0, 1fr) minmax(0, min(20rem, 32%));
@@ -604,14 +703,13 @@
     padding: 0;
   }
 
-  @media (min-width: 40rem) {
-    .album-page[data-density='small'] .gallery-grid {
-      --cell: 6.5rem;
-    }
+  /* On a phone these are three, two and one columns across. */
+  .album-page[data-density='small'] .gallery-grid {
+    --cell: 6.5rem;
+  }
 
-    .album-page[data-density='large'] .gallery-grid {
-      --cell: 16rem;
-    }
+  .album-page[data-density='large'] .gallery-grid {
+    --cell: 16rem;
   }
 
   /* The first rows arrive as one wave at load, from CSS alone. */
@@ -672,6 +770,14 @@
     transition:
       opacity 0.3s var(--ease-out),
       translate 0.3s var(--ease-out);
+  }
+
+  /* With no hover to reveal it the key stays on, but a three-across cell is too small to carry it: the viewer's title
+     names the picture once it is opened. */
+  @media (hover: none) {
+    .album-page[data-density='small'] .gallery-key {
+      display: none;
+    }
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -757,6 +863,8 @@
   .viewer-main {
     position: relative;
     display: grid;
+    /* An auto column would grow to the bar's unshrunk content and push the close button off a 360px screen. */
+    grid-template-columns: minmax(0, 1fr);
     grid-template-rows: auto minmax(0, 1fr);
     min-width: 0;
     min-height: 0;
@@ -946,35 +1054,38 @@
   }
 
   .viewer-status {
-    margin: 1rem 0 0;
+    margin: 0 0 1rem;
     color: var(--v-muted);
     font-size: 0.875rem;
+  }
+
+  .viewer-status:empty {
+    display: none;
   }
 
   .gallery-facts {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
-    gap: 0.125rem 0.75rem;
+    gap: 0.875rem 0.75rem;
     margin: 0;
     font-size: 0.875rem;
+  }
+
+  .gallery-facts > div {
+    min-width: 0;
   }
 
   .gallery-facts dt {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.75rem;
     color: var(--v-muted);
     font-size: 0.8125rem;
   }
 
-  .gallery-facts dt:first-child {
-    margin-top: 0;
-  }
-
   .gallery-facts dd {
     min-width: 0;
-    margin: 0 0 0.25rem;
+    margin: 0.125rem 0 0;
     overflow-wrap: anywhere;
     white-space: pre-wrap;
     line-height: 1.55;
@@ -985,6 +1096,25 @@
   .gallery-facts dd[data-field='generatedAt'] {
     font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
     font-variant-numeric: tabular-nums;
+  }
+
+  /* A prompt is the text a visitor came for, and it can run to a thousand characters. A faint well marks where each
+     one starts and stops, so the negative prompt is never read as the end of the positive one. */
+  .gallery-prompt dt {
+    justify-content: space-between;
+  }
+
+  .gallery-prompt dd {
+    margin-top: 0.375rem;
+    padding: 0.625rem 0.75rem;
+    border-radius: 0.5rem;
+    background: rgb(255 255 255 / 0.05);
+    -webkit-user-select: text;
+    user-select: text;
+  }
+
+  .gallery-prompt[data-secondary] dd {
+    color: var(--v-muted);
   }
 
   .viewer-copy {
@@ -1012,37 +1142,70 @@
     opacity: 0.4;
   }
 
-  /* A narrow screen has no room for a side panel: the details rise from the bottom edge over the picture. */
+  /* A finger needs the full 44px, and "Copy" and "Copied" must not change the button's width. */
+  @media (pointer: coarse) {
+    .viewer-copy {
+      min-width: 4.5rem;
+      min-height: 2.75rem;
+      padding: 0 1rem;
+    }
+  }
+
+  /* A narrow screen has no room for a side panel, so the details take the lower part of the screen and the picture
+     keeps the part above. The panel is a grid row, not a sheet laid over the picture: the stage shrinks to what is left,
+     so the picture and its previous / next buttons stay in view while the prompts are read, and a swipe still moves on
+     to the next image. */
   @media (max-width: 47.99rem) {
     .viewer,
     .viewer[data-panel='open'] {
       grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) 0;
+      overflow: hidden;
+      transition: grid-template-rows 0.5s var(--ease-out);
+    }
+
+    .viewer[data-panel='open'] {
+      grid-template-rows: minmax(0, 1fr) min(54dvh, 36rem);
     }
 
     .viewer-panel {
-      grid-area: auto;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      left: 0;
-      z-index: 5;
+      grid-column: 1;
+      grid-row: 2;
       width: auto;
-      max-height: 62dvh;
+      height: 100%;
+      padding: 1rem 1rem 2rem;
       border-top: 1px solid var(--v-line);
       border-left: 0;
+      overscroll-behavior: contain;
       opacity: 1;
-      translate: 0 102%;
-      transition: translate 0.5s var(--ease-out);
+      visibility: hidden;
+      transition: visibility 0s linear 0.5s;
     }
 
     .viewer[data-panel='open'] .viewer-panel {
-      translate: 0 0;
+      visibility: visible;
       transition-delay: 0s;
+    }
+
+    /* The short facts sit two to a row, so the prompts are not pushed down the panel by three tall single rows. */
+    .gallery-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1rem 0.75rem;
+    }
+
+    .gallery-prompt,
+    .gallery-fact-wide {
+      grid-column: 1 / -1;
+    }
+
+    /* The buttons sit at the stage's bottom corners; the picture keeps clear of them. */
+    .viewer-stage {
+      padding-bottom: 4rem;
     }
 
     .viewer-nav {
       top: auto;
-      bottom: 1rem;
+      bottom: 0.75rem;
       translate: 0 0;
       width: 2.75rem;
       height: 2.75rem;
