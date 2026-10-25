@@ -364,10 +364,12 @@
 
   /* ------------------------------------------------------------------ The model room */
 
-  /* The agent and model albums, in a second dark room under the sky. One panel per album stands side by side; the open
-     one shows the album's pictures and name, the others are slim slats tinted by their own cover. Whether a panel
-     shows its pictures is decided by its width (a container query), so the accordion on a fine pointer and the swipe
-     track everywhere else share one set of rules. With no script the first published model is open. */
+  /* The agent and model albums, in a second dark room under the sky. Every model stands on one wall at once, each as a
+     card with its fanned pictures, name and count, so the whole roster reads in one look. A pointer is a spotlight: the
+     veil over the wall dims the cards far from it and leaves the ones near it bright, and the card under it tilts
+     toward it. All of that is script on top of a wall that is already complete, so with no script, a touch screen or
+     reduced motion every card is simply on show. The number of columns is the room's width (a container query), so the
+     last row is centred instead of leaving a gap. */
   .roster {
     --sky-deep: #080d19;
     --sky-mid: #0f1a31;
@@ -379,6 +381,7 @@
     --roster-pad: clamp(1rem, 2.5vw, 2rem);
     position: relative;
     isolation: isolate;
+    container: roster-room / inline-size;
     margin-top: clamp(1.25rem, 3vw, 2rem);
     padding: var(--roster-pad);
     overflow: clip;
@@ -433,22 +436,37 @@
     opacity: 0.6;
   }
 
-  /* Swipe track: the default, and what a touch screen gets. */
+  /* The wall. --cols is the only thing the room's width decides. */
   .roster-row {
+    --cols: 2;
+    --gap: clamp(0.5rem, 1.2vw, 0.875rem);
+    position: relative;
     display: flex;
-    gap: 0.75rem;
-    height: clamp(27rem, 72svh, 36rem);
-    margin: 0 calc(-1 * var(--roster-pad));
-    padding: 0 var(--roster-pad) 0.5rem;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--gap);
+    margin: 0;
+    padding: 0;
     list-style: none;
-    scroll-padding-inline: var(--roster-pad);
-    scroll-snap-type: x mandatory;
-    scrollbar-color: var(--sky-line) transparent;
-    scrollbar-width: thin;
-    view-timeline-name: --roster;
-    view-timeline-axis: block;
+    perspective: 70rem;
+  }
+
+  @container roster-room (min-width: 30rem) {
+    .roster-row {
+      --cols: 3;
+    }
+  }
+
+  @container roster-room (min-width: 44rem) {
+    .roster-row {
+      --cols: 4;
+    }
+  }
+
+  @container roster-room (min-width: 62rem) {
+    .roster-row {
+      --cols: 6;
+    }
   }
 
   .roster-panel {
@@ -456,15 +474,18 @@
     isolation: isolate;
     display: grid;
     align-content: end;
-    flex: 0 0 min(78vw, 22rem);
+    flex: 0 0 calc((100% - (var(--cols) - 1) * var(--gap)) / var(--cols));
     min-width: 0;
+    aspect-ratio: 4 / 5;
     container: roster-panel / size;
     overflow: hidden;
     border: 1px solid rgb(255 255 255 / 0.14);
     border-radius: var(--radius-lg);
     background: var(--sky-mid);
-    scroll-snap-align: center;
-    transition: flex-grow 0.85s var(--ease-sky);
+    transition:
+      transform 0.5s var(--ease-sky),
+      scale 0.5s var(--ease-sky),
+      border-color 0.4s var(--ease-sky);
   }
 
   .roster-panel:has(.roster-link:focus-visible) {
@@ -478,7 +499,7 @@
     isolation: isolate;
   }
 
-  /* The cover, blurred, tints the panel; the dim layer keeps white text readable on any cover. */
+  /* The cover, blurred, tints the card; the dim layer keeps white text readable on any cover. */
   .roster-art .album-wash {
     inset: -25%;
     filter: blur(30px) saturate(1.7);
@@ -490,7 +511,7 @@
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(0deg, rgb(8 13 25 / 0.92) 0%, rgb(8 13 25 / 0.55) 42%, rgb(8 13 25 / 0.42) 100%);
+      linear-gradient(0deg, rgb(8 13 25 / 0.94) 0%, rgb(8 13 25 / 0.6) 38%, rgb(8 13 25 / 0.36) 100%);
   }
 
   .roster-panel[data-pending] .roster-art {
@@ -498,67 +519,37 @@
   }
 
   .roster-art .album-stack {
-    top: 41%;
-    width: min(70cqw, calc(54cqh * var(--ratio-n, 1)));
-    opacity: 0;
-    scale: 0.88;
+    top: 38%;
+    width: min(66cqw, calc(46cqh * var(--ratio-n, 1)));
     transition:
-      opacity 0.45s var(--ease-sky),
-      scale 0.8s var(--ease-sky);
+      translate 0.7s var(--ease-sky),
+      scale 0.7s var(--ease-sky);
   }
 
   .roster-spot {
     position: absolute;
     inset: 0;
     z-index: 4;
-    background: radial-gradient(16rem circle at var(--mx, 50%) var(--my, 40%), rgb(255 255 255 / 0.18), transparent 62%);
+    background: radial-gradient(12rem circle at var(--mx, 50%) var(--my, 40%), rgb(255 255 255 / 0.18), transparent 62%);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.4s var(--ease-sky);
   }
 
-  /* The name down the slat, shown while the panel is too narrow for its pictures. */
-  .roster-spine {
-    position: absolute;
-    top: 1.25rem;
-    left: 50%;
-    z-index: 2;
-    max-height: calc(100% - 2.5rem);
-    overflow: hidden;
-    translate: -50% 0;
-    color: var(--sky-fg);
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    writing-mode: vertical-rl;
-    transition: opacity 0.3s var(--ease-sky);
-  }
-
-  .roster-panel[data-pending] .roster-spine {
-    color: var(--sky-muted);
-  }
-
-  /* A flex or grid item takes z-index without being positioned, so the link's stretched ::after still fills the panel. */
+  /* A flex or grid item takes z-index without being positioned, so the link's stretched ::after still fills the card. */
   .roster-info {
     z-index: 2;
     display: grid;
-    gap: 0.35rem;
-    padding: 1.25rem;
-    opacity: 0;
-    translate: 0 0.75rem;
-    transition:
-      opacity 0.4s var(--ease-sky),
-      translate 0.6s var(--ease-sky);
+    gap: 0.15rem;
+    padding: clamp(0.625rem, 8cqw, 1rem);
   }
 
   .roster-name {
     margin: 0;
-    font-size: clamp(1.25rem, 2vw, 1.75rem);
+    font-size: clamp(0.9375rem, 9cqw, 1.375rem);
     font-weight: 800;
     line-height: 1.1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
     text-wrap: balance;
   }
 
@@ -567,9 +558,8 @@
     text-decoration: none;
   }
 
-  /* The info block slides on `translate`, which makes it the containing block of anything absolute inside it, so the
-     title link cannot stretch over the panel. This link is a direct child of the panel and covers all of it, pictures
-     included. */
+  /* The info block does not move, so one link would do; this one is a direct child of the card and covers all of it,
+     pictures included. */
   .roster-open {
     position: absolute;
     inset: 0;
@@ -580,83 +570,112 @@
     outline: none;
   }
 
+  .roster-count {
+    margin: 0;
+    color: var(--sky-star);
+    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The description is a row that grows from nothing, so the name and count stay where they are while it unfolds. */
+  .roster-more {
+    display: grid;
+    grid-template-rows: 1fr;
+  }
+
   .roster-desc {
     display: -webkit-box;
-    max-width: 34ch;
+    min-height: 0;
     margin: 0;
     overflow: hidden;
     color: var(--sky-muted);
-    font-size: 0.9375rem;
-    line-height: 1.5;
+    font-size: 0.8125rem;
+    line-height: 1.45;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
-  .roster-count {
-    margin: 0.25rem 0 0;
-    color: var(--sky-star);
-    font-family: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
-    font-size: 0.8125rem;
-    font-variant-numeric: tabular-nums;
+  /* Where there is no hover to unfold it, a card too small for the text leaves the description to the album page. */
+  @media (hover: none), (pointer: coarse) {
+    @container roster-panel (max-width: 14rem) {
+      .roster-more {
+        display: none;
+      }
+    }
   }
 
-  /* Wide enough to show the pictures: the container query is the only place the two states are written. */
-  @container roster-panel (min-width: 14rem) {
-    .roster-art .album-stack {
-      opacity: 1;
-      scale: 1;
+  /* The light. Everything here needs a fine pointer; the script only sets --lx and --ly, and data-lit while a pointer
+     or the keyboard is on the wall. The veil is the one layer over the cards and the lit card sits above it, so the
+     card in hand is always at full brightness and no card is ever dimmed past readable text. */
+  @media (hover: hover) and (pointer: fine) {
+    .roster-more {
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.55s var(--ease-sky);
     }
 
-    .roster-spine {
+    .roster-panel:is(:hover, :focus-within) .roster-more {
+      grid-template-rows: 1fr;
+    }
+
+    .roster-row::after {
+      content: '';
+      position: absolute;
+      inset: -1.75rem calc(-1 * var(--roster-pad)) calc(-1 * var(--roster-pad));
+      z-index: 1;
+      background: radial-gradient(
+        circle 19rem at var(--lx, 50%) var(--ly, 50%),
+        transparent 0%,
+        rgb(8 13 25 / 0.1) 45%,
+        rgb(8 13 25 / 0.42) 100%
+      );
+      /* The room's own edges are the veil's edges; the top, under the heading, fades in so it leaves no seam. */
+      mask-image: linear-gradient(180deg, transparent, #000 2.5rem);
       opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s var(--ease-sky);
     }
 
-    .roster-info {
+    .roster-row[data-lit]::after {
       opacity: 1;
-      translate: 0 0;
-      transition-delay: 0.12s;
-    }
-  }
-
-  /* Accordion: a keyboard or mouse can open a panel by pointing at it or tabbing to it. The first published model
-     stays open until another panel is pointed at. */
-  @media (min-width: 40rem) and (hover: hover) and (pointer: fine) {
-    .roster-row {
-      gap: 0.25rem;
-      margin: 0;
-      padding: 0;
-      overflow: visible;
-      scroll-snap-type: none;
     }
 
     .roster-panel {
-      flex: 1 1 0;
+      transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     }
 
-    .roster-panel[data-lead],
     .roster-panel:is(:hover, :focus-within) {
-      flex-grow: 7;
-    }
-
-    .roster-row:has(.roster-panel:not([data-lead]):is(:hover, :focus-within)) .roster-panel[data-lead]:not(:hover, :focus-within) {
-      flex-grow: 1;
+      z-index: 2;
+      scale: 1.045;
+      border-color: color-mix(in oklab, var(--sky-star) 60%, transparent);
     }
 
     .roster-panel:hover .roster-spot {
       opacity: 1;
     }
 
-    .roster-panel:hover .album-sheet-1 {
-      transform: translate(12%, -5%) rotate(6deg) scale(0.96);
+    /* The stack makes room for the description: it rises and shrinks so the name never lands on a picture. */
+    .roster-panel:is(:hover, :focus-within) .album-stack {
+      translate: -50% calc(-50% - 14cqh);
+      scale: 0.86;
     }
 
-    .roster-panel:hover .album-sheet-2 {
-      transform: translate(-12%, -8%) rotate(-7deg) scale(0.93);
+    .roster-panel:is(:hover, :focus-within) .album-sheet-0 {
+      transform: translateY(2%) scale(1.03);
+    }
+
+    .roster-panel:is(:hover, :focus-within) .album-sheet-1 {
+      transform: translate(14%, -5%) rotate(7deg) scale(0.96);
+    }
+
+    .roster-panel:is(:hover, :focus-within) .album-sheet-2 {
+      transform: translate(-14%, -8%) rotate(-8deg) scale(0.93);
     }
   }
 
-  /* The panels rise into place once, left to right, as the room scrolls in. The keyframes have no `to`, so the resting
-     state is the plain, fully visible panel: a browser without scroll timelines shows it at once. */
+  /* The cards rise into place once as the wall scrolls in, each on its own timeline, so a row comes up together and
+     the rows follow one another. The keyframes have no `to`, so the resting state is the plain, fully visible card: a
+     browser without scroll timelines shows it at once. */
   @media (prefers-reduced-motion: no-preference) {
     @supports (animation-timeline: view()) {
       .roster-panel {
@@ -664,8 +683,8 @@
         animation-duration: 1ms;
         animation-timing-function: var(--ease-sky);
         animation-fill-mode: both;
-        animation-timeline: --roster;
-        animation-range: entry calc(var(--i, 0) * 6%) entry calc(55% + var(--i, 0) * 6%);
+        animation-timeline: view();
+        animation-range: entry 0% entry 70%;
       }
     }
   }

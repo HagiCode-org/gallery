@@ -1,7 +1,7 @@
 // Motion that belongs to the lists, not to the viewer: the pointer spotlight, the develop-on-load fade, the thumbnail-size
 // control and the "which images are on screen" readout. Every part is an enhancement over markup that already works,
 // and each one steps aside for reduced motion or a missing browser feature.
-import { coverKeyFromHash, nextPanelIndex } from '../lib/gallery/home.ts';
+import { coverKeyFromHash } from '../lib/gallery/home.ts';
 import { formatPosition } from '../lib/viewer/transform.ts';
 
 const DENSITY_KEY = 'gallery:density';
@@ -20,7 +20,7 @@ export function setupSpotlight(): void {
   document.addEventListener(
     'pointermove',
     (event) => {
-      const target = (event.target as Element).closest<HTMLElement>('.album-art, .roster-art, .gallery-item');
+      const target = (event.target as Element).closest<HTMLElement>('.album-art, .gallery-item');
       if (!target) return;
       const box = target.getBoundingClientRect();
       host = target;
@@ -148,90 +148,82 @@ export function setupRange(grid: HTMLElement, readout: HTMLElement): void {
   for (const cell of grid.children) observer.observe(cell);
 }
 
-const ROSTER_TURN_MS = 1000;
-const ROSTER_ACCORDION = '(min-width: 40rem) and (hover: hover) and (pointer: fine)';
+const ROSTER_FINE_POINTER = '(hover: hover) and (pointer: fine)';
+// How far a card leans toward the pointer, in degrees at the edge of the card.
+const ROSTER_TILT_X = 6;
+const ROSTER_TILT_Y = 8;
 
-// The model room turns by itself: every second the next published model opens, as the accordion's lead panel on a
-// wide pointer screen and as the centred panel of the swipe track on a touch screen. It holds still while the visitor
-// points at, focuses, touches or scrolls the room, while the tab is hidden or the room is off screen, and for reduced
-// motion. The static markup is already complete, so nothing here is needed to read the page.
-export function setupRosterCarousel(roster: HTMLElement): void {
-  const panels = [...roster.querySelectorAll<HTMLElement>('[data-roster-panel]')];
-  const openable = panels.map((panel) => !panel.hasAttribute('data-pending'));
-  if (openable.filter(Boolean).length < 2) return;
+// The light over the model wall. The pointer moves a spotlight across the whole wall (CSS draws it from --lx and --ly
+// on the row) and the card under it leans toward it and shows a sheen that follows it; the keyboard lights the card it
+// is on. Every card is already visible and linked without this, so it only adds the light. It needs a fine pointer and
+// the tilt steps aside for reduced motion.
+export function setupRosterLight(roster: HTMLElement): void {
+  if (!window.matchMedia(ROSTER_FINE_POINTER).matches) return;
+  let frame = 0;
+  let pending: (() => void) | null = null;
+  let tilted: HTMLElement | null = null;
 
-  let visible = true;
-  let held = false;
-  let timer = 0;
-
-  const accordion = (): boolean => window.matchMedia(ROSTER_ACCORDION).matches;
-  const current = (): number => {
-    if (accordion()) {
-      const lead = panels.findIndex((panel) => panel.hasAttribute('data-lead'));
-      return lead >= 0 ? lead : openable.indexOf(true);
-    }
-    const box = roster.getBoundingClientRect();
-    const middle = box.left + box.width / 2;
-    let nearest = 0;
-    let gap = Infinity;
-    panels.forEach((panel, index) => {
-      const rect = panel.getBoundingClientRect();
-      const distance = Math.abs(rect.left + rect.width / 2 - middle);
-      if (distance < gap) {
-        gap = distance;
-        nearest = index;
-      }
-    });
-    return nearest;
-  };
-
-  const show = (index: number): void => {
-    const panel = panels[index];
+  const settle = (panel: HTMLElement | null): void => {
     if (!panel) return;
-    if (accordion()) {
-      panels.forEach((other) => other.removeAttribute('data-lead'));
-      panel.setAttribute('data-lead', '');
-      return;
-    }
+    panel.style.removeProperty('--rx');
+    panel.style.removeProperty('--ry');
+  };
+  const place = (clientX: number, clientY: number, panel: HTMLElement | null): void => {
     const box = roster.getBoundingClientRect();
+    roster.style.setProperty('--lx', `${clientX - box.left}px`);
+    roster.style.setProperty('--ly', `${clientY - box.top}px`);
+    roster.setAttribute('data-lit', '');
+    if (panel !== tilted) settle(tilted);
+    tilted = panel;
+    if (!panel) return;
     const rect = panel.getBoundingClientRect();
-    roster.scrollTo({
-      left: roster.scrollLeft + rect.left - box.left - (box.width - rect.width) / 2,
-      behavior: 'smooth',
+    const x = (clientX - rect.left) / rect.width;
+    const y = (clientY - rect.top) / rect.height;
+    panel.style.setProperty('--mx', `${clientX - rect.left}px`);
+    panel.style.setProperty('--my', `${clientY - rect.top}px`);
+    if (prefersReducedMotion()) return;
+    panel.style.setProperty('--ry', `${((x - 0.5) * 2 * ROSTER_TILT_Y).toFixed(2)}deg`);
+    panel.style.setProperty('--rx', `${((0.5 - y) * 2 * ROSTER_TILT_X).toFixed(2)}deg`);
+  };
+  const queue = (job: () => void): void => {
+    pending = job;
+    if (frame) return;
+    frame = requestAnimationFrame(() => {
+      frame = 0;
+      pending?.();
+      pending = null;
     });
   };
-
-  const schedule = (): void => {
-    window.clearTimeout(timer);
-    timer = window.setTimeout(turn, ROSTER_TURN_MS);
+  const unlit = (): void => {
+    if (frame) cancelAnimationFrame(frame);
+    frame = 0;
+    pending = null;
+    settle(tilted);
+    tilted = null;
+    roster.removeAttribute('data-lit');
   };
 
-  function turn(): void {
-    if (!held && visible && !document.hidden && !prefersReducedMotion()) show(nextPanelIndex(openable, current()));
-    schedule();
-  }
-
-  // Any interaction restarts the wait, so the room never turns under a hand that has just let go.
-  const hold = (): void => {
-    held = true;
-    window.clearTimeout(timer);
-  };
-  const release = (): void => {
-    held = false;
-    schedule();
-  };
-  roster.addEventListener('pointerenter', hold);
-  roster.addEventListener('pointerleave', release);
-  roster.addEventListener('focusin', hold);
-  roster.addEventListener('focusout', release);
-  roster.addEventListener('touchstart', hold, { passive: true });
-  roster.addEventListener('touchend', release, { passive: true });
-  roster.addEventListener('touchcancel', release, { passive: true });
-  roster.addEventListener('wheel', schedule, { passive: true });
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver((entries) => {
-      visible = entries.some((entry) => entry.isIntersecting);
-    }).observe(roster);
-  }
-  schedule();
+  roster.addEventListener(
+    'pointermove',
+    (event) => {
+      if (event.pointerType === 'touch') return;
+      const { clientX, clientY } = event;
+      const panel = (event.target as Element).closest<HTMLElement>('[data-roster-panel]');
+      queue(() => place(clientX, clientY, panel));
+    },
+    { passive: true },
+  );
+  roster.addEventListener('pointerleave', unlit);
+  // The keyboard has no pointer, so the light rests on the middle of the card that has focus.
+  roster.addEventListener('focusin', (event) => {
+    const panel = (event.target as Element).closest<HTMLElement>('[data-roster-panel]');
+    if (!panel || !panel.querySelector(':focus-visible')) return;
+    const rect = panel.getBoundingClientRect();
+    place(rect.left + rect.width / 2, rect.top + rect.height / 2, null);
+  });
+  roster.addEventListener('focusout', (event) => {
+    if (!roster.contains((event.relatedTarget as Node | null) ?? null)) unlit();
+  });
+  // A card the page has scrolled away from under a still pointer would keep its lean; the scroll ends it.
+  window.addEventListener('scroll', () => settle(tilted), { passive: true });
 }

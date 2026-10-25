@@ -17,8 +17,6 @@ export interface HomePicture {
 }
 
 export interface HomeSelection {
-  // Slug of the model album whose panel is open, or null when no model album has images.
-  readonly lead: string | null;
   // Per published album, the pictures in the order the page uses them: the cover first.
   readonly pictures: ReadonlyMap<string, readonly HomePicture[]>;
 }
@@ -34,7 +32,6 @@ async function shrink(thumb: Thumbnail, edge: number, quality: number): Promise<
 
 async function select(count: number, random: () => number): Promise<HomeSelection> {
   const published = (await loadAlbums()).filter((loaded) => !isPending(loaded));
-  const [lead] = samplePictures(published.filter((loaded) => loaded.album.featuredOnHome === true), 1, random);
   const pictures = await Promise.all(
     published.map(async (loaded) => {
       const chosen = samplePictures(loaded.index.entries, count, random);
@@ -47,7 +44,7 @@ async function select(count: number, random: () => number): Promise<HomeSelectio
       return [loaded.album.slug, cut] as const;
     }),
   );
-  return { lead: lead?.album.slug ?? null, pictures: new Map(pictures) };
+  return { pictures: new Map(pictures) };
 }
 
 // Every page of every language shares one selection, so the whole build shows the same pictures. `count` is how many

@@ -14,14 +14,9 @@ interface Props {
   // The pictures chosen for this build, cover first. The panel fans the first three.
   pictures: readonly HomePicture[];
   locale?: Locale;
-  // The panel that is open until the visitor points at another one.
-  lead?: boolean;
-  // Position in the roster, which staggers the rise.
-  position?: number;
-  eager?: boolean;
 }
 
-const { loaded, pictures, locale = DEFAULT_LOCALE, lead = false, position = 0, eager = false } = Astro.props;
+const { loaded, pictures, locale = DEFAULT_LOCALE } = Astro.props;
 const messages = messagesFor(locale);
 const text = albumText(loaded.album, locale);
 const stack = pictures.slice(0, 3);
@@ -33,7 +28,6 @@ const ratio = dominantAspect(loaded.index);
 const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
 const count = pending ? messages.album.pending : formatCount(locale, messages.images, loaded.index.range.count);
 const style = {
-  '--i': position,
   '--ratio': ratio,
   '--ratio-n': (ratioWidth / ratioHeight).toFixed(4),
 } as CSSProperties;
@@ -43,7 +37,6 @@ const style = {
   class="roster-panel"
   data-roster-panel
   data-home-album={loaded.album.slug}
-  data-lead={lead ? '' : undefined}
   data-pending={pending ? '' : undefined}
   style={style}
 >
@@ -60,7 +53,6 @@ const style = {
                 <Thumb
                   thumb={picture.card}
                   class={`album-sheet album-sheet-${depth}`}
-                  eager={eager && depth === 0}
                   alt={depth === 0 ? text.title : ''}
                   style={depth === 0 ? `view-transition-name: cover-${loaded.album.slug};` : ''}
                 />
@@ -74,12 +66,14 @@ const style = {
   </div>
   {/* The panel is the target, pictures included. The title link keeps the name for screen readers and the keyboard. */}
   <a class="roster-open" href={href} data-album-link aria-hidden="true" tabindex="-1"></a>
-  <span class="roster-spine" aria-hidden="true">{text.title}</span>
   <div class="roster-info">
     <h2 class="roster-name">
       <a class="roster-link" href={href} data-album-link>{text.title}</a>
     </h2>
-    <p class="roster-desc">{text.description}</p>
     <p class="roster-count">{count}</p>
+    {/* The description unfolds under a pointer or the keyboard; every name and count is already on show. */}
+    <div class="roster-more">
+      <p class="roster-desc">{text.description}</p>
+    </div>
   </div>
 </li>

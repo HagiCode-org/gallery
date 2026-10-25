@@ -4,7 +4,7 @@
 // never blocked by it.
 import { pruneOldCaches, readCached, storeCached, type CacheStorageLike } from '../lib/image-cache/cache.ts';
 import { loadMetadata } from '../lib/image-cache/metadata.ts';
-import { setupArrival, setupDensity, setupRange, setupReveal, setupRosterCarousel, setupSpotlight } from './grid-motion.ts';
+import { setupArrival, setupDensity, setupRange, setupReveal, setupRosterLight, setupSpotlight } from './grid-motion.ts';
 import { setupViewer } from './viewer.ts';
 
 const STORE_CONCURRENCY = 4;
@@ -123,7 +123,7 @@ async function start(): Promise<void> {
   watchVisibleImages();
   setupSpotlight();
   const roster = document.querySelector<HTMLElement>('[data-roster]');
-  if (roster) setupRosterCarousel(roster);
+  if (roster) setupRosterLight(roster);
   const dialog = document.querySelector<HTMLDialogElement>('[data-gallery-dialog]');
   const grid = document.querySelector<HTMLElement>('[data-gallery-grid]');
   const page = document.querySelector<HTMLElement>('.album-page');

@@ -32,14 +32,3 @@ export function fitWithin(width: number, height: number, edge: number): { width:
   const scale = Math.min(1, edge / Math.max(width, height));
   return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
 }
-
-// The panel that takes the lead after `current` when the model room turns by itself. Panels that cannot be opened
-// (no pictures yet) are skipped, and the turn wraps from the last published panel to the first.
-export function nextPanelIndex(openable: readonly boolean[], current: number): number {
-  const size = openable.length;
-  for (let step = 1; step <= size; step += 1) {
-    const candidate = (((current + step) % size) + size) % size;
-    if (openable[candidate]) return candidate;
-  }
-  return current;
-}

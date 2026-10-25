@@ -30,7 +30,6 @@ const models = albums.filter((loaded) => loaded.album.featuredOnHome === true);
 const others = albums.filter((loaded) => loaded.album.featuredOnHome !== true);
 const sum = (list: readonly LoadedAlbum[]) => list.reduce((total, loaded) => total + loaded.index.range.count, 0);
 const images = (count: number) => formatCount(locale, messages.images, count);
-// The open panel loads its pictures at once; the rest wait until they are near.
 // The first cards of the wall load at once only when no model room sits above them.
 const EAGER_CARDS = models.length > 0 ? 0 : 4;
 
@@ -40,9 +39,8 @@ const bodies = layoutSky(skyAlbums.map((loaded) => loaded.index.range.count));
 const hanging = satellitesPerStar(skyAlbums.length);
 // The pictures are drawn at random once per build and shared by every language, then cut down to small files, so the live
 // page is the same for every visitor and loads a few small images. A card fans three; a star shows its cover and the
-// pictures that hang off it. The model panel that is open is chosen the same way, and stays until a visitor points at another.
-const { lead, pictures: chosen } = await homeSelection(Math.max(3, hanging + 1));
-const leadModel = models.find((loaded) => loaded.album.slug === lead);
+// pictures that hang off it.
+const { pictures: chosen } = await homeSelection(Math.max(3, hanging + 1));
 const picturesOf = (loaded: LoadedAlbum) => chosen.get(loaded.album.slug) ?? [];
 
 // One star per album, placed by the same geometry on every build.
@@ -148,15 +146,8 @@ const albumHref = (loaded: LoadedAlbum) => {
           </p>
         </div>
         <ul class="roster-row" data-roster>
-          {models.map((loaded, position) => (
-            <ModelPanel
-              loaded={loaded}
-              pictures={picturesOf(loaded)}
-              locale={locale}
-              position={position}
-              lead={loaded === leadModel}
-              eager={loaded === leadModel}
-            />
+          {models.map((loaded) => (
+            <ModelPanel loaded={loaded} pictures={picturesOf(loaded)} locale={locale} />
           ))}
         </ul>
       </section>
