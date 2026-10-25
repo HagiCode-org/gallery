@@ -17,7 +17,7 @@ export interface Album {
   readonly slug: string;
   // R2 prefix, the batch's output.publish.prefix. Unique across ALBUMS.
   readonly prefix: string;
-  // Agent and model albums that take turns leading the home page once they have images.
+  // Selected agent and model albums that take turns leading the home page once they have images.
   readonly featuredOnHome?: true;
   // List the album before img-gen has published its index. It then shows with no images and a "coming soon" note, and
   // fills in on the first build after the publish. Remove the flag once the album is published.
@@ -32,7 +32,6 @@ export const ALBUMS: readonly Album[] = [
   {
     slug: 'agent-cli-default-cats',
     prefix: 'agent-cli-default-cats',
-    featuredOnHome: true,
   },
   {
     slug: 'anime-theme-backgrounds',

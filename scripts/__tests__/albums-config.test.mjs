@@ -54,9 +54,8 @@ describe('album configuration (task 1.2)', () => {
     assert.equal(new Set(ALBUMS.map((album) => album.prefix)).size, ALBUMS.length);
   });
 
-  it('includes agent and model albums in the home page rotation', () => {
+  it('includes the model character albums in the home rotation and excludes default cats', () => {
     assert.deepEqual(ALBUMS.filter((album) => album.featuredOnHome).map((album) => album.slug), [
-      'agent-cli-default-cats',
       'claude-antler-girl-gallery',
       'deepseek-whale-girl-gallery',
       'doubao-sunny-girl-gallery',
