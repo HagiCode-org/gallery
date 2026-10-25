@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { coverFragment, coverKeyFromHash, orderHomeAlbums, samplePictures } from '../../src/lib/gallery/home.ts';
+import { coverFragment, coverKeyFromHash, nextPanelIndex, orderHomeAlbums, samplePictures } from '../../src/lib/gallery/home.ts';
 
 const album = (slug, featured, count = 3) => ({
   slug,
@@ -85,5 +85,19 @@ describe('cover fragment', () => {
     assert.equal(coverKeyFromHash(''), null);
     assert.equal(coverKeyFromHash('#cover='), null);
     assert.equal(coverKeyFromHash('#cover=%E0%A4%A'), null);
+  });
+});
+
+describe('model room turn', () => {
+  it('moves to the next published panel, skips pending ones and wraps around', () => {
+    const openable = [true, false, true, true, false];
+    assert.equal(nextPanelIndex(openable, 0), 2);
+    assert.equal(nextPanelIndex(openable, 2), 3);
+    assert.equal(nextPanelIndex(openable, 3), 0);
+  });
+
+  it('stays put when no other panel can open', () => {
+    assert.equal(nextPanelIndex([true, false], 0), 0);
+    assert.equal(nextPanelIndex([], 0), 0);
   });
 });

@@ -1,7 +1,7 @@
 // Motion that belongs to the lists, not to the viewer: the pointer spotlight, the develop-on-load fade, the thumbnail-size
 // control and the "which images are on screen" readout. Every part is an enhancement over markup that already works,
 // and each one steps aside for reduced motion or a missing browser feature.
-import { coverKeyFromHash } from '../lib/gallery/home.ts';
+import { coverKeyFromHash, nextPanelIndex } from '../lib/gallery/home.ts';
 import { formatPosition } from '../lib/viewer/transform.ts';
 
 const DENSITY_KEY = 'gallery:density';
@@ -146,4 +146,92 @@ export function setupRange(grid: HTMLElement, readout: HTMLElement): void {
     { rootMargin: '-52px 0px 0px 0px' },
   );
   for (const cell of grid.children) observer.observe(cell);
+}
+
+const ROSTER_TURN_MS = 1000;
+const ROSTER_ACCORDION = '(min-width: 40rem) and (hover: hover) and (pointer: fine)';
+
+// The model room turns by itself: every second the next published model opens, as the accordion's lead panel on a
+// wide pointer screen and as the centred panel of the swipe track on a touch screen. It holds still while the visitor
+// points at, focuses, touches or scrolls the room, while the tab is hidden or the room is off screen, and for reduced
+// motion. The static markup is already complete, so nothing here is needed to read the page.
+export function setupRosterCarousel(roster: HTMLElement): void {
+  const panels = [...roster.querySelectorAll<HTMLElement>('[data-roster-panel]')];
+  const openable = panels.map((panel) => !panel.hasAttribute('data-pending'));
+  if (openable.filter(Boolean).length < 2) return;
+
+  let visible = true;
+  let held = false;
+  let timer = 0;
+
+  const accordion = (): boolean => window.matchMedia(ROSTER_ACCORDION).matches;
+  const current = (): number => {
+    if (accordion()) {
+      const lead = panels.findIndex((panel) => panel.hasAttribute('data-lead'));
+      return lead >= 0 ? lead : openable.indexOf(true);
+    }
+    const box = roster.getBoundingClientRect();
+    const middle = box.left + box.width / 2;
+    let nearest = 0;
+    let gap = Infinity;
+    panels.forEach((panel, index) => {
+      const rect = panel.getBoundingClientRect();
+      const distance = Math.abs(rect.left + rect.width / 2 - middle);
+      if (distance < gap) {
+        gap = distance;
+        nearest = index;
+      }
+    });
+    return nearest;
+  };
+
+  const show = (index: number): void => {
+    const panel = panels[index];
+    if (!panel) return;
+    if (accordion()) {
+      panels.forEach((other) => other.removeAttribute('data-lead'));
+      panel.setAttribute('data-lead', '');
+      return;
+    }
+    const box = roster.getBoundingClientRect();
+    const rect = panel.getBoundingClientRect();
+    roster.scrollTo({
+      left: roster.scrollLeft + rect.left - box.left - (box.width - rect.width) / 2,
+      behavior: 'smooth',
+    });
+  };
+
+  const schedule = (): void => {
+    window.clearTimeout(timer);
+    timer = window.setTimeout(turn, ROSTER_TURN_MS);
+  };
+
+  function turn(): void {
+    if (!held && visible && !document.hidden && !prefersReducedMotion()) show(nextPanelIndex(openable, current()));
+    schedule();
+  }
+
+  // Any interaction restarts the wait, so the room never turns under a hand that has just let go.
+  const hold = (): void => {
+    held = true;
+    window.clearTimeout(timer);
+  };
+  const release = (): void => {
+    held = false;
+    schedule();
+  };
+  roster.addEventListener('pointerenter', hold);
+  roster.addEventListener('pointerleave', release);
+  roster.addEventListener('focusin', hold);
+  roster.addEventListener('focusout', release);
+  roster.addEventListener('touchstart', hold, { passive: true });
+  roster.addEventListener('touchend', release, { passive: true });
+  roster.addEventListener('touchcancel', release, { passive: true });
+  roster.addEventListener('wheel', schedule, { passive: true });
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver((entries) => {
+      visible = entries.some((entry) => entry.isIntersecting);
+    }).observe(roster);
+  }
+  schedule();
 }
