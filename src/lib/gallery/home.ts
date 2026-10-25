@@ -1,15 +1,3 @@
-import type { Thumbnail } from './albums.ts';
-
-// A thumbnail that still knows which image of the album it belongs to, so a cover picked on the home page can be found
-// again in the album.
-export type HomeThumbnail = Thumbnail & { readonly key: string };
-
-export interface HomeAlbum {
-  readonly slug: string;
-  readonly featured: boolean;
-  readonly thumbnails: readonly HomeThumbnail[];
-}
-
 const COVER_PREFIX = 'cover=';
 
 // The fragment an album link carries so the album page can scroll to the picture that was its cover on the home page.
@@ -27,7 +15,8 @@ export function coverKeyFromHash(hash: string): string | null {
   }
 }
 
-// Sample without replacement so a short album never repeats a picture within its stack or satellites.
+// Sample without replacement so a short album never repeats a picture within its stack or satellites. The home page
+// samples once per build, so the pictures a visitor sees are fixed until the next build.
 export function samplePictures<T>(pictures: readonly T[], size: number, random = Math.random): T[] {
   const pool = [...pictures];
   const count = Math.min(size, pool.length);
@@ -38,20 +27,10 @@ export function samplePictures<T>(pictures: readonly T[], size: number, random =
   return pool.slice(0, count);
 }
 
-// Published agent/model albums take turns being the open model panel. Remembering the last one avoids repeating it
-// on the next visit; everything after the chosen lead keeps its relative order within its group.
-export function orderHomeAlbums(
-  albums: readonly HomeAlbum[],
-  previousSlug: string | null = null,
-  random = Math.random,
-): HomeAlbum[] {
-  const eligible = albums.filter((album) => album.featured && album.thumbnails.length > 0);
-  const candidates = eligible.length > 1 ? eligible.filter((album) => album.slug !== previousSlug) : eligible;
-  const [first] = samplePictures(candidates, 1, random);
-  if (!first) return [...albums];
-  const rest = eligible.filter((album) => album !== first);
-  const others = albums.filter((album) => !eligible.includes(album));
-  return [first, ...rest, ...others];
+// The size that fits a picture inside a square of `edge` pixels. A picture already smaller than that is not enlarged.
+export function fitWithin(width: number, height: number, edge: number): { width: number; height: number } {
+  const scale = Math.min(1, edge / Math.max(width, height));
+  return { width: Math.max(1, Math.round(width * scale)), height: Math.max(1, Math.round(height * scale)) };
 }
 
 // The panel that takes the lead after `current` when the model room turns by itself. Panels that cannot be opened

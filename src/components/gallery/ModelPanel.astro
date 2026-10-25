@@ -1,15 +1,18 @@
 ---
 import type { CSSProperties } from 'react';
-import { backgroundStyle, coverFor, dominantAspect, isPending, stackFor, type LoadedAlbum } from '@/lib/gallery/albums';
+import { backgroundStyle, dominantAspect, isPending, type LoadedAlbum } from '@/lib/gallery/albums';
 import { DEFAULT_LOCALE, type Locale } from '@/config/site';
 import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
 import { coverFragment } from '@/lib/gallery/home';
+import type { HomePicture } from '@/lib/gallery/homeThumbs';
 import Thumb from './Thumb.astro';
 
 interface Props {
   loaded: LoadedAlbum;
+  // The pictures chosen for this build, cover first. The panel fans the first three.
+  pictures: readonly HomePicture[];
   locale?: Locale;
   // The panel that is open until the visitor points at another one.
   lead?: boolean;
@@ -18,15 +21,14 @@ interface Props {
   eager?: boolean;
 }
 
-const { loaded, locale = DEFAULT_LOCALE, lead = false, position = 0, eager = false } = Astro.props;
+const { loaded, pictures, locale = DEFAULT_LOCALE, lead = false, position = 0, eager = false } = Astro.props;
 const messages = messagesFor(locale);
 const text = albumText(loaded.album, locale);
-const cover = coverFor(loaded);
-const stack = stackFor(loaded);
+const stack = pictures.slice(0, 3);
+const [cover] = stack;
 const pending = isPending(loaded);
-// Opens the album at its cover; home-gallery.ts rewrites the fragment when it swaps in another cover.
-const [first] = loaded.index.entries;
-const href = `${localePath(locale, `/albums/${loaded.album.slug}/`)}${first ? coverFragment(first.key) : ''}`;
+// Opens the album at the picture shown as its cover.
+const href = `${localePath(locale, `/albums/${loaded.album.slug}/`)}${cover ? coverFragment(cover.key) : ''}`;
 const ratio = dominantAspect(loaded.index);
 const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
 const count = pending ? messages.album.pending : formatCount(locale, messages.images, loaded.index.range.count);
@@ -46,20 +48,19 @@ const style = {
   style={style}
 >
   <div class="roster-art" aria-hidden="true">
-    {cover && <span class="album-wash" style={backgroundStyle(cover)} />}
+    {cover && <span class="album-wash" style={backgroundStyle(cover.small)} />}
     {
       stack.length > 0 && (
         <div class="album-stack">
           {
             // Back to front, as on the album card: the cover is drawn last so it sits on top.
-            [...stack].reverse().map((thumb, drawn) => {
+            [...stack].reverse().map((picture, drawn) => {
               const depth = stack.length - 1 - drawn;
               return (
                 <Thumb
-                  thumb={thumb}
+                  thumb={picture.card}
                   class={`album-sheet album-sheet-${depth}`}
                   eager={eager && depth === 0}
-                  cached={depth === 0}
                   alt={depth === 0 ? text.title : ''}
                   style={depth === 0 ? `view-transition-name: cover-${loaded.album.slug};` : ''}
                 />

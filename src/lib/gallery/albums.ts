@@ -125,17 +125,6 @@ export function dominantAspect(index: GalleryIndex): string {
   return best;
 }
 
-// Up to `size` thumbnails spread evenly through the album, starting with the first entry, so the home page can fan a
-// few real pictures from one album. The first element is always the cover.
-export function stackFor(loaded: LoadedAlbum, size = 3): Thumbnail[] {
-  const { entries } = loaded.index;
-  const shown = Math.min(size, entries.length);
-  return Array.from({ length: shown }, (_, step) => {
-    const entry = entries[Math.floor((step * entries.length) / shown)] as IndexEntry;
-    return thumbnailFor(loaded.index, entry);
-  });
-}
-
 // Inline style that shows one thumbnail as a CSS background, for the elements that cannot be an <img>: sprite-sheet
 // cells and the blurred glow behind a page. Empty for a plain image, which the caller renders as an <img>.
 export function sheetStyle(thumbnail: Thumbnail): string {

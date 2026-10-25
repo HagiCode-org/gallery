@@ -327,7 +327,7 @@ describe('album loading and geometry (task 1.5)', () => {
 });
 
 describe('home page and album page helpers', async () => {
-  const { dominantAspect, stackFor, backgroundStyle, sheetStyle } = await import('../../src/lib/gallery/albums.ts');
+  const { dominantAspect, backgroundStyle, sheetStyle } = await import('../../src/lib/gallery/albums.ts');
 
   const entry = (key, width, height) => ({
     key,
@@ -347,20 +347,6 @@ describe('home page and album page helpers', async () => {
   it('breaks a tie towards the earlier entry and falls back to a square', () => {
     assert.equal(dominantAspect(index([entry('a', 10, 20), entry('b', 20, 10)])), '10 / 20');
     assert.equal(dominantAspect(index([])), '1 / 1');
-  });
-
-  it('spreads the stack through the album, cover first', () => {
-    const entries = Array.from({ length: 9 }, (_, step) => entry(`e${step}`, 1024, 1024));
-    const stack = stackFor({ album, index: index(entries) });
-    assert.deepEqual(
-      stack.map((item) => item.url.split('/').pop()),
-      ['e0.avif', 'e3.avif', 'e6.avif'],
-    );
-  });
-
-  it('shows fewer pictures for a small album and none for an empty one', () => {
-    assert.equal(stackFor({ album, index: index([entry('a', 1, 1)]) }).length, 1);
-    assert.equal(stackFor({ album, index: index([]) }).length, 0);
   });
 
   it('writes a background for each thumbnail kind', () => {

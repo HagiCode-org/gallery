@@ -2,29 +2,31 @@
 import type { CSSProperties } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { backgroundStyle, coverFor, dominantAspect, isPending, stackFor, type LoadedAlbum } from '@/lib/gallery/albums';
+import { backgroundStyle, dominantAspect, isPending, type LoadedAlbum } from '@/lib/gallery/albums';
 import { DEFAULT_LOCALE, type Locale } from '@/config/site';
 import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
 import { coverFragment } from '@/lib/gallery/home';
+import type { HomePicture } from '@/lib/gallery/homeThumbs';
 import Thumb from './Thumb.astro';
 
 interface Props {
   loaded: LoadedAlbum;
+  // The pictures chosen for this build, cover first. The card fans the first three.
+  pictures: readonly HomePicture[];
   locale?: Locale;
   // The first screen's cards load their pictures at once.
   eager?: boolean;
 }
 
-const { loaded, locale = DEFAULT_LOCALE, eager = false } = Astro.props;
+const { loaded, pictures, locale = DEFAULT_LOCALE, eager = false } = Astro.props;
 const text = albumText(loaded.album, locale);
-const cover = coverFor(loaded);
-const stack = stackFor(loaded);
+const stack = pictures.slice(0, 3);
+const [cover] = stack;
 const count = loaded.index.range.count;
-// Opens the album at its cover; home-gallery.ts rewrites the fragment when it swaps in another cover.
-const [first] = loaded.index.entries;
-const href = `${localePath(locale, `/albums/${loaded.album.slug}/`)}${first ? coverFragment(first.key) : ''}`;
+// Opens the album at the picture shown as its cover.
+const href = `${localePath(locale, `/albums/${loaded.album.slug}/`)}${cover ? coverFragment(cover.key) : ''}`;
 const ratio = dominantAspect(loaded.index);
 const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
 // The React Card takes a style object; the custom properties are what the stylesheet sizes the art from.
@@ -38,20 +40,19 @@ const titleId = `album-${loaded.album.slug}-title`;
   style={cardStyle}
 >
   <div class="album-art" aria-hidden="true">
-    {cover && <span class="album-wash" style={backgroundStyle(cover)} />}
+    {cover && <span class="album-wash" style={backgroundStyle(cover.small)} />}
     {
       stack.length > 0 && (
         <div class="album-stack">
           {
             // Painted back to front: the cover is the first of the stack but the last one drawn, so it sits on top.
-            [...stack].reverse().map((thumb, drawn) => {
+            [...stack].reverse().map((picture, drawn) => {
               const depth = stack.length - 1 - drawn;
               return (
                 <Thumb
-                  thumb={thumb}
+                  thumb={picture.card}
                   class={`album-sheet album-sheet-${depth}`}
                   eager={eager && depth === 0}
-                  cached={depth === 0}
                   alt={depth === 0 ? text.title : ''}
                   style={depth === 0 ? `view-transition-name: cover-${loaded.album.slug};` : ''}
                 />
