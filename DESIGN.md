@@ -121,7 +121,7 @@ Density is open. The wall of albums and the grid of thumbnails fill the width up
 **Key Characteristics:**
 - One blue for links, actions and focus; the pictures carry all other colour.
 - Chrome separates with rings and borders; a shadow means a picture has been lifted.
-- Two fixed dark rooms (sky, viewer) inside a theme-following page.
+- Fixed dark rooms (sky, model roster, viewer) inside a theme-following page.
 - Native system font and a native monospace for keys, counts and readouts; no web font.
 - Motion is one authored moment per surface; hover effects belong to a fine pointer; reduced motion removes all of it.
 
@@ -236,6 +236,9 @@ A full-screen native `<dialog>` in the Viewer palette. A blurred, dimmed copy of
 
 ### Album card stack (signature)
 A fan of three pictures that settle with a spring and open wider on hover (a fine pointer only), over the cover's blurred wash and a soft pointer spotlight.
+
+### Model roster (signature)
+A second dark room under the sky for the agent and model albums (`featuredOnHome`), in the Sky palette. One panel per album, side by side: the open panel shows the album's fanned pictures at their real shape, its name, description and image count; the others are slim slats tinted by their own cover with the name set down the slat. On a fine pointer from 40rem up it is an accordion (`flex-grow` 7 vs 1) that follows hover and focus, with the first published model, or a random one once the script runs, open by default; everywhere else it is a scroll-snap swipe track with every panel open. A panel shows its pictures when its own width passes 14rem (a container query), so both layouts share one set of rules. The panels rise once from the bottom edge as the room scrolls in (a named view timeline on the row, no effect without support or with reduced motion). Albums that are not models stay on the white wall under the heading "More albums", every card the same size.
 
 ### Sky hero (signature)
 A dark framed room (14px radius, sky-line border) holding the `h1`, a lede, the call-to-action, and one star per album: the album's cover (14px radius, 1px white-at-22% edge) with a name label beneath and smaller satellite pictures around it. A canvas draws lines between neighbouring albums.
