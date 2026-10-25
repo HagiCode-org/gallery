@@ -5,6 +5,10 @@ on:
     branches:
       - main
   workflow_dispatch:
+  # The site reads each album's index.json from R2 at build time, and img-gen publishes without touching this repo.
+  # An hourly rebuild picks up newly published albums and images.
+  schedule:
+    - cron: "17 * * * *"
 
 concurrency:
   group: gallery-deploy-gh-pages

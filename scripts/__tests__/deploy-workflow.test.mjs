@@ -34,8 +34,11 @@ const ci = jobBlock(ciWorkflow, 'ci');
 
 describe('gallery deploy workflow contract', () => {
   // Contract item 1.
-  it('starts on a push to main and on manual dispatch only', () => {
-    assert.match(deployWorkflow, /^on:\n {2}push:\n {4}branches:\n {6}- main\n {2}workflow_dispatch:\n/mu);
+  it('starts on a push to main, on manual dispatch and on an hourly rebuild only', () => {
+    assert.match(
+      deployWorkflow,
+      /^on:\n {2}push:\n {4}branches:\n {6}- main\n {2}workflow_dispatch:\n(?: {2}#.*\n)* {2}schedule:\n {4}- cron: "\d+ \* \* \* \*"\n\n/mu,
+    );
     assert.doesNotMatch(deployWorkflow, /^ {2}pull_request(_target)?:/mu);
   });
 
