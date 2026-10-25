@@ -5,9 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "npm run i18n:generate && astro dev --host 0.0.0.0",
-    "build": "npm run i18n:generate && astro build",
+    "build": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\"; npm run i18n:generate && astro build",
     "preview": "astro preview",
-    "check": "npm run i18n:generate && astro check && tsc --noEmit",
+    "check": "export NODE_OPTIONS=\"${NODE_OPTIONS:-} --max-old-space-size=8192\"; npm run i18n:generate && astro check && tsc --noEmit",
     "verify": "npm run build && node scripts/verify-foundation.mjs",
     "deploy:payload": "node scripts/assemble-gh-pages-payload.mjs",
     "deploy:warmup": "node scripts/warm-deployment-domains.mjs",
