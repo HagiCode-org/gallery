@@ -18,7 +18,7 @@ Every image shows how it was made. Prompts, seed, pixel and byte size and genera
 ## Operating Context
 - Albums are R2 prefixes published by `img-gen` (`repos/img-gen`) at `https://img-gen.hagicode.com`. Each publish writes an `index.json` for the batch and a `<stem>.metadata.json` per image.
 - The build reads each album's `index.json` once; the browser reads an image's metadata when that image is opened.
-- Albums are listed in `src/config/albums.ts`. An album is omitted until its index is published.
+- Albums are listed in `src/config/albums.ts`. An album is omitted until its index is published, unless it is flagged `listBeforePublish`, which lists it with no images and a "coming soon" note.
 - Deployment is a static build published to `gh-pages` and served at `https://gallery.hagicode.com`.
 
 ## Capabilities and Constraints
