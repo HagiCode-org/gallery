@@ -1,11 +1,13 @@
 // The gallery's one client script: a plain module, not an island. It reads what the markup carries (data-* attributes
-// written at build time) and never parses an index. It upgrades thumbnails to cached copies and starts the motion of
+// written at build time) and never parses an index. Home pages first sample their static thumbnail manifest, then it
+// upgrades thumbnails to cached copies and starts the motion of
 // the lists (grid-motion.ts) and the image viewer (viewer.ts). Every cache call is a miss on failure, so the page is
 // never blocked by it.
 import { pruneOldCaches, readCached, storeCached, type CacheStorageLike } from '../lib/image-cache/cache.ts';
 import { loadMetadata } from '../lib/image-cache/metadata.ts';
 import { setupDensity, setupRange, setupReveal, setupSpotlight } from './grid-motion.ts';
 import { setupViewer } from './viewer.ts';
+import { setupHomeGallery } from './home-gallery.ts';
 
 const STORE_CONCURRENCY = 4;
 
@@ -117,7 +119,8 @@ function watchVisibleImages(): void {
   images.forEach((image) => observer.observe(image));
 }
 
-function start(): void {
+async function start(): Promise<void> {
+  await setupHomeGallery();
   if (storage) void pruneOldCaches({ storage });
   upgradeSheets();
   watchVisibleImages();
@@ -146,4 +149,4 @@ function start(): void {
   });
 }
 
-start();
+void start();

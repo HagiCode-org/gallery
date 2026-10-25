@@ -278,7 +278,7 @@
     aspect-ratio: auto;
   }
 
-  /* The cover, blown up and blurred, tints the whole box with the colours of the album's own first picture. */
+  /* The cover, blown up and blurred, tints the whole box with the colours of the album's selected picture. */
   .album-wash {
     position: absolute;
     inset: -20%;

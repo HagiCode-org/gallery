@@ -19,7 +19,9 @@ const { locale = DEFAULT_LOCALE } = Astro.props;
 const messages = messagesFor(locale);
 
 // The same memoized load serves the album pages, so each album's index is requested once per build.
-const albums = await loadAlbums();
+const albums = [...await loadAlbums()].sort((a, b) =>
+  Number(b.album.featuredOnHome === true && !isPending(b)) - Number(a.album.featuredOnHome === true && !isPending(a)),
+);
 const total = albums.reduce((sum, loaded) => sum + loaded.index.range.count, 0);
 const images = (count: number) => formatCount(locale, messages.images, count);
 // Cards that fit in the first screen load their pictures at once; the rest wait until they are near.
@@ -82,6 +84,7 @@ const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.
             <li
               class="sky-node"
               data-sky-node
+              data-home-album={loaded.album.slug}
               style={starStyle(position, body.size, body.wideX, body.wideY, body.narrowX, body.narrowY)}
             >
               <a
@@ -136,7 +139,7 @@ const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.
       ) : (
         <ul class="album-wall" data-featured={featured ? '' : undefined} data-album-wall aria-labelledby="albums-title">
           {albums.map((loaded, position) => (
-            <li class="min-w-0" style={`--i: ${position};`}>
+            <li class="min-w-0" data-home-album={loaded.album.slug} style={`--i: ${position};`}>
               <AlbumCard loaded={loaded} locale={locale} eager={position < EAGER_CARDS} />
             </li>
           ))}
