@@ -7,6 +7,8 @@ pipeline publishes.
 ## What you get
 
 - **A home page of albums.** Each published album is listed with its name and description.
+  Published agent and model albums take turns in the first spot on each visit or refresh. Covers, stacks and sky
+  pictures are sampled from each album on every visit; the same cover appears in the sky and on its card.
 - **A grid page per album.** Every album shows its images as a grid of thumbnails, with a control to change the thumbnail
   size.
 - **A full-screen image viewer.** Open any thumbnail to look at the picture in detail: zoom with the wheel, pinch or
