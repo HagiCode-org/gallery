@@ -7,6 +7,7 @@ import { DEFAULT_LOCALE, type Locale } from '@/config/site';
 import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
+import { coverFragment } from '@/lib/gallery/home';
 import Thumb from './Thumb.astro';
 
 interface Props {
@@ -21,7 +22,9 @@ const text = albumText(loaded.album, locale);
 const cover = coverFor(loaded);
 const stack = stackFor(loaded);
 const count = loaded.index.range.count;
-const href = localePath(locale, `/albums/${loaded.album.slug}/`);
+// Opens the album at its cover; home-gallery.ts rewrites the fragment when it swaps in another cover.
+const [first] = loaded.index.entries;
+const href = `${localePath(locale, `/albums/${loaded.album.slug}/`)}${first ? coverFragment(first.key) : ''}`;
 const ratio = dominantAspect(loaded.index);
 const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
 // The React Card takes a style object; the custom properties are what the stylesheet sizes the art from.
@@ -63,7 +66,7 @@ const titleId = `album-${loaded.album.slug}-title`;
   <CardHeader className="album-body gap-1.5 px-4 pt-4">
     <CardTitle>
       <h2 id={titleId} class="album-title">
-        <a href={href} class="album-link">{text.title}</a>
+        <a href={href} class="album-link" data-album-link>{text.title}</a>
       </h2>
     </CardTitle>
     <CardDescription>{text.description}</CardDescription>

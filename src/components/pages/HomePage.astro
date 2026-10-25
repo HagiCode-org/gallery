@@ -8,6 +8,7 @@ import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
 import { coverFor, isPending, loadAlbums, stackFor, type LoadedAlbum, type Thumbnail } from '@/lib/gallery/albums';
 import { ogImageFor } from '@/lib/gallery/ogImage';
+import { coverFragment } from '@/lib/gallery/home';
 import { homeStructuredData } from '@/lib/seo';
 import { layoutSky, narrowFieldRem, satellitesPerStar } from '@/lib/gallery/constellation';
 import { DEFAULT_LOCALE, SITE_NAME, type Locale } from '@/config/site';
@@ -59,7 +60,12 @@ const starStyle = (position: number, size: number, wx: number, wy: number, nx: n
   `--i:${position};--s:${size};--wx:${wx}%;--wy:${wy}%;--nx:${nx}%;--nxn:${nx};--ny:${ny}%;`;
 const label = (loaded: LoadedAlbum) =>
   `${albumText(loaded.album, locale).title}, ${isPending(loaded) ? messages.album.pending : images(loaded.index.range.count)}`;
-const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.album.slug}/`);
+// Every way into an album opens it at the picture shown as its cover; home-gallery.ts rewrites the fragment when it
+// swaps in another cover.
+const albumHref = (loaded: LoadedAlbum) => {
+  const [first] = loaded.index.entries;
+  return `${localePath(locale, `/albums/${loaded.album.slug}/`)}${first ? coverFragment(first.key) : ''}`;
+};
 ---
 
 <BaseLayout
@@ -96,6 +102,7 @@ const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.
                 class="sky-star"
                 href={albumHref(loaded)}
                 aria-label={label(loaded)}
+                data-album-link
                 data-sky-star
               >
                 <span class="sky-cover" aria-hidden="true">

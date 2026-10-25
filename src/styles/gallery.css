@@ -724,6 +724,25 @@
     transform: scale(0.98);
   }
 
+  /* The picture an album was opened at, from the home page (grid-motion.ts sets data-arrived): a ring that settles once. */
+  @media (prefers-reduced-motion: no-preference) {
+    .gallery-item[data-arrived] {
+      z-index: 2;
+      animation: arrive 1.8s var(--ease-out) both;
+    }
+  }
+
+  @keyframes arrive {
+    0%,
+    45% {
+      box-shadow: 0 0 0 3px var(--ring);
+    }
+
+    100% {
+      box-shadow: 0 0 0 3px transparent;
+    }
+  }
+
   .gallery-thumb {
     position: absolute;
     inset: 0;

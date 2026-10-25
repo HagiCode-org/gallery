@@ -1,6 +1,7 @@
 // Motion that belongs to the lists, not to the viewer: the pointer spotlight, the develop-on-load fade, the thumbnail-size
 // control and the "which images are on screen" readout. Every part is an enhancement over markup that already works,
 // and each one steps aside for reduced motion or a missing browser feature.
+import { coverKeyFromHash } from '../lib/gallery/home.ts';
 import { formatPosition } from '../lib/viewer/transform.ts';
 
 const DENSITY_KEY = 'gallery:density';
@@ -52,6 +53,21 @@ export function setupReveal(grid: HTMLElement): void {
     image.addEventListener('load', done, { once: true });
     image.addEventListener('error', done, { once: true });
   }
+}
+
+// An album opened from the home page arrives with `#cover=<key>`: the picture that was its cover there. The grid scrolls
+// to it and the picture lights up once, then the fragment is dropped so a reload or the viewer's own history entries
+// start clean. An unknown key leaves the page at the top.
+export function setupArrival(grid: HTMLElement): void {
+  const key = coverKeyFromHash(location.hash);
+  if (key === null) return;
+  history.replaceState(null, '', location.pathname + location.search);
+  const item = [...grid.querySelectorAll<HTMLElement>('a.gallery-item')].find((link) => link.dataset.key === key);
+  if (!item) return;
+  item.scrollIntoView({ block: 'center', behavior: 'instant' });
+  if (prefersReducedMotion()) return;
+  item.dataset.arrived = '';
+  item.addEventListener('animationend', () => delete item.dataset.arrived, { once: true });
 }
 
 function readDensity(): Density {

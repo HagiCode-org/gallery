@@ -5,6 +5,7 @@ import { DEFAULT_LOCALE, type Locale } from '@/config/site';
 import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
+import { coverFragment } from '@/lib/gallery/home';
 import Thumb from './Thumb.astro';
 
 interface Props {
@@ -23,7 +24,9 @@ const text = albumText(loaded.album, locale);
 const cover = coverFor(loaded);
 const stack = stackFor(loaded);
 const pending = isPending(loaded);
-const href = localePath(locale, `/albums/${loaded.album.slug}/`);
+// Opens the album at its cover; home-gallery.ts rewrites the fragment when it swaps in another cover.
+const [first] = loaded.index.entries;
+const href = `${localePath(locale, `/albums/${loaded.album.slug}/`)}${first ? coverFragment(first.key) : ''}`;
 const ratio = dominantAspect(loaded.index);
 const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
 const count = pending ? messages.album.pending : formatCount(locale, messages.images, loaded.index.range.count);
@@ -68,10 +71,12 @@ const style = {
     }
     <span class="roster-spot"></span>
   </div>
+  {/* The panel is the target, pictures included. The title link keeps the name for screen readers and the keyboard. */}
+  <a class="roster-open" href={href} data-album-link aria-hidden="true" tabindex="-1"></a>
   <span class="roster-spine" aria-hidden="true">{text.title}</span>
   <div class="roster-info">
     <h2 class="roster-name">
-      <a class="roster-link" href={href}>{text.title}</a>
+      <a class="roster-link" href={href} data-album-link>{text.title}</a>
     </h2>
     <p class="roster-desc">{text.description}</p>
     <p class="roster-count">{count}</p>

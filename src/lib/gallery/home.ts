@@ -1,9 +1,30 @@
 import type { Thumbnail } from './albums.ts';
 
+// A thumbnail that still knows which image of the album it belongs to, so a cover picked on the home page can be found
+// again in the album.
+export type HomeThumbnail = Thumbnail & { readonly key: string };
+
 export interface HomeAlbum {
   readonly slug: string;
   readonly featured: boolean;
-  readonly thumbnails: readonly Thumbnail[];
+  readonly thumbnails: readonly HomeThumbnail[];
+}
+
+const COVER_PREFIX = 'cover=';
+
+// The fragment an album link carries so the album page can scroll to the picture that was its cover on the home page.
+// It is not a bare image key: the viewer opens an image for a bare key, and this only brings the image into view.
+export const coverFragment = (key: string): string => `#${COVER_PREFIX}${encodeURIComponent(key)}`;
+
+// The image key a `location.hash` asks to be shown, or null when the hash is anything else.
+export function coverKeyFromHash(hash: string): string | null {
+  const fragment = hash.startsWith('#') ? hash.slice(1) : hash;
+  if (!fragment.startsWith(COVER_PREFIX)) return null;
+  try {
+    return decodeURIComponent(fragment.slice(COVER_PREFIX.length)) || null;
+  } catch {
+    return null;
+  }
 }
 
 // Sample without replacement so a short album never repeats a picture within its stack or satellites.

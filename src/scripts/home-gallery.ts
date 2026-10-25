@@ -1,5 +1,5 @@
 import type { Thumbnail } from '../lib/gallery/albums.ts';
-import { orderHomeAlbums, samplePictures, type HomeAlbum } from '../lib/gallery/home.ts';
+import { coverFragment, orderHomeAlbums, samplePictures, type HomeAlbum } from '../lib/gallery/home.ts';
 
 const FEATURED_KEY = 'gallery:featured-album';
 const EAGER_CARDS = 4;
@@ -101,6 +101,12 @@ export async function setupHomeGallery(): Promise<void> {
       });
       const wash = card.querySelector<HTMLElement>('.album-wash');
       if (wash && pictures[0]) setBackground(wash, pictures[0]);
+      // Whichever way the album is opened, it opens at the picture that is its cover right now.
+      if (pictures[0]) {
+        for (const link of [...card.querySelectorAll<HTMLAnchorElement>('[data-album-link]'), ...(star?.querySelectorAll<HTMLAnchorElement>('[data-album-link]') ?? [])]) {
+          link.hash = coverFragment(pictures[0].key);
+        }
+      }
     });
     if (opens) {
       try {

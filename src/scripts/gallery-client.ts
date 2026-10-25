@@ -5,7 +5,7 @@
 // never blocked by it.
 import { pruneOldCaches, readCached, storeCached, type CacheStorageLike } from '../lib/image-cache/cache.ts';
 import { loadMetadata } from '../lib/image-cache/metadata.ts';
-import { setupDensity, setupRange, setupReveal, setupSpotlight } from './grid-motion.ts';
+import { setupArrival, setupDensity, setupRange, setupReveal, setupSpotlight } from './grid-motion.ts';
 import { setupViewer } from './viewer.ts';
 import { setupHomeGallery } from './home-gallery.ts';
 
@@ -131,6 +131,7 @@ async function start(): Promise<void> {
   const density = document.querySelector<HTMLElement>('[data-density-control]');
   const range = document.querySelector<HTMLElement>('[data-album-range]');
   if (grid) {
+    setupArrival(grid);
     setupReveal(grid);
     if (page && density) setupDensity(page, grid, density);
     if (range) setupRange(grid, range);

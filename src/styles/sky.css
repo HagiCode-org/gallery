@@ -567,8 +567,10 @@
     text-decoration: none;
   }
 
-  .roster-link::after {
-    content: '';
+  /* The info block slides on `translate`, which makes it the containing block of anything absolute inside it, so the
+     title link cannot stretch over the panel. This link is a direct child of the panel and covers all of it, pictures
+     included. */
+  .roster-open {
     position: absolute;
     inset: 0;
     z-index: 5;

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 
-import { orderHomeAlbums, samplePictures } from '../../src/lib/gallery/home.ts';
+import { coverFragment, coverKeyFromHash, orderHomeAlbums, samplePictures } from '../../src/lib/gallery/home.ts';
 
 const album = (slug, featured, count = 3) => ({
   slug,
@@ -70,5 +70,20 @@ describe('home picture sampling', () => {
     const image = { kind: 'image', url: 'image.avif', bytes: 10, width: 100, height: 200 };
     const sheet = { kind: 'sheet', url: 'sheet.avif', bytes: 20, size: '200% 200%', position: '100% 0%' };
     assert.deepEqual(samplePictures([image, sheet], 2, () => 0.99), [sheet, image]);
+  });
+});
+
+describe('cover fragment', () => {
+  it('round-trips an image key, including one that needs escaping', () => {
+    for (const key of ['hero-001', 'a b/c#d?e', '猫-01']) {
+      assert.equal(coverKeyFromHash(coverFragment(key)), key);
+    }
+  });
+
+  it('ignores a bare image key, which belongs to the viewer, and malformed input', () => {
+    assert.equal(coverKeyFromHash('#hero-001'), null);
+    assert.equal(coverKeyFromHash(''), null);
+    assert.equal(coverKeyFromHash('#cover='), null);
+    assert.equal(coverKeyFromHash('#cover=%E0%A4%A'), null);
   });
 });
