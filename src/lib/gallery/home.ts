@@ -17,8 +17,8 @@ export function samplePictures<T>(pictures: readonly T[], size: number, random =
   return pool.slice(0, count);
 }
 
-// Published agent/model albums lead the wall. Remembering the last lead avoids repeating it on the next visit;
-// everything after the chosen lead keeps its relative order within its group.
+// Published agent/model albums take turns being the open model panel. Remembering the last one avoids repeating it
+// on the next visit; everything after the chosen lead keeps its relative order within its group.
 export function orderHomeAlbums(
   albums: readonly HomeAlbum[],
   previousSlug: string | null = null,

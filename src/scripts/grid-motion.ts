@@ -19,7 +19,7 @@ export function setupSpotlight(): void {
   document.addEventListener(
     'pointermove',
     (event) => {
-      const target = (event.target as Element).closest<HTMLElement>('.album-art, .gallery-item');
+      const target = (event.target as Element).closest<HTMLElement>('.album-art, .roster-art, .gallery-item');
       if (!target) return;
       const box = target.getBoundingClientRect();
       host = target;

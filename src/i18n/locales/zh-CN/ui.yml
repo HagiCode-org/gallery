@@ -9,6 +9,8 @@ home:
   lede: HagiCode 背后的图片：猫咪头像、英雄肖像、启动画面。每一张都由 img-gen 渲染，归入相册，并附带生成它的提示词。
   browse: 浏览相册
   albumsHeading: 相册
+  modelsHeading: 模型
+  moreHeading: 更多相册
   empty: 暂无已发布的相册。
 images:
   one: "{{n}} 张图片"

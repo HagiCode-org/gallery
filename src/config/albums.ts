@@ -59,25 +59,21 @@ export const ALBUMS: readonly Album[] = [
     slug: 'doubao-sunny-girl-gallery',
     prefix: 'doubao-sunny-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'gemini-twin-star-girl-gallery',
     prefix: 'gemini-twin-star-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'gpt-knot-girl-gallery',
     prefix: 'gpt-knot-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'grok-punk-girl-gallery',
     prefix: 'grok-punk-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'hero-avatars',
@@ -87,7 +83,6 @@ export const ALBUMS: readonly Album[] = [
     slug: 'kimi-moon-girl-gallery',
     prefix: 'kimi-moon-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'planning-direction-icons',
@@ -105,7 +100,6 @@ export const ALBUMS: readonly Album[] = [
     slug: 'qwen-porcelain-girl-gallery',
     prefix: 'qwen-porcelain-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'scenario-stage-backgrounds',

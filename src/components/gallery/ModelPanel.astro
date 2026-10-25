@@ -1,0 +1,79 @@
+---
+import type { CSSProperties } from 'react';
+import { backgroundStyle, coverFor, dominantAspect, isPending, stackFor, type LoadedAlbum } from '@/lib/gallery/albums';
+import { DEFAULT_LOCALE, type Locale } from '@/config/site';
+import { albumText } from '@/i18n/albums';
+import { formatCount, localePath } from '@/i18n/locales';
+import { messagesFor } from '@/i18n/messages';
+import Thumb from './Thumb.astro';
+
+interface Props {
+  loaded: LoadedAlbum;
+  locale?: Locale;
+  // The panel that is open until the visitor points at another one.
+  lead?: boolean;
+  // Position in the roster, which staggers the rise.
+  position?: number;
+  eager?: boolean;
+}
+
+const { loaded, locale = DEFAULT_LOCALE, lead = false, position = 0, eager = false } = Astro.props;
+const messages = messagesFor(locale);
+const text = albumText(loaded.album, locale);
+const cover = coverFor(loaded);
+const stack = stackFor(loaded);
+const pending = isPending(loaded);
+const href = localePath(locale, `/albums/${loaded.album.slug}/`);
+const ratio = dominantAspect(loaded.index);
+const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
+const count = pending ? messages.album.pending : formatCount(locale, messages.images, loaded.index.range.count);
+const style = {
+  '--i': position,
+  '--ratio': ratio,
+  '--ratio-n': (ratioWidth / ratioHeight).toFixed(4),
+} as CSSProperties;
+---
+
+<li
+  class="roster-panel"
+  data-roster-panel
+  data-home-album={loaded.album.slug}
+  data-lead={lead ? '' : undefined}
+  data-pending={pending ? '' : undefined}
+  style={style}
+>
+  <div class="roster-art" aria-hidden="true">
+    {cover && <span class="album-wash" style={backgroundStyle(cover)} />}
+    {
+      stack.length > 0 && (
+        <div class="album-stack">
+          {
+            // Back to front, as on the album card: the cover is drawn last so it sits on top.
+            [...stack].reverse().map((thumb, drawn) => {
+              const depth = stack.length - 1 - drawn;
+              return (
+                <Thumb
+                  thumb={thumb}
+                  class={`album-sheet album-sheet-${depth}`}
+                  eager={eager && depth === 0}
+                  cached={depth === 0}
+                  alt={depth === 0 ? text.title : ''}
+                  style={depth === 0 ? `view-transition-name: cover-${loaded.album.slug};` : ''}
+                />
+              );
+            })
+          }
+        </div>
+      )
+    }
+    <span class="roster-spot"></span>
+  </div>
+  <span class="roster-spine" aria-hidden="true">{text.title}</span>
+  <div class="roster-info">
+    <h2 class="roster-name">
+      <a class="roster-link" href={href}>{text.title}</a>
+    </h2>
+    <p class="roster-desc">{text.description}</p>
+    <p class="roster-count">{count}</p>
+  </div>
+</li>

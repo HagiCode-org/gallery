@@ -9,6 +9,8 @@ home:
   lede: "As imagens por trás do HagiCode: avatares de gatos, retratos de heróis, cenas de abertura. Cada uma é gerada com o img-gen, reunida em um álbum e abre junto com o prompt que a criou."
   browse: Explorar os álbuns
   albumsHeading: Álbuns
+  modelsHeading: Modelos
+  moreHeading: Mais álbuns
   empty: Ainda não há álbuns publicados.
 images:
   one: "{{n}} imagem"

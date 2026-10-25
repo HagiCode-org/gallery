@@ -9,6 +9,8 @@ home:
   lede: HagiCode を支える画像たち。猫のアバター、ヒーローのポートレート、スプラッシュシーン。どれも img-gen で生成し、アルバムにまとめ、生成に使ったプロンプトと一緒に開けます。
   browse: アルバムを見る
   albumsHeading: アルバム
+  modelsHeading: モデル
+  moreHeading: ほかのアルバム
   empty: 公開されているアルバムはまだありません。
 images:
   one: "{{n}} 枚"

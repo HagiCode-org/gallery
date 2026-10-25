@@ -30,6 +30,8 @@ export interface Messages {
     readonly lede: string;
     readonly browse: string;
     readonly albumsHeading: string;
+    readonly modelsHeading: string;
+    readonly moreHeading: string;
     readonly empty: string;
   };
   readonly images: PluralForms;

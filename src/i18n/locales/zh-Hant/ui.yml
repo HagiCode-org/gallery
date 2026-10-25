@@ -9,6 +9,8 @@ home:
   lede: HagiCode 背後的圖片：貓咪頭像、英雄肖像、啟動畫面。每一張都由 img-gen 渲染，歸入相簿，並附上產生它的提示詞。
   browse: 瀏覽相簿
   albumsHeading: 相簿
+  modelsHeading: 模型
+  moreHeading: 更多相簿
   empty: 目前沒有已發佈的相簿。
 images:
   one: "{{n}} 張圖片"

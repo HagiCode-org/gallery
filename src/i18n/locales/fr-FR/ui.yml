@@ -9,6 +9,8 @@ home:
   lede: "Les images derrière HagiCode : avatars de chats, portraits de héros, scènes d’accueil. Chacune est générée avec img-gen, rangée dans un album et s’ouvre avec le prompt qui l’a produite."
   browse: Parcourir les albums
   albumsHeading: Albums
+  modelsHeading: Modèles
+  moreHeading: Autres albums
   empty: Aucun album n’est encore publié.
 images:
   one: "{{n}} image"

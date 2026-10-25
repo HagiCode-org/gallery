@@ -9,6 +9,8 @@ home:
   lede: "HagiCode 뒤에 있는 이미지들: 고양이 아바타, 히어로 초상화, 스플래시 장면. 모두 img-gen으로 렌더링해 앨범으로 묶었고, 각 이미지를 만든 프롬프트와 함께 볼 수 있습니다."
   browse: 앨범 둘러보기
   albumsHeading: 앨범
+  modelsHeading: 모델
+  moreHeading: 다른 앨범
   empty: 아직 공개된 앨범이 없습니다.
 images:
   one: 이미지 {{n}}장

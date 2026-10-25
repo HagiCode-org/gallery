@@ -9,6 +9,8 @@ home:
   lede: "The pictures behind HagiCode: cat avatars, hero portraits, splash scenes. Each one is rendered with img-gen, grouped into an album, and opens with the prompt that made it."
   browse: Browse the albums
   albumsHeading: Albums
+  modelsHeading: Models
+  moreHeading: More albums
   empty: No albums are published yet.
 images:
   one: "{{n}} image"

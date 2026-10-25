@@ -9,6 +9,8 @@ home:
   lede: "Die Bilder hinter HagiCode: Katzen-Avatare, Heldenporträts, Startbildschirm-Szenen. Jedes Bild wird mit img-gen erzeugt, in einem Album gesammelt und lässt sich mit dem Prompt öffnen, der es hervorgebracht hat."
   browse: Alben ansehen
   albumsHeading: Alben
+  modelsHeading: Modelle
+  moreHeading: Weitere Alben
   empty: Es sind noch keine Alben veröffentlicht.
 images:
   one: "{{n}} Bild"

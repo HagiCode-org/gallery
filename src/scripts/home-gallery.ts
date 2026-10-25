@@ -43,7 +43,8 @@ function replaceThumbnail(
 
 export async function setupHomeGallery(): Promise<void> {
   const wall = document.querySelector<HTMLElement>('[data-album-wall]');
-  if (!wall) return;
+  const roster = document.querySelector<HTMLElement>('[data-roster]');
+  if (!wall && !roster) return;
 
   try {
     const response = await fetch(`${import.meta.env.BASE_URL}home-albums.json`);
@@ -53,31 +54,39 @@ export async function setupHomeGallery(): Promise<void> {
     try {
       previous = sessionStorage.getItem(FEATURED_KEY);
     } catch {
-      // The first album can still vary when browser storage is unavailable.
+      // The open model can still vary when browser storage is unavailable.
     }
     const ordered = orderHomeAlbums(albums, previous);
+    // Model panels and wall cards are both keyed by album; each album sits in exactly one of them.
     const cards = new Map(
-      [...wall.querySelectorAll<HTMLElement>('[data-home-album]')].map((card) => [card.dataset.homeAlbum, card]),
+      [...document.querySelectorAll<HTMLElement>('[data-album-wall] [data-home-album], [data-roster] [data-home-album]')].map(
+        (card) => [card.dataset.homeAlbum, card],
+      ),
     );
     const stars = new Map(
       [...document.querySelectorAll<HTMLElement>('[data-sky-node][data-home-album]')].map((star) => [star.dataset.homeAlbum, star]),
     );
+    const lead = ordered[0];
+    const opens = lead?.featured && lead.thumbnails.length > 0 ? lead : undefined;
+    if (roster && opens && cards.get(opens.slug)?.matches('[data-roster-panel]')) {
+      roster.querySelectorAll('[data-lead]').forEach((panel) => panel.removeAttribute('data-lead'));
+      cards.get(opens.slug)?.setAttribute('data-lead', '');
+    }
 
     ordered.forEach((album, position) => {
       const card = cards.get(album.slug);
       if (!card) return;
-      wall.append(card);
-      card.style.setProperty('--i', String(position));
 
       const sheets = [...card.querySelectorAll<HTMLElement>('.album-sheet')];
       const star = stars.get(album.slug);
       const skyPictures = [...(star?.querySelectorAll<HTMLElement>('.sky-img') ?? [])];
       const pictures = samplePictures(album.thumbnails, Math.max(sheets.length, skyPictures.length));
-      const title = card.querySelector('.album-title')?.textContent?.trim() ?? '';
+      const title = card.querySelector('.album-title, .roster-name')?.textContent?.trim() ?? '';
+      const eager = album === opens || (!roster && position < EAGER_CARDS);
       sheets.reverse().forEach((sheet, depth) => {
         const thumbnail = pictures[depth];
         if (thumbnail) replaceThumbnail(sheet, thumbnail, {
-          eager: position < EAGER_CARDS && depth === 0,
+          eager: eager && depth === 0,
           cached: depth === 0,
           alt: depth === 0 ? title : '',
         });
@@ -93,10 +102,9 @@ export async function setupHomeGallery(): Promise<void> {
       const wash = card.querySelector<HTMLElement>('.album-wash');
       if (wash && pictures[0]) setBackground(wash, pictures[0]);
     });
-    const first = ordered[0];
-    if (first?.featured && first.thumbnails.length > 0) {
+    if (opens) {
       try {
-        sessionStorage.setItem(FEATURED_KEY, first.slug);
+        sessionStorage.setItem(FEATURED_KEY, opens.slug);
       } catch {
         // Remembering the choice is optional.
       }
