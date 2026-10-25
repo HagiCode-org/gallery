@@ -27,8 +27,8 @@ pipeline publishes.
 ## Albums and where the images come from
 
 An album is one set of images that `img-gen` renders from a recipe set and publishes. The gallery lists the albums that
-are published. The newest series, such as the seven AIGC character galleries, are listed before their first images
-exist and show "Images coming soon" until `img-gen` publishes them. The pages work without JavaScript, because every
+are published. An album that `img-gen` has not published yet is left out of the site until its first publish. An album
+marked `listBeforePublish` in `src/config/albums.ts` is listed earlier, with "Images coming soon", until `img-gen` publishes it. The pages work without JavaScript, because every
 thumbnail is a link to its image file, and animation steps aside when your system asks for reduced motion.
 
 ## Run it locally
