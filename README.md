@@ -10,6 +10,7 @@ pipeline publishes.
   Selected agent and model albums take turns in the first spot on each visit or refresh once published. Agent CLI
   default cats stays in the regular album list. Covers, stacks and sky
   pictures are sampled from each album on every visit; the same cover appears in the sky and on its card.
+  Every part of a model panel opens its album, pictures included, and every way into an album (panel, card, star) opens it at the picture shown as its cover: the link carries `#cover=<image key>`, and the album page scrolls to that picture and rings it once.
 - **A grid page per album.** Every album shows its images as a grid of thumbnails, with a control to change the thumbnail
   size.
 - **A full-screen image viewer.** Open any thumbnail to look at the picture in detail: zoom with the wheel, pinch or
