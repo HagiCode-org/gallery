@@ -32,6 +32,7 @@ album:
   small: Small thumbnails
   medium: Medium thumbnails
   large: Large thumbnails
+  pending: Images coming soon
 viewer:
   unknown: Unknown
   notPublished: No description is published for this image.

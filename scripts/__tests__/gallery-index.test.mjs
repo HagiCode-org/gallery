@@ -261,6 +261,34 @@ describe('album loading and geometry (task 1.5)', () => {
     assert.match(warnings[0], /album "startup-splash" is not published yet/u);
   });
 
+  it('keeps an unpublished album that is listed before publish, with an empty index, and warns once', async () => {
+    const warnings = [];
+    const load = createAlbumLoader({
+      albums: [album, { slug: 'kimi-moon-girl-gallery', prefix: 'kimi-moon-girl-gallery', listBeforePublish: true }],
+      warn: (message) => warnings.push(message),
+      source: {
+        retryDelayMs: 0,
+        fetch: async (url) => (url.includes('kimi-moon') ? new Response('', { status: 404 }) : jsonResponse(indexFor('hero-avatars'))),
+      },
+    });
+    const loaded = await load();
+    assert.deepEqual(loaded.map((item) => item.album.slug), ['hero-avatars', 'kimi-moon-girl-gallery']);
+    assert.equal(loaded[1].index.range.count, 0);
+    assert.deepEqual(loaded[1].index.entries, []);
+    assert.equal(coverFor(loaded[1]), null);
+    assert.equal(warnings.length, 1);
+    assert.match(warnings[0], /album "kimi-moon-girl-gallery" is not published yet .* listed with no images/u);
+  });
+
+  it('uses the published index once a listed-before-publish album is published', async () => {
+    const load = createAlbumLoader({
+      albums: [{ ...album, listBeforePublish: true }],
+      source: { retryDelayMs: 0, fetch: async () => jsonResponse(indexFor('hero-avatars')) },
+    });
+    const [loaded] = await load();
+    assert.ok(loaded.index.range.count > 0);
+  });
+
   it('returns an empty list, without throwing, when every album is missing', async () => {
     const load = createAlbumLoader({
       albums: twoAlbums,

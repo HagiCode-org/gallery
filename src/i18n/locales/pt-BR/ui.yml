@@ -32,6 +32,7 @@ album:
   small: Miniaturas pequenas
   medium: Miniaturas médias
   large: Miniaturas grandes
+  pending: Imagens em breve
 viewer:
   unknown: Desconhecido
   notPublished: Nenhuma descrição foi publicada para esta imagem.

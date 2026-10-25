@@ -32,6 +32,7 @@ album:
   small: 小缩略图
   medium: 中缩略图
   large: 大缩略图
+  pending: 图片即将上线
 viewer:
   unknown: 未知
   notPublished: 这张图片没有发布说明。

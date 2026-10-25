@@ -32,6 +32,7 @@ album:
   small: 小縮圖
   medium: 中縮圖
   large: 大縮圖
+  pending: 圖片即將上線
 viewer:
   unknown: 未知
   notPublished: 這張圖片沒有發佈說明。

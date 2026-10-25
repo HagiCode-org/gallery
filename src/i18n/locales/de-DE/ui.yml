@@ -32,6 +32,7 @@ album:
   small: Kleine Vorschaubilder
   medium: Mittlere Vorschaubilder
   large: Große Vorschaubilder
+  pending: Bilder folgen in Kürze
 viewer:
   unknown: Unbekannt
   notPublished: Für dieses Bild ist keine Beschreibung veröffentlicht.

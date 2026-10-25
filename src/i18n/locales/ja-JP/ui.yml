@@ -32,6 +32,7 @@ album:
   small: 小さいサムネイル
   medium: 中くらいのサムネイル
   large: 大きいサムネイル
+  pending: 画像は近日公開
 viewer:
   unknown: 不明
   notPublished: この画像の説明は公開されていません。

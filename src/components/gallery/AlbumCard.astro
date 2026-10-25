@@ -2,7 +2,7 @@
 import type { CSSProperties } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { backgroundStyle, coverFor, dominantAspect, stackFor, type LoadedAlbum } from '@/lib/gallery/albums';
+import { backgroundStyle, coverFor, dominantAspect, isPending, stackFor, type LoadedAlbum } from '@/lib/gallery/albums';
 import { DEFAULT_LOCALE, type Locale } from '@/config/site';
 import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
@@ -69,6 +69,8 @@ const titleId = `album-${loaded.album.slug}-title`;
     <CardDescription>{text.description}</CardDescription>
   </CardHeader>
   <CardContent className="px-4 pb-4 pt-3">
-    <Badge variant="secondary" className="album-count">{formatCount(locale, messagesFor(locale).images, count)}</Badge>
+    <Badge variant="secondary" className="album-count">
+      {isPending(loaded) ? messagesFor(locale).album.pending : formatCount(locale, messagesFor(locale).images, count)}
+    </Badge>
   </CardContent>
 </Card>

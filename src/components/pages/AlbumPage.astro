@@ -7,7 +7,7 @@ import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { backgroundStyle, coverFor, dominantAspect, type LoadedAlbum } from '@/lib/gallery/albums';
+import { backgroundStyle, coverFor, dominantAspect, isPending, type LoadedAlbum } from '@/lib/gallery/albums';
 import { ogImageFor } from '@/lib/gallery/ogImage';
 import { albumMetaDescription, albumStructuredData } from '@/lib/seo';
 
@@ -24,7 +24,8 @@ const backHref = localePath(locale, '/');
 const cover = coverFor(loaded);
 const ratio = dominantAspect(loaded.index);
 const [ratioWidth = 1, ratioHeight = 1] = ratio.split(' / ').map(Number);
-const metaDescription = albumMetaDescription(text.description, formatCount(locale, messages.images, count));
+const countText = isPending(loaded) ? messages.album.pending : formatCount(locale, messages.images, count);
+const metaDescription = albumMetaDescription(text.description, countText);
 const structuredData = albumStructuredData({
   locale,
   slug: loaded.album.slug,
@@ -63,7 +64,7 @@ const structuredData = albumStructuredData({
       <div class="album-hero-text">
         <h1>{text.title}</h1>
         <p>{text.description}</p>
-        <p class="album-count-line">{formatCount(locale, messages.images, count)}</p>
+        <p class="album-count-line">{countText}</p>
       </div>
       {
         cover && (

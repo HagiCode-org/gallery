@@ -47,6 +47,7 @@ export interface Messages {
     readonly small: string;
     readonly medium: string;
     readonly large: string;
+    readonly pending: string;
   };
   readonly viewer: ViewerScriptMessages & {
     readonly zoomTitle: string;

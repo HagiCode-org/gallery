@@ -27,8 +27,15 @@ export type Thumbnail =
   | { readonly kind: 'sheet'; readonly url: string; readonly bytes: number; readonly size: string; readonly position: string }
   | { readonly kind: 'image'; readonly url: string; readonly bytes: number; readonly width: number; readonly height: number };
 
+// What an album that is listed before its first publish carries: no images, so the card and page show it as empty.
+const EMPTY_INDEX: GalleryIndex = { version: 1, range: { count: 0, first: null, last: null }, sheet: null, entries: [] };
+
+// An album is waiting when it is listed before publish and has no images yet.
+export const isPending = (loaded: LoadedAlbum): boolean => loaded.index.range.count === 0;
+
 // The loader returns the same promise to every caller, so each album's index is requested once per build. Albums that
-// answer 404 are omitted with one warning each; any other failure rejects and names the album.
+// answer 404 are omitted with one warning each, unless they are listed before publish, which keep an empty index; any
+// other failure rejects and names the album.
 export function createAlbumLoader(options: LoaderOptions): () => Promise<LoadedAlbum[]> {
   const warn = options.warn ?? (() => {});
   let pending: Promise<LoadedAlbum[]> | undefined;
@@ -47,6 +54,11 @@ async function loadEach(
   const loaded: LoadedAlbum[] = [];
   for (const { album, result } of results) {
     if (result.status === 'not-published') {
+      if (album.listBeforePublish) {
+        warn(`album "${album.slug}" is not published yet (index.json returned 404) and is listed with no images`);
+        loaded.push({ album, index: EMPTY_INDEX });
+        continue;
+      }
       warn(`album "${album.slug}" is not published yet (index.json returned 404) and is omitted from the build`);
       continue;
     }

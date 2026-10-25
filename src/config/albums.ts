@@ -17,6 +17,9 @@ export interface Album {
   readonly slug: string;
   // R2 prefix, the batch's output.publish.prefix. Unique across ALBUMS.
   readonly prefix: string;
+  // List the album before img-gen has published its index. It then shows with no images and a "coming soon" note, and
+  // fills in on the first build after the publish. Remove the flag once the album is published.
+  readonly listBeforePublish?: true;
 }
 
 export const ALBUMS: readonly Album[] = [

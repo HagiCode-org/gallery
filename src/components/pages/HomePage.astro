@@ -5,7 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import { albumText } from '@/i18n/albums';
 import { formatCount, localePath } from '@/i18n/locales';
 import { messagesFor } from '@/i18n/messages';
-import { coverFor, loadAlbums, stackFor, type LoadedAlbum, type Thumbnail } from '@/lib/gallery/albums';
+import { coverFor, isPending, loadAlbums, stackFor, type LoadedAlbum, type Thumbnail } from '@/lib/gallery/albums';
 import { ogImageFor } from '@/lib/gallery/ogImage';
 import { homeStructuredData } from '@/lib/seo';
 import { layoutSky, narrowFieldRem, satellitesPerStar } from '@/lib/gallery/constellation';
@@ -29,9 +29,11 @@ const featured = albums.length >= 3;
 
 // One star per album, placed by the same geometry on every build. Its covers and the small pictures that hang off it are
 // real images from the album's own index.
-const bodies = layoutSky(albums.map((loaded) => loaded.index.range.count));
-const hanging = satellitesPerStar(albums.length);
-const stars = albums.flatMap((loaded, position) => {
+// An album with no images yet has nothing to show in the sky, so it appears on the wall only.
+const skyAlbums = albums.filter((loaded) => !isPending(loaded));
+const bodies = layoutSky(skyAlbums.map((loaded) => loaded.index.range.count));
+const hanging = satellitesPerStar(skyAlbums.length);
+const stars = skyAlbums.flatMap((loaded, position) => {
   const body = bodies[position];
   const cover = coverFor(loaded);
   if (!body || !cover) return [];
@@ -39,16 +41,17 @@ const stars = albums.flatMap((loaded, position) => {
   const extras: Thumbnail[] = stackFor(loaded, hanging + 1).slice(1);
   return [{ loaded, position, body, cover, extras }];
 });
-const [firstAlbum] = albums;
+const [firstAlbum] = skyAlbums;
 const structuredData = homeStructuredData(
   locale,
   messages.siteDescription,
   albums.map((loaded) => ({ slug: loaded.album.slug, title: albumText(loaded.album, locale).title })),
 );
-const skyStyle = `--n:${albums.length};--field:${narrowFieldRem(albums.length)}rem;`;
+const skyStyle = `--n:${skyAlbums.length};--field:${narrowFieldRem(skyAlbums.length)}rem;`;
 const starStyle = (position: number, size: number, wx: number, wy: number, nx: number, ny: number) =>
   `--i:${position};--s:${size};--wx:${wx}%;--wy:${wy}%;--nx:${nx}%;--ny:${ny}%;`;
-const label = (loaded: LoadedAlbum) => `${albumText(loaded.album, locale).title}, ${images(loaded.index.range.count)}`;
+const label = (loaded: LoadedAlbum) =>
+  `${albumText(loaded.album, locale).title}, ${isPending(loaded) ? messages.album.pending : images(loaded.index.range.count)}`;
 const albumHref = (loaded: LoadedAlbum) => localePath(locale, `/albums/${loaded.album.slug}/`);
 ---
 
