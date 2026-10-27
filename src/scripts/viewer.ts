@@ -19,8 +19,11 @@ import {
   type Point,
   type View,
 } from '../lib/viewer/transform.ts';
+import { captureSiteEvent } from '../lib/posthog-events.ts';
 
 const PANEL_KEY = 'gallery:panel';
+// A zoom gesture ends after this much time without a zoom step, so the next zoom-in counts as a new gesture.
+const ZOOM_GESTURE_IDLE = 600;
 const EASE_OUT = 'cubic-bezier(0.16, 1, 0.3, 1)';
 // A tap is a press that barely moves and ends quickly. Two taps this close together, in time and space, zoom.
 const TAP_MOVE = 8;
@@ -90,6 +93,7 @@ function readMessages(dialog: HTMLElement): { locale: string; text: ViewerScript
 
 export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: ViewerDeps): void {
   const { locale, text: strings } = readMessages(dialog);
+  const album = grid.dataset.album ?? '';
   const items = [...grid.querySelectorAll<HTMLAnchorElement>('a.gallery-item')];
   const pick = <T extends HTMLElement>(selector: string) => dialog.querySelector<T>(selector);
   const viewer = pick<HTMLElement>('[data-viewer]');
@@ -118,6 +122,8 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
   let metadataRequest = 0;
   let view: View = REST;
   let metadataLoaded = false;
+  // The timer that ends the current zoom gesture; null when no gesture is open.
+  let zoomIdle: number | null = null;
 
   const fact = (name: string) => dialog.querySelector<HTMLElement>(`[data-fact="${name}"]`);
   const field = (name: string) => dialog.querySelector<HTMLElement>(`[data-field="${name}"]`);
@@ -144,7 +150,19 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
 
   const relative = (point: Point, center: Point): Point => ({ x: point.x - center.x, y: point.y - center.y });
 
+  // One zoom-in event per gesture: the first zoom-in opens a gesture, and each later zoom step (in or out) keeps it open
+  // until ZOOM_GESTURE_IDLE passes with no step.
+  const noteZoom = (before: number, after: number) => {
+    if (before === after) return;
+    if (zoomIdle === null && after > before) captureSiteEvent('gallery_image_zoomed');
+    if (zoomIdle !== null) window.clearTimeout(zoomIdle);
+    zoomIdle = window.setTimeout(() => {
+      zoomIdle = null;
+    }, ZOOM_GESTURE_IDLE);
+  };
+
   const paintView = (next: View, animated: boolean) => {
+    noteZoom(view.scale, next.scale);
     view = next;
     figure.style.transition = animated ? `transform 0.34s ${EASE_OUT}` : 'none';
     figure.style.transform = next.scale === 1 && next.x === 0 && next.y === 0 ? '' : `translate3d(${next.x}px, ${next.y}px, 0) scale(${next.scale})`;
@@ -497,6 +515,7 @@ export function setupViewer(dialog: HTMLDialogElement, grid: HTMLElement, deps: 
     if (dialog.open) {
       showAt(index, 0);
     } else {
+      if (album) captureSiteEvent('gallery_image_opened', { album });
       opener = items[index] ?? null;
       const thumb = thumbOf(opener ?? undefined);
       const reveal = () => {
