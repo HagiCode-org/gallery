@@ -46,3 +46,19 @@ To build the static site and look at it locally:
 npm run build
 npm run preview
 ```
+
+## PostHog events
+
+The viewer sends two site-level events to PostHog when a visitor has not opted out and PostHog is loaded. They are
+defined in `src/lib/posthog-events.ts`, and the viewer sends them from `src/scripts/viewer.ts`.
+
+| Event | When it fires | Properties |
+|-------|---------------|------------|
+| `gallery_image_opened` | The viewer opens from a thumbnail or from a shared `#image` link. Moving to another image inside an open viewer does not send it. | `album`: the album's public slug |
+| `gallery_image_zoomed` | A zoom-in step starts a zoom gesture: a wheel or pinch step, a double tap, the zoom button, or `+`. | none |
+
+`album` is the only property. No image URL, file name, caption or prompt is ever sent.
+
+**Deduplication rule.** One zoom gesture sends at most one `gallery_image_zoomed`. A gesture stays open while zoom steps keep arriving less than 600 ms apart, and a zoom-in after 600 ms of no zoom steps starts a new gesture. Gallery thumbnails carry no `data-ga-*` markers, so these events never overlap with `cta_click`. If a `data-ga-*` marker is added to a control that also sends one of these events, the business event is the canonical record for that action, and dashboards must not add it to `cta_click` counts.
+
+Without PostHog, or after the visitor opts out, the viewer opens and zooms exactly as before and sends nothing.
