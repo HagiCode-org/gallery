@@ -33,18 +33,18 @@ thumbnail is a link to its image file, and animation steps aside when your syste
 
 ## Run it locally
 
-You need Node.js 24 or newer and npm. The build reads the published albums, so it needs network access.
+You need Node.js 24 or newer and pnpm (via corepack). The build reads the published albums, so it needs network access.
 
 ```bash
-npm ci
-npm run dev
+pnpm install
+pnpm run dev
 ```
 
 To build the static site and look at it locally:
 
 ```bash
-npm run build
-npm run preview
+pnpm run build
+pnpm run preview
 ```
 
 ## PostHog events
@@ -62,3 +62,10 @@ defined in `src/lib/posthog-events.ts`, and the viewer sends them from `src/scri
 **Deduplication rule.** One zoom gesture sends at most one `gallery_image_zoomed`. A gesture stays open while zoom steps keep arriving less than 600 ms apart, and a zoom-in after 600 ms of no zoom steps starts a new gesture. Gallery thumbnails carry no `data-ga-*` markers, so these events never overlap with `cta_click`. If a `data-ga-*` marker is added to a control that also sends one of these events, the business event is the canonical record for that action, and dashboards must not add it to `cta_click` counts.
 
 Without PostHog, or after the visitor opts out, the viewer opens and zooms exactly as before and sends nothing.
+
+## Package management
+
+- The repository uses pnpm, pinned in `package.json` `packageManager`. Run `corepack enable` once, then `pnpm install`. `pnpm-lock.yaml` is the only lockfile; do not commit `package-lock.json`.
+- Settings live in `pnpm-workspace.yaml`. `allowBuilds` lists the dependencies whose install scripts may run (reviewed individually, `false` means reviewed and denied); review any new dependency that has an install script and add it there.
+- A local registry mirror belongs in `~/.npmrc` only. Never commit a `registry=` line or a mirror URL; `pnpm run check:registry` (also run in CI) fails on any non-`registry.npmjs.org` `tarball` in the lockfile and on mirror hosts in tracked files.
+- Undeclared imports fail under pnpm's strict layout: declare the package instead of hoisting it.
