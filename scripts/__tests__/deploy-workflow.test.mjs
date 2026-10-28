@@ -77,7 +77,7 @@ describe('gallery deploy workflow contract', () => {
   // Contract item 4: the deploy job downloads the payload and never installs or builds.
   it('downloads the staged payload and does not install or build in the deploy job', () => {
     assert.match(deploy, /uses: actions\/download-artifact@v4/u);
-    assert.doesNotMatch(deploy, /npm ci\b/u);
+    assert.doesNotMatch(deploy, /npm ci\b|pnpm install\b/u);
     assert.doesNotMatch(deploy, /pnpm run (build|verify)\b/u);
     assert.doesNotMatch(deploy, /run: .*astro build/u);
   });
@@ -125,7 +125,7 @@ describe('gallery pull request CI workflow contract', () => {
   });
 
   it('runs install, locale audit, type check, tests and verification in that order', () => {
-    const commands = ['run: npm ci', 'run: pnpm run i18n:check', 'run: pnpm run check', 'run: pnpm test', 'run: pnpm run verify'];
+    const commands = ['run: pnpm install --frozen-lockfile', 'run: pnpm run i18n:check', 'run: pnpm run check\n', 'run: pnpm test', 'run: pnpm run verify'];
     let previous = -1;
     for (const command of commands) {
       const position = ci.indexOf(command);
