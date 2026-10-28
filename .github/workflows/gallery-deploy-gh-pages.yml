@@ -32,19 +32,30 @@ jobs:
       - name: Checkout current source ref
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: npm
+          cache: pnpm
 
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify install and lockfile stability
+        run: |
+          test -d node_modules
+          git diff --exit-code -- pnpm-lock.yaml
+
+      - name: Registry neutrality
+        run: pnpm run check:registry
 
       - name: Build and verify site
         env:
           HAGILIGHT_BUILD_BRANCH: ${{ github.ref_name }}
-        run: npm run verify
+        run: pnpm run verify
 
       - name: Assemble gh-pages publication payload
         run: node scripts/assemble-gh-pages-payload.mjs "$GALLERY_GH_PAGES_PAYLOAD_DIR"
@@ -70,6 +81,9 @@ jobs:
       - name: Checkout deployment scripts
         uses: actions/checkout@v4
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -93,7 +107,7 @@ jobs:
 
       - name: Warm deployment domains
         id: warmup
-        run: npm run deploy:warmup -- --summary-markdown "$GALLERY_WARMUP_SUMMARY_PATH"
+        run: pnpm run deploy:warmup --summary-markdown "$GALLERY_WARMUP_SUMMARY_PATH"
 
       - name: Summarize deployment output
         if: always()

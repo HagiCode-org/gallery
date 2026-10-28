@@ -54,10 +54,10 @@ describe('gallery deploy workflow contract', () => {
 
   // Contract item 3.
   it('verifies the build before staging the payload', () => {
-    assert.match(build, /run: npm run verify\b/u);
+    assert.match(build, /run: pnpm run verify\b/u);
     assert.match(build, /HAGILIGHT_BUILD_BRANCH: \$\{\{ github\.ref_name \}\}/u);
     assert.match(build, /run: node scripts\/assemble-gh-pages-payload\.mjs/u);
-    assert.ok(build.indexOf('npm run verify') < build.indexOf('assemble-gh-pages-payload'));
+    assert.ok(build.indexOf('pnpm run verify') < build.indexOf('assemble-gh-pages-payload'));
   });
 
   // Contract items 2 and 5: the build job stages the payload and uploads it with hidden files kept.
@@ -78,7 +78,7 @@ describe('gallery deploy workflow contract', () => {
   it('downloads the staged payload and does not install or build in the deploy job', () => {
     assert.match(deploy, /uses: actions\/download-artifact@v4/u);
     assert.doesNotMatch(deploy, /npm ci\b/u);
-    assert.doesNotMatch(deploy, /npm run (build|verify)\b/u);
+    assert.doesNotMatch(deploy, /pnpm run (build|verify)\b/u);
     assert.doesNotMatch(deploy, /run: .*astro build/u);
   });
 
@@ -91,7 +91,7 @@ describe('gallery deploy workflow contract', () => {
   });
 
   it('warms the domains after publication', () => {
-    assert.match(deploy, /run: npm run deploy:warmup -- --summary-markdown/u);
+    assert.match(deploy, /run: pnpm run deploy:warmup --summary-markdown/u);
     assert.ok(deploy.indexOf('peaceiris/actions-gh-pages@v4') < deploy.indexOf('deploy:warmup'));
   });
 
@@ -125,7 +125,7 @@ describe('gallery pull request CI workflow contract', () => {
   });
 
   it('runs install, locale audit, type check, tests and verification in that order', () => {
-    const commands = ['run: npm ci', 'run: npm run i18n:check', 'run: npm run check', 'run: npm test', 'run: npm run verify'];
+    const commands = ['run: npm ci', 'run: pnpm run i18n:check', 'run: pnpm run check', 'run: pnpm test', 'run: pnpm run verify'];
     let previous = -1;
     for (const command of commands) {
       const position = ci.indexOf(command);
