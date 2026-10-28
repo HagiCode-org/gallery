@@ -1,4 +1,4 @@
-// Stages the gh-pages publication payload: esa.jsonc, wrangler.jsonc, and the built dist/. Run after `npm run build`.
+// Stages the gh-pages publication payload: esa.jsonc, wrangler.jsonc, and the built dist/. Run after `pnpm run build`.
 import { existsSync } from 'node:fs';
 import { cp, mkdir, rm } from 'node:fs/promises';
 import path from 'node:path';

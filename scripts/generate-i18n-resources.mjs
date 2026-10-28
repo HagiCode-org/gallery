@@ -1,5 +1,5 @@
 // Turns the YAML locale tree (src/i18n/locales, maintained with hagi18n) into the JSON the site imports
-// (src/i18n/generated, git-ignored). Every npm script that builds, checks or tests the site runs it first.
+// (src/i18n/generated, git-ignored). Every package script that builds, checks or tests the site runs it first.
 //
 //   node scripts/generate-i18n-resources.mjs
 import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';

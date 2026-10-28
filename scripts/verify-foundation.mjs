@@ -1,4 +1,4 @@
-// Checks the foundation facts of the built site. Run after `npm run build`; `npm run verify` does both.
+// Checks the foundation facts of the built site. Run after `pnpm run build`; `pnpm run verify` does both.
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -78,7 +78,7 @@ expect(
 for (const name of HAGILIGHT_PACKAGES) {
   const installedManifest = join(root, 'node_modules', name, 'package.json');
   if (!fileExists(installedManifest)) {
-    failures.push(`${name} is not installed; run npm install`);
+    failures.push(`${name} is not installed; run pnpm install`);
     continue;
   }
   const installed = readJson(installedManifest).version;
@@ -88,7 +88,7 @@ for (const name of HAGILIGHT_PACKAGES) {
 // Every page in the build output: one language, one canonical, one title, one description, one h1, one footer,
 // one icon, and no island or hydration script. Internal targets must exist in dist/.
 const htmlFiles = filesUnder(dist).filter((file) => file.endsWith('.html'));
-expect(htmlFiles.some((file) => relative(dist, file) === 'index.html'), 'dist/index.html is missing; run npm run build first');
+expect(htmlFiles.some((file) => relative(dist, file) === 'index.html'), 'dist/index.html is missing; run pnpm run build first');
 
 const sharedIcon = join(root, 'node_modules', '@hagicode', 'hagilight-core', 'favicon.ico');
 for (const file of htmlFiles) {

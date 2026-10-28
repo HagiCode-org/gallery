@@ -62,7 +62,7 @@ describe('locale paths', () => {
 });
 
 describe('message catalogs', () => {
-  // Field-by-field parity with English (missing, extra and placeholder-mismatched keys) is `npm run i18n:audit`'s job, which
+  // Field-by-field parity with English (missing, extra and placeholder-mismatched keys) is `pnpm run i18n:audit`'s job, which
   // runs hagi18n over the YAML sources. These tests cover what it does not: that the catalogs the site imports exist and
   // that counts format with each language's plural forms.
   it('exist for every language and carry the four plural forms', () => {
