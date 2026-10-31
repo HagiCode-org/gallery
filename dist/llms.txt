@@ -1,0 +1,34 @@
+# HagiCode Gallery
+
+> Browse images from HagiCode's img-gen pipeline. Every image shows its prompts, seed and generation details.
+
+## Overview
+
+- [HagiCode Gallery](https://gallery.hagicode.com/): Browse images from HagiCode's img-gen pipeline. Every image shows its prompts, seed and generation details.
+
+## Albums
+
+- [Agent CLI default cats](https://gallery.hagicode.com/albums/agent-cli-default-cats/): Default cat avatars for agent CLI sessions. 1 image
+- [Cat head gallery](https://gallery.hagicode.com/albums/cat-head-gallery/): Cat head portraits. 1,000 images
+- [Claude antler girl gallery](https://gallery.hagicode.com/albums/claude-antler-girl-gallery/): The Claude girl, drawn in many styles and scenes. 1,000 images
+- [DeepSeek whale girl gallery](https://gallery.hagicode.com/albums/deepseek-whale-girl-gallery/): The whale-maid character drawn in many styles, proportions and scenes. 1,000 images
+- [Doubao sunny girl gallery](https://gallery.hagicode.com/albums/doubao-sunny-girl-gallery/): The Doubao girl, drawn in many styles and scenes. 1,000 images
+- [Gemini twin-star girl gallery](https://gallery.hagicode.com/albums/gemini-twin-star-girl-gallery/): The Gemini girl, drawn in many styles and scenes. 1,000 images
+- [GLM black book girl gallery](https://gallery.hagicode.com/albums/glm-black-book-girl-gallery/): The GLM girl, drawn in many styles and scenes. 1,000 images
+- [GPT knot girl gallery](https://gallery.hagicode.com/albums/gpt-knot-girl-gallery/): The GPT girl, drawn in many styles and scenes. 1,000 images
+- [Grok punk girl gallery](https://gallery.hagicode.com/albums/grok-punk-girl-gallery/): The Grok girl, drawn in many styles and scenes. 1,000 images
+- [Hero avatars](https://gallery.hagicode.com/albums/hero-avatars/): Avatar portraits for the hero section. 132 images
+- [Hunyuan neon girl gallery](https://gallery.hagicode.com/albums/hunyuan-neon-girl-gallery/): The Hunyuan girl, drawn in many styles and scenes. 1,000 images
+- [Kimi moon girl gallery](https://gallery.hagicode.com/albums/kimi-moon-girl-gallery/): The Kimi girl, drawn in many styles and scenes. 1,000 images
+
+## Optional
+
+- [de-DE](https://gallery.hagicode.com/de-DE/)
+- [es-ES](https://gallery.hagicode.com/es-ES/)
+- [fr-FR](https://gallery.hagicode.com/fr-FR/)
+- [ja-JP](https://gallery.hagicode.com/ja-JP/)
+- [ko-KR](https://gallery.hagicode.com/ko-KR/)
+- [pt-BR](https://gallery.hagicode.com/pt-BR/)
+- [ru-RU](https://gallery.hagicode.com/ru-RU/)
+- [zh-CN](https://gallery.hagicode.com/zh-CN/)
+- [zh-Hant](https://gallery.hagicode.com/zh-Hant/)
