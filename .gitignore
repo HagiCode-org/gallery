@@ -14,3 +14,6 @@ dist/
 
 # Generated from src/i18n/locales by scripts/generate-i18n-resources.mjs
 src/i18n/generated/
+
+# Local deja session-rule export (auto-extracted from agent sessions; not committed)
+.deja/
