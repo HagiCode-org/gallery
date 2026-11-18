@@ -36,7 +36,7 @@ const FORBIDDEN_KEYS: ReadonlySet<string> = new Set([
 
 // Keys are snake_case event names (object before action).
 export const SITE_POSTHOG_EVENTS: SiteEventTable = Object.freeze({
-  gallery_image_opened: Object.freeze({ album: { kind: 'string' } }),
+  gallery_image_opened: Object.freeze({ album: { kind: 'string' as const } }),
   gallery_image_zoomed: Object.freeze({}),
 });
 
