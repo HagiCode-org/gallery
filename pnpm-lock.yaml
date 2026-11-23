@@ -219,8 +219,8 @@ importers:
         specifier: ^0.9.10
         version: 0.9.11(@emnapi/runtime@1.11.3)(prettier@3.9.10)(typescript@6.0.3)
       '@hagicode/hagi18n':
-        specifier: ^0.3.0
-        version: 0.3.0
+        specifier: ^0.3.1
+        version: 0.3.1
       '@types/react':
         specifier: ^19.3.0
         version: 19.3.0
@@ -679,8 +679,8 @@ packages:
   '@floating-ui/utils@0.2.12':
     resolution: {integrity: sha512-HpCo8tmWzLVad5s2d19EhAz5zqrrQ6s69qd6moPMQvkOuSwDT1YgRfWSVuc4ennqrgv3OHppiOGMQ7oC13yIww==}
 
-  '@hagicode/hagi18n@0.3.0':
-    resolution: {integrity: sha512-b3Adlxire3/IRulQJRobDzAGvGYXtR2Pw/Gbrzg+tFptgawWInqstIWNk2a4gp19FYrEbS+qjEz7MmDBfEEEtQ==}
+  '@hagicode/hagi18n@0.3.1':
+    resolution: {integrity: sha512-t0L5r7j3jqA/ImnNJTwbLk1glFVyV4j5Uo6/qOX+LK3RnvNT7++zS/bYno6w+ZIyck5uOz6HZHfmkMXFOF3tkA==}
     engines: {node: '>=24.0.0'}
     hasBin: true
 
@@ -4751,7 +4751,7 @@ snapshots:
 
   '@floating-ui/utils@0.2.12': {}
 
-  '@hagicode/hagi18n@0.3.0':
+  '@hagicode/hagi18n@0.3.1':
     dependencies:
       '@types/js-yaml': 4.0.9
       commander: 14.0.3
