@@ -13,6 +13,7 @@ const EXPECTED_PREFIXES = [
   'achievement-icons',
   'agent-cli-default-cats',
   'anime-theme-backgrounds',
+  'antigravity-feather-girl-gallery',
   'cat-head-gallery',
   'claude-antler-girl-gallery',
   'deepseek-whale-girl-gallery',
@@ -59,6 +60,7 @@ describe('album configuration (task 1.2)', () => {
 
   it('includes the model character albums in the home rotation and excludes default cats', () => {
     assert.deepEqual(ALBUMS.filter((album) => album.featuredOnHome).map((album) => album.slug), [
+      'antigravity-feather-girl-gallery',
       'claude-antler-girl-gallery',
       'deepseek-whale-girl-gallery',
       'doubao-sunny-girl-gallery',
