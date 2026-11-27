@@ -41,7 +41,6 @@ export const ALBUMS: readonly Album[] = [
     slug: 'antigravity-feather-girl-gallery',
     prefix: 'antigravity-feather-girl-gallery',
     featuredOnHome: true,
-    listBeforePublish: true,
   },
   {
     slug: 'cat-head-gallery',
